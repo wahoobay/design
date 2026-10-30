@@ -4,8 +4,13 @@
   "description": "Wahoo Bay design system: tokens, components, logo",
   "type": "module",
   "license": "UNLICENSED",
-  "repository": { "type": "git", "url": "git+https://github.com/wahoobay/design.git" },
-  "files": ["dist"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wahoobay/design.git"
+  },
+  "files": [
+    "dist"
+  ],
   "exports": {
     "./tokens.css": "./dist/tokens.css",
     "./components.css": "./dist/components.css",
@@ -17,5 +22,10 @@
     "build": "node scripts/build.mjs",
     "test": "node --test 'tests/*.test.mjs'"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@fontsource-variable/manrope": "5.3.0"
+  }
 }
