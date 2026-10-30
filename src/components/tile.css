@@ -1,0 +1,35 @@
+/* Stat tile: a label and a large number. The accent tile is a count of something alive now. */
+.wb-tile {
+  min-width: 0;
+  padding: var(--wb-space-3) var(--wb-space-4);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-bg);
+}
+.wb-tile__k {
+  margin: 0;
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-xs);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.wb-tile__v {
+  margin: var(--wb-space-1) 0 0;
+  color: var(--wb-color-action);
+  font-size: var(--wb-text-2xl);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.wb-tile__v small {
+  margin-left: 0.15em;
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-sm);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.wb-tile--accent .wb-tile__v { color: var(--wb-color-accent-text); }

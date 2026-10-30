@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wahoo Bay design system</title>
+  <meta name="description" content="The Wahoo Bay design system: tokens and components for wahoobay.net and the fish-ID app, in the light and dark themes.">
+  <link rel="icon" href="./logo/wahoobay-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./fonts.css">
+  <link rel="stylesheet" href="./tokens.css">
+  <link rel="stylesheet" href="./components.css">
+  <style>
+    /* Documentation layout only; the components come from components.css. */
+    .docs-head { padding-top: var(--wb-space-8); padding-bottom: var(--wb-space-6); background: linear-gradient(180deg, var(--wb-color-tint) 0%, var(--wb-color-bg) 100%); }
+    .docs-head h1 { font-weight: 800; }
+    .docs-lede { max-width: var(--wb-measure); margin-top: var(--wb-space-4); color: var(--wb-color-ink-2); font-size: var(--wb-text-lg); }
+    .docs-toc { display: flex; flex-wrap: wrap; gap: var(--wb-space-2) var(--wb-space-5); margin: var(--wb-space-5) 0 0; padding: 0; list-style: none; font-weight: 700; }
+    .docs-toc a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+    code { font-family: inherit; font-size: 0.875em; font-weight: 600; white-space: nowrap; }
+    .docs-section { padding-top: var(--wb-space-6); padding-bottom: var(--wb-space-8); }
+    .docs-section > h2, .docs-theme h2 { margin-bottom: var(--wb-space-3); }
+    .docs-intro { max-width: var(--wb-measure); color: var(--wb-color-ink-2); }
+    .docs-lede, .docs-intro, .docs-note { text-wrap: pretty; }
+    .docs-theme { border-top: 1px solid var(--wb-color-line); background: var(--wb-color-bg); color: var(--wb-color-ink); }
+    .docs-theme > .wb-container { padding-top: var(--wb-space-7); padding-bottom: var(--wb-space-8); }
+    .docs-specimen { display: grid; gap: var(--wb-space-4) var(--wb-space-7); margin-top: var(--wb-space-6); padding-top: var(--wb-space-6); border-top: 1px solid var(--wb-color-line); }
+    .docs-specimen > div:first-child p { margin-top: var(--wb-space-2); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
+    .docs-note { max-width: var(--wb-measure); margin-top: var(--wb-space-3); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
+    .docs-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--wb-space-3); margin: 0; padding: 0; list-style: none; }
+    .docs-focus { outline: 2px solid var(--wb-color-focus); outline-offset: 2px; }
+    .docs-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--wb-space-3); }
+    .docs-cards { display: grid; gap: var(--wb-space-4); }
+    .docs-seen { margin: 0; padding: 0; list-style: none; font-size: var(--wb-text-sm); }
+    .docs-seen li { display: flex; justify-content: space-between; gap: var(--wb-space-4); padding-top: var(--wb-space-2); padding-bottom: var(--wb-space-2); border-top: 1px solid var(--wb-color-line); }
+    .docs-seen li:first-child { border-top: 0; }
+    .docs-seen li > :first-child { font-weight: 600; }
+    .docs-seen .wb-num { color: var(--wb-color-ink-3); }
+    .docs-video { position: relative; max-width: 40rem; overflow: hidden; border: 1px solid var(--wb-color-line); border-radius: var(--wb-radius); }
+    .docs-video img { display: block; width: 100%; }
+    .docs-video .wb-live { position: absolute; top: var(--wb-space-3); left: var(--wb-space-3); }
+    .docs-form { display: grid; gap: var(--wb-space-5); max-width: 32rem; }
+    .docs-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--wb-space-4); margin: var(--wb-space-4) 0 0; padding: 0; list-style: none; }
+    .docs-swatch { display: grid; grid-template-columns: 2.75rem 1fr; column-gap: var(--wb-space-3); align-items: center; font-size: var(--wb-text-sm); }
+    .docs-swatch > span { grid-row: span 3; width: 2.75rem; height: 2.75rem; border: 1px solid var(--wb-color-line); border-radius: var(--wb-radius-sm); }
+    .docs-swatch small { color: var(--wb-color-ink-3); font-size: var(--wb-text-xs); }
+    .docs-dark { margin-top: var(--wb-space-4); padding: var(--wb-space-5); background: var(--wb-color-bg); color: var(--wb-color-ink); border-radius: var(--wb-radius); }
+    .docs-dark .docs-swatches { margin: 0; }
+    .docs-scale, .docs-space { display: grid; gap: var(--wb-space-3); margin: var(--wb-space-4) 0 0; padding: 0; list-style: none; }
+    .docs-scale li, .docs-space li { display: grid; gap: var(--wb-space-1) var(--wb-space-5); align-items: baseline; }
+    .docs-meta { color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
+    .docs-sample { font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+    .docs-space li { align-items: center; }
+    .docs-bar { display: block; height: var(--wb-space-3); border-radius: 2px; background: var(--wb-color-brand); }
+    .docs-shape { display: flex; flex-wrap: wrap; gap: var(--wb-space-5); margin: var(--wb-space-4) 0 0; padding: 0; list-style: none; }
+    .docs-shape li { display: grid; gap: var(--wb-space-2); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
+    .docs-shape span { display: block; width: 7rem; height: 4.5rem; background: var(--wb-color-tint); }
+    .docs-tokens h3 { margin-top: var(--wb-space-7); }
+    .docs-tokens h3 + .docs-intro { margin-top: var(--wb-space-2); }
+    @media (min-width: 48rem) {
+      .docs-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .docs-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .docs-scale li, .docs-space li { grid-template-columns: 14rem 1fr; }
+    }
+    @media (min-width: 60rem) {
+      .docs-specimen { grid-template-columns: 15rem minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="docs-head">
+    <div class="wb-container">
+      <h1>Wahoo Bay design system</h1>
+      <p class="docs-lede">Tokens and components for wahoobay.net and the fish-ID app. A white ground, a pale blue wash, one sans-serif and 12px corners. Brand blue is the logo and the large type, action blue is what you press, and the Seagrass accent means alive right now.</p>
+      <ul class="docs-toc" role="list">
+        <li><a href="#tokens">Tokens</a></li>
+        <li><a href="#light">Components</a></li>
+        <li><a href="#dark">The dark theme</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="wb-container docs-section docs-tokens" id="tokens" aria-labelledby="tokens-title">
+      <h2 id="tokens-title">Tokens</h2>
+      <p class="docs-intro">Every colour and size in the components is one of these custom properties, from <code>tokens.css</code>. Use the names; the values can change.</p>
+
+      <h3>Colour, light</h3>
+      <ul class="docs-swatches" role="list">
+        <li class="docs-swatch"><span style="background: var(--wb-color-brand)"></span><code>--wb-color-brand</code> <code>#0088D6</code><small>Logo, display headings, first chart series</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-action)"></span><code>--wb-color-action</code> <code>#0072B5</code><small>Buttons, links, active navigation</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-action)"></span><code>--wb-color-on-action</code> <code>#FFFFFF</code><small>Text on action</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink)"></span><code>--wb-color-ink</code> <code>#0F2233</code><small>Text</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink-2)"></span><code>--wb-color-ink-2</code> <code>#35495A</code><small>Secondary text</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink-3)"></span><code>--wb-color-ink-3</code> <code>#5B6F80</code><small>Muted text, labels</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-bg)"></span><code>--wb-color-bg</code> <code>#FFFFFF</code><small>Ground</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-panel)"></span><code>--wb-color-panel</code> <code>#F3F8FC</code><small>Panels, cards</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-line)"></span><code>--wb-color-line</code> <code>#DCE8F1</code><small>1px lines</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-tint)"></span><code>--wb-color-tint</code> <code>#EAF4FB</code><small>Pale blue wash</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent)"></span><code>--wb-color-accent</code> <code>#0B7F72</code><small>Seagrass: alive right now</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-text)"></span><code>--wb-color-accent-text</code> <code>#0A6E63</code><small>Accent text on tints</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#DDF3EF</code><small>Chip ground</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#FFFFFF</code><small>Text on accent</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#0072B5</code><small>Focus ring</small></li>
+      </ul>
+
+      <h3>Colour, dark</h3>
+      <p class="docs-intro">The live-camera pages set <code>data-theme="dark"</code>, which replaces these colours; brand blue, type, spacing and corners stay as they are.</p>
+      <div class="docs-dark" data-theme="dark">
+        <ul class="docs-swatches" role="list">
+        <li class="docs-swatch"><span style="background: var(--wb-color-bg)"></span><code>--wb-color-bg</code> <code>#0B1B2B</code><small>Ground</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-panel)"></span><code>--wb-color-panel</code> <code>#122738</code><small>Panels, cards</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-line)"></span><code>--wb-color-line</code> <code>#1F3A50</code><small>1px lines</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-tint)"></span><code>--wb-color-tint</code> <code>#0E2A40</code><small>Pale blue wash</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink)"></span><code>--wb-color-ink</code> <code>#EAF2F8</code><small>Text</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink-2)"></span><code>--wb-color-ink-2</code> <code>#C3D2DF</code><small>Secondary text</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink-3)"></span><code>--wb-color-ink-3</code> <code>#93A9BC</code><small>Muted text, labels</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-action)"></span><code>--wb-color-action</code> <code>#3FA8EA</code><small>Buttons, links, active navigation</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-action)"></span><code>--wb-color-on-action</code> <code>#06111B</code><small>Text on action</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent)"></span><code>--wb-color-accent</code> <code>#2DD4BF</code><small>Seagrass: alive right now</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-text)"></span><code>--wb-color-accent-text</code> <code>#5FE3D1</code><small>Accent text on tints</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#0F3A3C</code><small>Chip ground</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#07192B</code><small>Text on accent</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#5FE3D1</code><small>Focus ring</small></li>
+        </ul>
+      </div>
+
+      <h3>Type scale</h3>
+      <p class="docs-intro">One family, Manrope, from 400 to 800. The two largest steps are fluid.</p>
+      <ul class="docs-scale" role="list">
+        <li><span class="docs-meta"><code>--wb-text-3xl</code> clamp(2.25rem, 1.4rem + 3.2vw, 3.5rem)</span><span class="docs-sample" style="font-size: var(--wb-text-3xl)">A living reef, open to everyone.</span></li>
+        <li><span class="docs-meta"><code>--wb-text-2xl</code> clamp(1.75rem, 1.2rem + 2vw, 2.5rem)</span><span class="docs-sample" style="font-size: var(--wb-text-2xl)">A living reef, open to everyone.</span></li>
+        <li><span class="docs-meta"><code>--wb-text-xl</code> 1.375rem</span><span class="docs-sample" style="font-size: var(--wb-text-xl)">A living reef, open to everyone.</span></li>
+        <li><span class="docs-meta"><code>--wb-text-lg</code> 1.125rem</span><span class="docs-sample" style="font-size: var(--wb-text-lg)">A living reef, open to everyone.</span></li>
+        <li><span class="docs-meta"><code>--wb-text-base</code> 1rem</span><span class="docs-sample" style="font-size: var(--wb-text-base)">A living reef, open to everyone.</span></li>
+        <li><span class="docs-meta"><code>--wb-text-sm</code> 0.875rem</span><span class="docs-sample" style="font-size: var(--wb-text-sm)">A living reef, open to everyone.</span></li>
+        <li><span class="docs-meta"><code>--wb-text-xs</code> 0.75rem</span><span class="docs-sample" style="font-size: var(--wb-text-xs)">A living reef, open to everyone.</span></li>
+      </ul>
+
+      <h3>Spacing</h3>
+      <ul class="docs-space" role="list">
+        <li><span class="docs-meta"><code>--wb-space-1</code> 0.25rem</span><span class="docs-bar" style="width: var(--wb-space-1)"></span></li>
+        <li><span class="docs-meta"><code>--wb-space-2</code> 0.5rem</span><span class="docs-bar" style="width: var(--wb-space-2)"></span></li>
+        <li><span class="docs-meta"><code>--wb-space-3</code> 0.75rem</span><span class="docs-bar" style="width: var(--wb-space-3)"></span></li>
+        <li><span class="docs-meta"><code>--wb-space-4</code> 1rem</span><span class="docs-bar" style="width: var(--wb-space-4)"></span></li>
+        <li><span class="docs-meta"><code>--wb-space-5</code> 1.5rem</span><span class="docs-bar" style="width: var(--wb-space-5)"></span></li>
+        <li><span class="docs-meta"><code>--wb-space-6</code> 2rem</span><span class="docs-bar" style="width: var(--wb-space-6)"></span></li>
+        <li><span class="docs-meta"><code>--wb-space-7</code> 3rem</span><span class="docs-bar" style="width: var(--wb-space-7)"></span></li>
+        <li><span class="docs-meta"><code>--wb-space-8</code> 4rem</span><span class="docs-bar" style="width: var(--wb-space-8)"></span></li>
+      </ul>
+
+      <h3>Corners and shadow</h3>
+      <ul class="docs-shape" role="list">
+        <li><span style="border-radius: var(--wb-radius)"></span><code>--wb-radius</code></li>
+        <li><span style="border-radius: var(--wb-radius-sm)"></span><code>--wb-radius-sm</code></li>
+        <li><span style="border-radius: var(--wb-radius); background: var(--wb-color-bg); box-shadow: var(--wb-shadow)"></span><code>--wb-shadow</code></li>
+      </ul>
+    </section>
+
+    <section class="docs-theme" id="light" aria-labelledby="light-title">
+    <nav class="wb-nav" aria-label="Example navigation, light">
+      <a class="wb-nav__logo" href="#"><!-- @wb-logo --></a>
+      <ul class="wb-nav__links">
+        <li><a class="wb-nav__link" href="#">Visit</a></li>
+        <li><a class="wb-nav__link" href="#">Learn</a></li>
+        <li><a class="wb-nav__link wb-nav__link--on" href="#" aria-current="page">Live reef</a></li>
+        <li><a class="wb-nav__link" href="#">Get involved</a></li>
+      </ul>
+      <a class="wb-btn wb-btn--accent wb-nav__cta" href="#">Donate</a>
+    </nav>
+      <div class="wb-container">
+        <h2 id="light-title">Components</h2>
+        <p class="docs-intro">On the light ground, which is every page except the live cameras. The navigation bar above and the footer below are components too.</p>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Buttons</h3>
+          <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
+        </div>
+        <div>
+          <div class="docs-row">
+            <a class="wb-btn wb-btn--action" href="#">Watch the reef live</a>
+            <a class="wb-btn wb-btn--ghost" href="#">Plan a visit</a>
+            <a class="wb-btn wb-btn--accent" href="#">Donate</a>
+            <button class="wb-btn wb-btn--action docs-focus" type="button">Send sighting</button>
+          </div>
+          <p class="docs-note">The last button is drawn as keyboard focus draws it: the ring comes from <code>base.css</code>, 2px of <code>--wb-color-focus</code> set 2px clear of the button. Press Tab to see it on the others.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Live badge</h3>
+          <p>Shown only while a stream is on.</p>
+        </div>
+        <div>
+          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live">Live</span></p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Species chips</h3>
+          <p>A species the camera named, and how long ago.</p>
+        </div>
+        <div>
+          <ul class="docs-row" role="list">
+            <li><span class="wb-chip">Sergeant major<small class="wb-chip__meta">2 min</small></span></li>
+            <li><span class="wb-chip">Blue tang<small class="wb-chip__meta">4 min</small></span></li>
+            <li><span class="wb-chip">Parrotfish<small class="wb-chip__meta">12 min</small></span></li>
+            <li><span class="wb-chip">Atlantic spadefish (Chaetodipterus faber), juvenile in grass<small class="wb-chip__meta">31 min</small></span></li>
+          </ul>
+          <p class="docs-note">Fixture: the last chip's species name is exactly 60 characters, there to show that a long name wraps inside the chip and is never cut off.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Stat tiles</h3>
+          <p>A reading and its unit, the number in action blue. The accent tile counts something alive today.</p>
+        </div>
+        <div>
+          <div class="docs-tiles">
+            <div class="wb-tile"><p class="wb-tile__k">Water</p><p class="wb-tile__v">27.4<small>°C</small></p></div>
+            <div class="wb-tile wb-tile--accent"><p class="wb-tile__k">Species today</p><p class="wb-tile__v">18</p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Oxygen</p><p class="wb-tile__v">6.8<small>mg/L</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Salinity</p><p class="wb-tile__v">36<small>ppt</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Visibility</p><p class="wb-tile__v">6<small>m</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Dissolved oxygen, north reef module buoy</p><p class="wb-tile__v">6.9<small>mg/L</small></p></div>
+          </div>
+          <p class="docs-note">Fixture: the last tile's label is exactly 40 characters, there to show that a long label wraps inside the tile and never overflows it.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Panel</h3>
+          <p>Groups related readings under one small title, on the panel ground.</p>
+        </div>
+        <div>
+          <div class="wb-panel">
+            <h4 class="wb-panel__title">Seen in the last hour</h4>
+            <ol class="docs-seen">
+              <li><span>Sergeant major</span><span class="wb-num">143</span></li>
+              <li><span>Grey snapper</span><span class="wb-num">88</span></li>
+              <li><span>Blue tang</span><span class="wb-num">52</span></li>
+              <li><span>Stoplight parrotfish</span><span class="wb-num">24</span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Cards</h3>
+          <p>A way into another page. Image beside the text where the card is wide enough, above it where it is not.</p>
+        </div>
+        <div class="docs-cards">
+          <a class="wb-card" href="#">
+            <img class="wb-card__media" src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <div class="wb-card__body"><h4>Why the manatees come in winter</h4><p>Learn · 4 min read</p></div>
+          </a>
+          <a class="wb-card" href="#">
+            <img class="wb-card__media" src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <div class="wb-card__body"><h4>Visit the park this weekend</h4><p>Open sunrise to sunset · free</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Chart</h3>
+          <p>The frame and legend. Brand blue is the first series and the accent the second: mark them <code>data-series="1"</code> and <code>data-series="2"</code>.</p>
+        </div>
+        <div>
+          <figure class="wb-chart">
+            <figcaption>Water temperature and species seen, 7 days</figcaption>
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none" role="img" aria-label="Over seven days the water temperature holds steady while the number of species seen rises">
+              <polyline data-series="1" points="0,14 16,15 32,13 48,12 64,13 80,11 100,10"/>
+              <polyline data-series="2" points="0,22 16,18 32,20 48,12 64,14 80,8 100,5"/>
+            </svg>
+            <ul class="wb-chart__legend" role="list"><li data-series="1">Water temp</li><li data-series="2">Species seen</li></ul>
+          </figure>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Detection boxes</h3>
+          <p>Drawn over the live video in the accent: the species and the model's confidence.</p>
+        </div>
+        <div>
+          <div class="docs-video">
+            <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
+            <span class="wb-live">Live</span>
+            <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
+            <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
+            <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Form controls</h3>
+          <p>Label above, help or error below. There is no danger colour: an error says what to do, in bold, and the control's border thickens.</p>
+        </div>
+        <div class="docs-form">
+          <div class="wb-field">
+            <label class="wb-label" for="camera-l">Camera</label>
+            <select class="wb-select" id="camera-l"><option>Reef camera</option><option>Pier camera</option></select>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="species-l">Species</label>
+            <input class="wb-input" id="species-l" type="text" placeholder="Start typing a name" aria-describedby="species-l-help">
+            <p class="wb-help" id="species-l-help">A common or scientific name; suggestions come from the species list.</p>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="time-l">Time in the video</label>
+            <input class="wb-input" id="time-l" type="text" value="1240" aria-invalid="true" aria-describedby="time-l-error">
+            <p class="wb-error" id="time-l-error">Enter the time as minutes and seconds, like 12:40.</p>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="notes-l">What did you see?</label>
+            <textarea class="wb-textarea" id="notes-l">Two sergeant majors guarding eggs on the north reef module.</textarea>
+          </div>
+          <div><button class="wb-btn wb-btn--action" type="button">Send sighting</button></div>
+        </div>
+      </div>
+      </div>
+    <footer class="wb-footer">
+      <p>© 2026 Wahoo Bay by Shipwreck Park, Inc. · 501(c)(3) non-profit organization — all donations are tax-deductible to the extent permitted by law.</p>
+      <ul>
+        <li><a href="https://www.instagram.com/wahoobaypompano/">Instagram</a></li>
+        <li><a href="https://www.facebook.com/wahoobaypompano/">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@wahoobaypompano">YouTube</a></li>
+        <li><a href="https://shipwreckparkpompano.org">Shipwreck Park</a></li>
+      </ul>
+    </footer>
+    </section>
+
+    <section data-theme="dark" class="docs-theme" id="dark" aria-labelledby="dark-title">
+    <nav class="wb-nav" aria-label="Example navigation, dark">
+      <a class="wb-nav__logo" href="#"><!-- @wb-logo --></a>
+      <ul class="wb-nav__links">
+        <li><a class="wb-nav__link" href="#">Visit</a></li>
+        <li><a class="wb-nav__link" href="#">Learn</a></li>
+        <li><a class="wb-nav__link wb-nav__link--on" href="#" aria-current="page">Live reef</a></li>
+        <li><a class="wb-nav__link" href="#">Get involved</a></li>
+      </ul>
+      <a class="wb-btn wb-btn--accent wb-nav__cta" href="#">Donate</a>
+    </nav>
+      <div class="wb-container">
+        <h2 id="dark-title">The dark theme</h2>
+        <p class="docs-intro">The same components on the dark ground of the live-camera pages. Nothing is redrawn: only the tokens change, and the logo turns white.</p>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Buttons</h3>
+          <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
+        </div>
+        <div>
+          <div class="docs-row">
+            <a class="wb-btn wb-btn--action" href="#">Watch the reef live</a>
+            <a class="wb-btn wb-btn--ghost" href="#">Plan a visit</a>
+            <a class="wb-btn wb-btn--accent" href="#">Donate</a>
+            <button class="wb-btn wb-btn--action docs-focus" type="button">Send sighting</button>
+          </div>
+          <p class="docs-note">The last button is drawn as keyboard focus draws it: the ring comes from <code>base.css</code>, 2px of <code>--wb-color-focus</code> set 2px clear of the button. Press Tab to see it on the others.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Live badge</h3>
+          <p>Shown only while a stream is on.</p>
+        </div>
+        <div>
+          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live">Live</span></p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Species chips</h3>
+          <p>A species the camera named, and how long ago.</p>
+        </div>
+        <div>
+          <ul class="docs-row" role="list">
+            <li><span class="wb-chip">Sergeant major<small class="wb-chip__meta">2 min</small></span></li>
+            <li><span class="wb-chip">Blue tang<small class="wb-chip__meta">4 min</small></span></li>
+            <li><span class="wb-chip">Parrotfish<small class="wb-chip__meta">12 min</small></span></li>
+            <li><span class="wb-chip">Atlantic spadefish (Chaetodipterus faber), juvenile in grass<small class="wb-chip__meta">31 min</small></span></li>
+          </ul>
+          <p class="docs-note">Fixture: the last chip's species name is exactly 60 characters, there to show that a long name wraps inside the chip and is never cut off.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Stat tiles</h3>
+          <p>A reading and its unit, the number in action blue. The accent tile counts something alive today.</p>
+        </div>
+        <div>
+          <div class="docs-tiles">
+            <div class="wb-tile"><p class="wb-tile__k">Water</p><p class="wb-tile__v">27.4<small>°C</small></p></div>
+            <div class="wb-tile wb-tile--accent"><p class="wb-tile__k">Species today</p><p class="wb-tile__v">18</p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Oxygen</p><p class="wb-tile__v">6.8<small>mg/L</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Salinity</p><p class="wb-tile__v">36<small>ppt</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Visibility</p><p class="wb-tile__v">6<small>m</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Dissolved oxygen, north reef module buoy</p><p class="wb-tile__v">6.9<small>mg/L</small></p></div>
+          </div>
+          <p class="docs-note">Fixture: the last tile's label is exactly 40 characters, there to show that a long label wraps inside the tile and never overflows it.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Panel</h3>
+          <p>Groups related readings under one small title, on the panel ground.</p>
+        </div>
+        <div>
+          <div class="wb-panel">
+            <h4 class="wb-panel__title">Seen in the last hour</h4>
+            <ol class="docs-seen">
+              <li><span>Sergeant major</span><span class="wb-num">143</span></li>
+              <li><span>Grey snapper</span><span class="wb-num">88</span></li>
+              <li><span>Blue tang</span><span class="wb-num">52</span></li>
+              <li><span>Stoplight parrotfish</span><span class="wb-num">24</span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Cards</h3>
+          <p>A way into another page. Image beside the text where the card is wide enough, above it where it is not.</p>
+        </div>
+        <div class="docs-cards">
+          <a class="wb-card" href="#">
+            <img class="wb-card__media" src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <div class="wb-card__body"><h4>Why the manatees come in winter</h4><p>Learn · 4 min read</p></div>
+          </a>
+          <a class="wb-card" href="#">
+            <img class="wb-card__media" src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <div class="wb-card__body"><h4>Visit the park this weekend</h4><p>Open sunrise to sunset · free</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Chart</h3>
+          <p>The frame and legend. Brand blue is the first series and the accent the second: mark them <code>data-series="1"</code> and <code>data-series="2"</code>.</p>
+        </div>
+        <div>
+          <figure class="wb-chart">
+            <figcaption>Water temperature and species seen, 7 days</figcaption>
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none" role="img" aria-label="Over seven days the water temperature holds steady while the number of species seen rises">
+              <polyline data-series="1" points="0,14 16,15 32,13 48,12 64,13 80,11 100,10"/>
+              <polyline data-series="2" points="0,22 16,18 32,20 48,12 64,14 80,8 100,5"/>
+            </svg>
+            <ul class="wb-chart__legend" role="list"><li data-series="1">Water temp</li><li data-series="2">Species seen</li></ul>
+          </figure>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Detection boxes</h3>
+          <p>Drawn over the live video in the accent: the species and the model's confidence.</p>
+        </div>
+        <div>
+          <div class="docs-video">
+            <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
+            <span class="wb-live">Live</span>
+            <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
+            <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
+            <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Form controls</h3>
+          <p>Label above, help or error below. There is no danger colour: an error says what to do, in bold, and the control's border thickens.</p>
+        </div>
+        <div class="docs-form">
+          <div class="wb-field">
+            <label class="wb-label" for="camera-d">Camera</label>
+            <select class="wb-select" id="camera-d"><option>Reef camera</option><option>Pier camera</option></select>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="species-d">Species</label>
+            <input class="wb-input" id="species-d" type="text" placeholder="Start typing a name" aria-describedby="species-d-help">
+            <p class="wb-help" id="species-d-help">A common or scientific name; suggestions come from the species list.</p>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="time-d">Time in the video</label>
+            <input class="wb-input" id="time-d" type="text" value="1240" aria-invalid="true" aria-describedby="time-d-error">
+            <p class="wb-error" id="time-d-error">Enter the time as minutes and seconds, like 12:40.</p>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="notes-d">What did you see?</label>
+            <textarea class="wb-textarea" id="notes-d">Two sergeant majors guarding eggs on the north reef module.</textarea>
+          </div>
+          <div><button class="wb-btn wb-btn--action" type="button">Send sighting</button></div>
+        </div>
+      </div>
+      </div>
+    <footer class="wb-footer">
+      <p>© 2026 Wahoo Bay by Shipwreck Park, Inc. · 501(c)(3) non-profit organization — all donations are tax-deductible to the extent permitted by law.</p>
+      <ul>
+        <li><a href="https://www.instagram.com/wahoobaypompano/">Instagram</a></li>
+        <li><a href="https://www.facebook.com/wahoobaypompano/">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@wahoobaypompano">YouTube</a></li>
+        <li><a href="https://shipwreckparkpompano.org">Shipwreck Park</a></li>
+      </ul>
+    </footer>
+    </section>
+  </main>
+</body>
+</html>

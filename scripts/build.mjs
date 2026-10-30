@@ -17,7 +17,25 @@ export async function build(root = process.cwd()) {
     await cp(join(root, 'node_modules', '@fontsource-variable', 'manrope', 'files', file), join(dist, 'fonts', file));
   }
   await writeFile(join(dist, 'fonts.css'), fontsCss());
-  await writeFile(join(dist, 'components.css'), `${COMPONENTS_HEADER}\n${await readFile(join(root, 'src', 'base.css'), 'utf8')}`);
+  const css = [await readFile(join(root, 'src', 'base.css'), 'utf8')];
+  for (const name of COMPONENT_FILES) css.push(await readFile(join(root, 'src', 'components', `${name}.css`), 'utf8'));
+  await writeFile(join(dist, 'components.css'), `${COMPONENTS_HEADER}\n${css.join('\n')}`);
+  await cp(join(root, 'src', 'docs', 'media'), join(dist, 'media'), { recursive: true });
+  const docs = await readFile(join(root, 'src', 'docs', 'index.html'), 'utf8');
+  await writeFile(join(dist, 'index.html'), inlineLogo(docs, await readFile(join(root, 'brand', 'wahoobay-logo.svg'), 'utf8')));
+}
+
+// Appended to base.css in this order.
+const COMPONENT_FILES = ['nav', 'button', 'live', 'chip', 'tile', 'panel', 'card', 'chart', 'detect', 'form', 'footer', 'layout'];
+
+// Replaces each <!-- @wb-logo --> with the logo's <svg>, so it follows currentColor; each copy gets its own ids.
+function inlineLogo(page, logo) {
+  const svg = logo.slice(logo.indexOf('<svg')).trim();
+  let n = 0;
+  return page.replaceAll('<!-- @wb-logo -->', () => {
+    n += 1;
+    return svg.replace(/\b(id|aria-labelledby)="([^"]+)"/g, (_, attr, id) => `${attr}="${id}-${n}"`);
+  });
 }
 
 // Unicode ranges copied from @fontsource-variable/manrope index.css for the shipped subsets.

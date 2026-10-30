@@ -1,0 +1,22 @@
+/* Live badge: the stream is on right now. */
+.wb-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.3em 0.7em;
+  border-radius: var(--wb-radius-pill);
+  background: var(--wb-color-accent);
+  color: var(--wb-color-on-accent);
+  font-size: var(--wb-text-xs);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.wb-live::before {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: currentColor;
+}

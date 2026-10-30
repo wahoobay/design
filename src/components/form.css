@@ -1,0 +1,66 @@
+/* Form controls: a field is a label, a control, then help or an error. */
+.wb-field {
+  display: grid;
+  gap: var(--wb-space-2);
+  min-width: 0;
+}
+.wb-label {
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-sm);
+  font-weight: 700;
+}
+.wb-input,
+.wb-select,
+.wb-textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--wb-space-2) var(--wb-space-3);
+  border: 1px solid var(--wb-color-ink-3);
+  border-radius: var(--wb-radius-sm);
+  background-color: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+  font: inherit;
+  font-size: var(--wb-text-base);
+  line-height: 1.4;
+}
+.wb-input::placeholder,
+.wb-textarea::placeholder { color: var(--wb-color-ink-3); opacity: 1; }
+.wb-input:hover,
+.wb-select:hover,
+.wb-textarea:hover { border-color: var(--wb-color-ink-2); }
+.wb-input:focus-visible,
+.wb-select:focus-visible,
+.wb-textarea:focus-visible { border-color: var(--wb-color-action); }
+.wb-textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+/* The native arrow is replaced by a chevron drawn in the text colour, so it follows the theme. */
+.wb-select {
+  appearance: none;
+  padding-right: 2.5rem;
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 1.25rem center, right 0.9375rem center;
+  background-size: 0.3125rem 0.3125rem;
+  background-repeat: no-repeat;
+}
+.wb-help {
+  margin: 0;
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-sm);
+}
+/* There is no danger colour in the tokens: an error is said in words, in bold ink, and the control is marked. */
+.wb-error {
+  margin: 0;
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-sm);
+  font-weight: 700;
+}
+.wb-input[aria-invalid="true"],
+.wb-select[aria-invalid="true"],
+.wb-textarea[aria-invalid="true"] {
+  border-width: 2px;
+  border-color: var(--wb-color-ink);
+}

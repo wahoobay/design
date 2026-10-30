@@ -1,0 +1,26 @@
+/* Detection box and label, drawn over the video. The parent is position: relative; the box gets left/top/width/height. */
+.wb-detect {
+  position: absolute;
+  border: 2px solid var(--wb-color-accent);
+  border-radius: 0.25rem;
+}
+.wb-detect__label {
+  position: absolute;
+  left: -2px;
+  bottom: 100%;
+  padding: 0.2em 0.55em;
+  border-radius: 0.25rem 0.25rem 0.25rem 0;
+  background: var(--wb-color-accent);
+  color: var(--wb-color-on-accent);
+  font-size: var(--wb-text-xs);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.wb-detect__label small {
+  margin-left: 0.35em;
+  font-size: inherit;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}

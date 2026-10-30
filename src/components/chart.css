@@ -1,0 +1,58 @@
+/* Chart frame with legend. Series are marked data-series="1" (brand blue) and data-series="2" (the accent). */
+.wb-chart {
+  margin: 0;
+  min-width: 0;
+  padding: var(--wb-space-3) var(--wb-space-4);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-bg);
+}
+.wb-chart figcaption {
+  margin-bottom: var(--wb-space-2);
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-xs);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.wb-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 4rem;
+  aspect-ratio: 5 / 1;
+  overflow: visible;
+}
+.wb-chart svg [data-series] {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.wb-chart svg [data-series="1"] { stroke: var(--wb-color-brand); }
+.wb-chart svg [data-series="2"] { stroke: var(--wb-color-accent); }
+.wb-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wb-space-1) var(--wb-space-4);
+  margin: var(--wb-space-2) 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-xs);
+  font-weight: 600;
+}
+.wb-chart__legend [data-series]::before {
+  content: "";
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.1875rem;
+  margin-right: 0.4em;
+  border-radius: var(--wb-radius-pill);
+  vertical-align: middle;
+}
+.wb-chart__legend [data-series="1"]::before { background: var(--wb-color-brand); }
+.wb-chart__legend [data-series="2"]::before { background: var(--wb-color-accent); }

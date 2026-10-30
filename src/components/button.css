@@ -1,0 +1,32 @@
+/* Buttons: action is the primary action, ghost the secondary, accent is Donate only. */
+.wb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wb-space-2);
+  min-height: 2.75rem;
+  padding: var(--wb-space-2) var(--wb-space-5);
+  border: 1.5px solid transparent;
+  border-radius: var(--wb-radius);
+  background: transparent;
+  color: var(--wb-color-ink);
+  font: inherit;
+  font-size: var(--wb-text-base);
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.wb-btn--action {
+  background: var(--wb-color-action);
+  color: var(--wb-color-on-action);
+}
+.wb-btn--action:hover { background: color-mix(in srgb, var(--wb-color-action) 85%, var(--wb-color-ink)); }
+.wb-btn--ghost { border-color: color-mix(in srgb, var(--wb-color-ink-3) 50%, transparent); }
+.wb-btn--ghost:hover { border-color: var(--wb-color-ink-3); }
+.wb-btn--accent {
+  background: var(--wb-color-accent);
+  color: var(--wb-color-on-accent);
+}
+.wb-btn--accent:hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }

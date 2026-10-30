@@ -10,6 +10,8 @@ body {
   color: var(--wb-color-ink);
   background: var(--wb-color-bg);
   -webkit-font-smoothing: antialiased;
+  /* Manrope's common ligatures turn "(c)" into ©, "--" into – and "->" into →; "501(c)(3)" must read as typed. */
+  font-variant-ligatures: no-common-ligatures;
 }
 img, svg, video { max-width: 100%; height: auto; }
 h1, h2, h3, h4 { line-height: 1.15; text-wrap: balance; }

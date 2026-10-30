@@ -1,0 +1,23 @@
+/* Footer: full-bleed on the panel ground; content lines up with .wb-container. */
+.wb-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--wb-space-4) var(--wb-space-7);
+  padding: var(--wb-space-6) max(var(--wb-space-4), calc((100% - 70rem) / 2));
+  border-top: 1px solid var(--wb-color-line);
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink-2);
+  font-size: var(--wb-text-sm);
+}
+.wb-footer p { max-width: var(--wb-measure); }
+.wb-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wb-space-2) var(--wb-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wb-footer a { font-weight: 600; }

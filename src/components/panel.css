@@ -1,0 +1,16 @@
+/* Panel: a pale-blue ground grouping related content under one small title. */
+.wb-panel {
+  padding: var(--wb-space-4) var(--wb-space-5);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-panel);
+}
+.wb-panel__title {
+  margin: 0 0 var(--wb-space-3);
+  color: var(--wb-color-action);
+  font-size: var(--wb-text-xs);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

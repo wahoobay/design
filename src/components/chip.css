@@ -1,0 +1,21 @@
+/* Species chip: a species seen recently, with when. Long names wrap; nothing is cut off. */
+.wb-chip {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.4em;
+  max-width: 100%;
+  padding: var(--wb-space-1) var(--wb-space-3);
+  border-radius: var(--wb-radius-pill);
+  background: var(--wb-color-accent-tint);
+  color: var(--wb-color-accent-text);
+  font-size: var(--wb-text-sm);
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.wb-chip__meta {
+  font-size: var(--wb-text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+}
