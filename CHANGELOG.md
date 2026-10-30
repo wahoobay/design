@@ -2,6 +2,13 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.1.3 — 2026-10-30
+
+### Changed
+
+- A photo, video or embed in `.wb-prose` (a page's Markdown body) has the 12px corners of the cards, panels and tiles, `var(--wb-radius)`, in a paragraph or in a figure. The rule is `.wb-prose :where(img, video, iframe)`, one class strong, so a component inside prose keeps its own corners: a card's photo stays 8px.
+- The documentation page shows a photo in a paragraph and a captioned figure in running text, in both themes.
+
 ## 0.1.2 — 2026-10-30
 
 ### Added
