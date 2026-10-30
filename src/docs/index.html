@@ -10,11 +10,16 @@
   <link rel="stylesheet" href="./tokens.css">
   <link rel="stylesheet" href="./components.css">
   <!-- Detector waivers on this page, element by element (tests/components.test.mjs pins where they may appear):
-       data-impeccable-ignore="low-contrast" on the light brand-blue tile numbers: spec §4.3 sets large display numbers in
-         brand blue; --wb-text-2xl is at least 28px at weight 800, so WCAG's 3:1 for large text applies (brand blue is 3.8:1
-         on white). The detector cannot resolve clamp() sizes and applies 4.5:1.
+       data-impeccable-ignore="low-contrast" on the light brand-blue tile numbers and impact figures: spec §4.3 sets large
+         display numbers in brand blue; --wb-text-2xl is at least 28px and --wb-text-figure at least 40px, both at weight
+         800, so WCAG's 3:1 for large text applies (brand blue is 3.8:1 on white). The detector cannot resolve clamp() sizes
+         and applies 4.5:1.
        data-impeccable-ignore="pulsing-dot" on every live badge: spec §4.3, the live badge breathes as part of the live pages'
-         one authored moment; it is shown only while a stream is live and stops under prefers-reduced-motion. -->
+         one authored moment; it is shown only while a stream is live and stops under prefers-reduced-motion.
+       data-impeccable-ignore="low-contrast" on text set on a photograph (the stage's title and lead, the doorways' and the
+         feature's titles and text, and the links of the nav over the stage, only there): spec §4.3, Deep Field, sets that
+         text in white over a scrim. The detector sees neither the photograph nor the scrim and measures white on the page
+         ground; the finish review checks the contrast by eye on the real photographs. -->
   <style>
     /* Documentation layout only; the components come from components.css. */
     .docs-head { padding-top: var(--wb-space-8); padding-bottom: var(--wb-space-6); background: linear-gradient(180deg, var(--wb-color-tint) 0%, var(--wb-color-bg) 100%); }
@@ -30,6 +35,7 @@
     .docs-theme > .wb-container { padding-top: var(--wb-space-7); padding-bottom: var(--wb-space-8); }
     .docs-specimen { display: grid; gap: var(--wb-space-4) var(--wb-space-7); margin-top: var(--wb-space-6); padding-top: var(--wb-space-6); border-top: 1px solid var(--wb-color-line); }
     .docs-specimen > div:first-child p { margin-top: var(--wb-space-2); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
+    .docs-wide > div:first-child p { max-width: var(--wb-measure); }
     .docs-note { max-width: var(--wb-measure); margin-top: var(--wb-space-3); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
     .docs-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--wb-space-3); margin: 0; padding: 0; list-style: none; }
     .docs-focus { outline: 2px solid var(--wb-color-focus); outline-offset: 2px; }
@@ -86,15 +92,25 @@
     .docs-media { display: grid; gap: var(--wb-space-5); max-width: 40rem; }
     .docs-media figcaption { margin-top: var(--wb-space-2); }
     .docs-band { aspect-ratio: 21 / 9; }
+    .docs-still { position: relative; }
+    .docs-still .wb-live { position: absolute; top: var(--wb-space-3); left: var(--wb-space-3); }
+    .docs-band-words { display: grid; justify-items: start; gap: var(--wb-space-4); }
+    .docs-doors { display: grid; gap: var(--wb-space-4); }
+    .docs-feature { max-width: 40rem; }
+    .docs-map img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .docs-notices { display: grid; gap: var(--wb-space-4); max-width: 32rem; }
     .docs-tokens h3 { margin-top: var(--wb-space-7); }
     .docs-tokens h3 + .docs-intro { margin-top: var(--wb-space-2); }
     @media (min-width: 48rem) {
       .docs-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .docs-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .docs-scale li, .docs-space li { grid-template-columns: 14rem 1fr; }
+      .docs-doors { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
     @media (min-width: 60rem) {
       .docs-specimen { grid-template-columns: 15rem minmax(0, 1fr); }
+      /* The page-wide pieces (the stage, the band, the figures, the doorways) get the whole width, as on a page. */
+      .docs-wide { grid-template-columns: minmax(0, 1fr); }
     }
   </style>
 </head>
@@ -134,10 +150,13 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#DDF3EF</code><small>Chip ground</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#FFFFFF</code><small>Text on accent</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#0072B5</code><small>Focus ring</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
       </ul>
 
       <h3>Colour, dark</h3>
-      <p class="docs-intro">The live-camera pages set <code>data-theme="dark"</code>, which replaces these colours; brand blue, type, spacing and corners stay as they are.</p>
+      <p class="docs-intro">The live-camera pages and the home page's live band set <code>data-theme="dark"</code>, which replaces these colours; brand blue, type, spacing and corners stay as they are, and so does the text on a photograph and its scrim.</p>
       <div class="docs-dark" data-theme="dark">
         <ul class="docs-swatches" role="list">
         <li class="docs-swatch"><span style="background: var(--wb-color-bg)"></span><code>--wb-color-bg</code> <code>#0B1B2B</code><small>Ground</small></li>
@@ -154,12 +173,17 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#0F3A3C</code><small>Chip ground</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#07192B</code><small>Text on accent</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#3FA8EA</code><small>Focus ring</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
         </ul>
       </div>
 
       <h3>Type scale</h3>
-      <p class="docs-intro">One family, Manrope, from 400 to 800. The two largest steps are fluid.</p>
+      <p class="docs-intro">One family, Manrope, from 400 to 800. The four largest steps are fluid. The display size, for the headline on the home page's photograph, and the figure size, for the impact numbers, are tracked in by <code>--wb-track-display</code>, -0.04em.</p>
       <ul class="docs-scale" role="list">
+        <li><span class="docs-meta"><code>--wb-text-display</code> clamp(3rem, 7.5vw, 7rem)</span><span class="docs-sample" style="font-size: var(--wb-text-display); letter-spacing: var(--wb-track-display)">A living reef</span></li>
+        <li><span class="docs-meta"><code>--wb-text-figure</code> clamp(2.5rem, 5vw, 4.5rem)</span><span class="docs-sample wb-num" style="font-size: var(--wb-text-figure); letter-spacing: var(--wb-track-display)">14,910</span></li>
         <li><span class="docs-meta"><code>--wb-text-3xl</code> clamp(2.25rem, 1.4rem + 3.2vw, 3.5rem)</span><span class="docs-sample" style="font-size: var(--wb-text-3xl)">A living reef, open to everyone.</span></li>
         <li><span class="docs-meta"><code>--wb-text-2xl</code> clamp(1.75rem, 1.2rem + 2vw, 2.5rem)</span><span class="docs-sample" style="font-size: var(--wb-text-2xl)">A living reef, open to everyone.</span></li>
         <li><span class="docs-meta"><code>--wb-text-xl</code> 1.375rem</span><span class="docs-sample" style="font-size: var(--wb-text-xl)">A living reef, open to everyone.</span></li>
@@ -444,6 +468,125 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Map frame</h3>
+          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it.</p>
+        </div>
+        <div>
+          <div class="wb-map docs-map">
+            <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Stage</h3>
+          <p>The home page opens on a photograph as tall as most of the screen (about 820px at 1440, never taller than the viewport) with the headline on it at the display size. The scrim darkens the foot of the picture, where the words sit. The navigation lies over the top of it, transparent, with the logo and links in white: <code>wb-nav--over</code>. Text on a photograph is white in both themes, and a ghost button on it is outlined in white.</p>
+        </div>
+        <div class="wb-stage">
+          <img class="wb-stage__photo" src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
+          <div class="wb-stage__scrim"></div>
+          <nav class="wb-nav wb-nav--over" aria-label="Example navigation over a photograph, light">
+            <a class="wb-nav__logo" href="#"><!-- @wb-logo --></a>
+            <ul class="wb-nav__links">
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Visit</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Learn</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Live reef</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Fish ID</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Get involved</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">About</a></li>
+            </ul>
+            <a class="wb-btn wb-btn--accent wb-nav__cta" href="#">Donate</a>
+          </nav>
+          <div class="wb-container wb-stage__body">
+            <h4 class="wb-stage__title" data-impeccable-ignore="low-contrast">Art. Conservation. Education</h4>
+            <p class="wb-stage__lead" data-impeccable-ignore="low-contrast">Wahoo Bay is a public marine education park at the Hillsboro Inlet, inspiring ocean literacy through hands-on learning, immersive field experiences, and community conservation.</p>
+            <div class="wb-stage__actions">
+              <a class="wb-btn wb-btn--action" href="#">Explore Wahoo Bay</a>
+              <a class="wb-btn wb-btn--ghost" href="#">Underwater camera</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Band</h3>
+          <p>A full-bleed section on its own ground, <code>wb-band</code>. With <code>data-theme="dark"</code> it is the home page's live band, the one dark surface outside the camera pages: the dark tokens apply inside it, so it needs no modifier. Inside, <code>wb-container wb-band__inner</code> sets the still and the words side by side from 48rem.</p>
+        </div>
+        <div class="wb-band" data-theme="dark">
+          <div class="wb-container wb-band__inner">
+            <div class="wb-video docs-still">
+              <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
+              <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span>
+            </div>
+            <div class="docs-band-words">
+              <h4>SeaHIVE reef camera</h4>
+              <p>The reef under the dock, live, with the fish the camera names as they pass.</p>
+              <ul class="docs-row" role="list">
+                <li><span class="wb-chip">Sergeant major<small class="wb-chip__meta">2 min</small></span></li>
+                <li><span class="wb-chip">Blue tang<small class="wb-chip__meta">4 min</small></span></li>
+                <li><span class="wb-chip">Parrotfish<small class="wb-chip__meta">12 min</small></span></li>
+              </ul>
+              <div class="docs-row">
+                <a class="wb-btn wb-btn--action" href="#">Watch live</a>
+                <a class="wb-btn wb-btn--ghost" href="#">Fish ID dashboard</a>
+                <a class="wb-btn wb-btn--ghost" href="#">Best of the reef</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Figures</h3>
+          <p>The impact numbers, large in brand blue with tabular numerals, in columns divided by 1px lines with a 12px inset, so two never collide: two columns on phones, four from 48rem. Give them the width of the page.</p>
+        </div>
+        <div class="wb-figures">
+          <div class="wb-figure"><b class="wb-figure__value" data-impeccable-ignore="low-contrast">14,910</b><span class="wb-figure__label">Community members</span></div>
+          <div class="wb-figure"><b class="wb-figure__value" data-impeccable-ignore="low-contrast">3,000</b><span class="wb-figure__label">Students</span></div>
+          <div class="wb-figure"><b class="wb-figure__value" data-impeccable-ignore="low-contrast">201</b><span class="wb-figure__label">Educators</span></div>
+          <div class="wb-figure"><b class="wb-figure__value" data-impeccable-ignore="low-contrast">184</b><span class="wb-figure__label">Species documented</span></div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Doorways</h3>
+          <p>A 4:5 photograph that is one link into a section, its title on the picture over the scrim, with no card around it. The photo is decorative: the title and the sentence name the link.</p>
+        </div>
+        <div class="docs-doors">
+          <a class="wb-door" href="#">
+            <img class="wb-door__photo" src="./media/park.jpg" width="640" height="360" alt="">
+            <div class="wb-door__body"><h4 class="wb-door__title" data-impeccable-ignore="low-contrast">Visit</h4><p class="wb-door__text" data-impeccable-ignore="low-contrast">Wahoo Bay sits within the Hillsboro Inlet at Roy L. Rogers Family Park.</p></div>
+          </a>
+          <a class="wb-door" href="#">
+            <img class="wb-door__photo" src="./media/reef-camera.jpg" width="960" height="639" alt="">
+            <div class="wb-door__body"><h4 class="wb-door__title" data-impeccable-ignore="low-contrast">Learn</h4><p class="wb-door__text" data-impeccable-ignore="low-contrast">Explore the many educational resources available right here on our website.</p></div>
+          </a>
+          <a class="wb-door" href="#">
+            <img class="wb-door__photo" src="./media/manatee.jpg" width="640" height="427" alt="">
+            <div class="wb-door__body"><h4 class="wb-door__title" data-impeccable-ignore="low-contrast">Get involved</h4><p class="wb-door__text" data-impeccable-ignore="low-contrast">Join our conservation mission and inspire others to protect marine ecosystems.</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Feature</h3>
+          <p>The doorway's shape at 16:9, for the one large news item: a photograph that is one link, its title and sentence on the picture over the scrim.</p>
+        </div>
+        <div class="docs-feature">
+          <a class="wb-feature" href="#">
+            <img class="wb-feature__photo" src="./media/manatee.jpg" width="640" height="427" alt="">
+            <div class="wb-feature__body"><h4 class="wb-feature__title" data-impeccable-ignore="low-contrast">Why the manatees come in winter</h4><p class="wb-feature__text" data-impeccable-ignore="low-contrast">When the ocean cools, they come into the inlet's warmer water.</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Chart</h3>
           <p>The frame and legend. Brand blue is the first series and the accent the second: mark them <code>data-series="1"</code> and <code>data-series="2"</code>.</p>
         </div>
@@ -512,6 +655,17 @@
             <textarea class="wb-textarea" id="notes-l">Two sergeant majors guarding eggs on the north reef module.</textarea>
           </div>
           <div><button class="wb-btn wb-btn--action" type="button">Send sighting</button></div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Notices</h3>
+          <p>What a form says once it is sent, or why it cannot be: on the panel ground with a 1px line. An error notice has no danger colour either: its border thickens to 2px of ink, and its words say what to do.</p>
+        </div>
+        <div class="docs-notices">
+          <div class="wb-notice"><p>Thank you: your sighting was sent, with its two photos.</p></div>
+          <div class="wb-notice wb-notice--error"><p>The sighting did not send. Check your connection and press Send sighting again; what you typed is still here.</p></div>
         </div>
       </div>
       </div>
@@ -781,6 +935,125 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Map frame</h3>
+          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it.</p>
+        </div>
+        <div>
+          <div class="wb-map docs-map">
+            <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Stage</h3>
+          <p>The home page opens on a photograph as tall as most of the screen (about 820px at 1440, never taller than the viewport) with the headline on it at the display size. The scrim darkens the foot of the picture, where the words sit. The navigation lies over the top of it, transparent, with the logo and links in white: <code>wb-nav--over</code>. Text on a photograph is white in both themes, and a ghost button on it is outlined in white.</p>
+        </div>
+        <div class="wb-stage">
+          <img class="wb-stage__photo" src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
+          <div class="wb-stage__scrim"></div>
+          <nav class="wb-nav wb-nav--over" aria-label="Example navigation over a photograph, dark">
+            <a class="wb-nav__logo" href="#"><!-- @wb-logo --></a>
+            <ul class="wb-nav__links">
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Visit</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Learn</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Live reef</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Fish ID</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">Get involved</a></li>
+              <li><a class="wb-nav__link" data-impeccable-ignore="low-contrast" href="#">About</a></li>
+            </ul>
+            <a class="wb-btn wb-btn--accent wb-nav__cta" href="#">Donate</a>
+          </nav>
+          <div class="wb-container wb-stage__body">
+            <h4 class="wb-stage__title" data-impeccable-ignore="low-contrast">Art. Conservation. Education</h4>
+            <p class="wb-stage__lead" data-impeccable-ignore="low-contrast">Wahoo Bay is a public marine education park at the Hillsboro Inlet, inspiring ocean literacy through hands-on learning, immersive field experiences, and community conservation.</p>
+            <div class="wb-stage__actions">
+              <a class="wb-btn wb-btn--action" href="#">Explore Wahoo Bay</a>
+              <a class="wb-btn wb-btn--ghost" href="#">Underwater camera</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Band</h3>
+          <p>A full-bleed section on its own ground, <code>wb-band</code>. With <code>data-theme="dark"</code> it is the home page's live band, the one dark surface outside the camera pages: the dark tokens apply inside it, so it needs no modifier. Inside, <code>wb-container wb-band__inner</code> sets the still and the words side by side from 48rem.</p>
+        </div>
+        <div class="wb-band" data-theme="dark">
+          <div class="wb-container wb-band__inner">
+            <div class="wb-video docs-still">
+              <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
+              <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span>
+            </div>
+            <div class="docs-band-words">
+              <h4>SeaHIVE reef camera</h4>
+              <p>The reef under the dock, live, with the fish the camera names as they pass.</p>
+              <ul class="docs-row" role="list">
+                <li><span class="wb-chip">Sergeant major<small class="wb-chip__meta">2 min</small></span></li>
+                <li><span class="wb-chip">Blue tang<small class="wb-chip__meta">4 min</small></span></li>
+                <li><span class="wb-chip">Parrotfish<small class="wb-chip__meta">12 min</small></span></li>
+              </ul>
+              <div class="docs-row">
+                <a class="wb-btn wb-btn--action" href="#">Watch live</a>
+                <a class="wb-btn wb-btn--ghost" href="#">Fish ID dashboard</a>
+                <a class="wb-btn wb-btn--ghost" href="#">Best of the reef</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Figures</h3>
+          <p>The impact numbers, large in brand blue with tabular numerals, in columns divided by 1px lines with a 12px inset, so two never collide: two columns on phones, four from 48rem. Give them the width of the page.</p>
+        </div>
+        <div class="wb-figures">
+          <div class="wb-figure"><b class="wb-figure__value">14,910</b><span class="wb-figure__label">Community members</span></div>
+          <div class="wb-figure"><b class="wb-figure__value">3,000</b><span class="wb-figure__label">Students</span></div>
+          <div class="wb-figure"><b class="wb-figure__value">201</b><span class="wb-figure__label">Educators</span></div>
+          <div class="wb-figure"><b class="wb-figure__value">184</b><span class="wb-figure__label">Species documented</span></div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Doorways</h3>
+          <p>A 4:5 photograph that is one link into a section, its title on the picture over the scrim, with no card around it. The photo is decorative: the title and the sentence name the link.</p>
+        </div>
+        <div class="docs-doors">
+          <a class="wb-door" href="#">
+            <img class="wb-door__photo" src="./media/park.jpg" width="640" height="360" alt="">
+            <div class="wb-door__body"><h4 class="wb-door__title" data-impeccable-ignore="low-contrast">Visit</h4><p class="wb-door__text" data-impeccable-ignore="low-contrast">Wahoo Bay sits within the Hillsboro Inlet at Roy L. Rogers Family Park.</p></div>
+          </a>
+          <a class="wb-door" href="#">
+            <img class="wb-door__photo" src="./media/reef-camera.jpg" width="960" height="639" alt="">
+            <div class="wb-door__body"><h4 class="wb-door__title" data-impeccable-ignore="low-contrast">Learn</h4><p class="wb-door__text" data-impeccable-ignore="low-contrast">Explore the many educational resources available right here on our website.</p></div>
+          </a>
+          <a class="wb-door" href="#">
+            <img class="wb-door__photo" src="./media/manatee.jpg" width="640" height="427" alt="">
+            <div class="wb-door__body"><h4 class="wb-door__title" data-impeccable-ignore="low-contrast">Get involved</h4><p class="wb-door__text" data-impeccable-ignore="low-contrast">Join our conservation mission and inspire others to protect marine ecosystems.</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Feature</h3>
+          <p>The doorway's shape at 16:9, for the one large news item: a photograph that is one link, its title and sentence on the picture over the scrim.</p>
+        </div>
+        <div class="docs-feature">
+          <a class="wb-feature" href="#">
+            <img class="wb-feature__photo" src="./media/manatee.jpg" width="640" height="427" alt="">
+            <div class="wb-feature__body"><h4 class="wb-feature__title" data-impeccable-ignore="low-contrast">Why the manatees come in winter</h4><p class="wb-feature__text" data-impeccable-ignore="low-contrast">When the ocean cools, they come into the inlet's warmer water.</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Chart</h3>
           <p>The frame and legend. Brand blue is the first series and the accent the second: mark them <code>data-series="1"</code> and <code>data-series="2"</code>.</p>
         </div>
@@ -849,6 +1122,17 @@
             <textarea class="wb-textarea" id="notes-d">Two sergeant majors guarding eggs on the north reef module.</textarea>
           </div>
           <div><button class="wb-btn wb-btn--action" type="button">Send sighting</button></div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Notices</h3>
+          <p>What a form says once it is sent, or why it cannot be: on the panel ground with a 1px line. An error notice has no danger colour either: its border thickens to 2px of ink, and its words say what to do.</p>
+        </div>
+        <div class="docs-notices">
+          <div class="wb-notice"><p>Thank you: your sighting was sent, with its two photos.</p></div>
+          <div class="wb-notice wb-notice--error"><p>The sighting did not send. Check your connection and press Send sighting again; what you typed is still here.</p></div>
         </div>
       </div>
       </div>

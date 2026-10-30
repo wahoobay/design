@@ -50,6 +50,22 @@
   box-shadow: inset 0 -2px 0 var(--wb-color-action);
 }
 .wb-nav__cta { flex: none; }
+/* Over a photograph (the home page's stage): transparent, at the top of the picture, the logo and the links white in both
+   themes. The logo follows through currentColor. Current and hovered links are underlined in the same white. */
+.wb-nav--over {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 2;
+  background: transparent;
+  border-bottom: 0;
+  color: var(--wb-color-on-photo);
+}
+.wb-nav--over .wb-nav__logo { color: inherit; }
+.wb-nav--over .wb-nav__link { color: inherit; }
+.wb-nav--over .wb-nav__link:hover,
+.wb-nav--over .wb-nav__link--on { box-shadow: inset 0 -2px 0 currentColor; }
+.wb-nav--over :focus-visible { outline-color: var(--wb-color-on-photo); }
 /* Narrow screens: logo and call to action on the first row, the links scroll on the second (they wrap on phones). */
 @media (max-width: 47.99rem) {
   .wb-nav { padding-top: var(--wb-space-3); row-gap: var(--wb-space-2); }

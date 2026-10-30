@@ -1,0 +1,43 @@
+/* Feature: the doorway's shape at 16:9, for the one large news item: a photograph that is one link, the title set on
+   the picture over the scrim (spec §4.3, Deep Field). */
+.wb-feature {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 16 / 9;
+  /* clip, not hidden: a box with an aspect ratio that is not a scroll container grows to fit its text, so a long title
+     on a phone is never cut off at the top; hidden stays as the fallback where clip is unknown. */
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--wb-radius);
+  color: var(--wb-color-on-photo);
+  text-decoration: none;
+}
+.wb-feature:focus-visible {
+  outline: 2px solid var(--wb-color-focus);
+  outline-offset: 2px;
+}
+.wb-feature__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wb-feature__body {
+  position: relative;
+  width: 100%;
+  padding: var(--wb-space-6);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 100%);
+}
+.wb-feature__title {
+  margin: 0;
+  font-size: var(--wb-text-2xl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.wb-feature__text {
+  margin: var(--wb-space-2) 0 0;
+  font-size: var(--wb-text-base);
+}

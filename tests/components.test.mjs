@@ -7,7 +7,7 @@ const read = (path) => readFileSync(path, 'utf8');
 // The class names the site consumes, exactly as the design system publishes them.
 const CLASSES = [
   'wb-container',
-  'wb-nav', 'wb-nav__logo', 'wb-nav__links', 'wb-nav__link', 'wb-nav__link--on', 'wb-nav__cta',
+  'wb-nav', 'wb-nav__logo', 'wb-nav__links', 'wb-nav__link', 'wb-nav__link--on', 'wb-nav__cta', 'wb-nav--over',
   'wb-btn', 'wb-btn--action', 'wb-btn--ghost', 'wb-btn--accent',
   'wb-live',
   'wb-chip', 'wb-chip__meta',
@@ -22,10 +22,18 @@ const CLASSES = [
   'wb-icon', 'wb-back', 'wb-initials', 'wb-logo-tile', 'wb-logo-tile--dark', 'wb-btn--wrap', 'wb-btn__meta', 'wb-caption',
   'wb-panel--raised', 'wb-card--raised', 'wb-video',
   'wb-media', 'wb-media--top',
+  'wb-map',
+  'wb-stage', 'wb-stage__photo', 'wb-stage__scrim', 'wb-stage__body', 'wb-stage__title', 'wb-stage__lead', 'wb-stage__actions',
+  'wb-band', 'wb-band__inner',
+  'wb-figures', 'wb-figure', 'wb-figure__value', 'wb-figure__label',
+  'wb-door', 'wb-door__photo', 'wb-door__body', 'wb-door__title', 'wb-door__text',
+  'wb-feature', 'wb-feature__photo', 'wb-feature__body', 'wb-feature__title', 'wb-feature__text',
+  'wb-notice', 'wb-notice--error',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
-const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
+const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media',
+  'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
 const ACCENT_OWNERS = ['wb-live', 'wb-chip', 'wb-tile--accent', 'wb-detect', 'wb-btn--accent', 'wb-chart'];
@@ -40,9 +48,10 @@ test('every var(--wb-…) in components.css names a token in tokens.css', () => 
   for (const m of css.matchAll(/var\((--wb-[a-z0-9-]+)/g)) assert.ok(tokens.includes(`${m[1]}:`), m[1]);
 });
 
-test('components.css has no hex colour and no px font-size below 12px', () => {
+test('components.css has no colour literal (hex, rgb, hsl) and no px font-size below 12px', () => {
   const css = read('dist/components.css');
   assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i);
+  assert.doesNotMatch(css, /\b(rgba?|hsla?|hwb|lab|lch|oklab|oklch)\(/i, 'colours come from tokens.css, the scrims too');
   for (const m of css.matchAll(/font-size:\s*(\d+(\.\d+)?)px/g)) assert.ok(Number(m[1]) >= 12, m[0]);
 });
 
@@ -126,7 +135,7 @@ test('body text keeps "(c)" as typed: Manrope\'s common ligatures are off', () =
 test('the inlined logo has no inline style, so it follows currentColor; components.css needs no !important', () => {
   const html = read('dist/index.html');
   const svgs = [...html.matchAll(/<svg\b[^>]*aria-labelledby="wb-logo-title-\d+"[^>]*>/g)].map((m) => m[0]);
-  assert.equal(svgs.length, 4, "two navs and two dark logo tiles");
+  assert.equal(svgs.length, 6, 'two navs, two navs over a photograph and two dark logo tiles');
   for (const tag of svgs) assert.doesNotMatch(tag, /\sstyle=/, tag);
   assert.match(read('dist/logo/wahoobay-logo.svg'), /<svg\b[^>]*style="color:#0088D6"/, 'the <img> file keeps its default colour');
   assert.doesNotMatch(read('dist/components.css'), /!important/);
@@ -162,12 +171,26 @@ test('the dark focus ring is not the accent, which means "alive right now"', () 
   assert.ok(!['accent', 'accent-text', 'accent-tint'].some((k) => dark[k] === dark.focus), dark.focus);
 });
 
-test('detector waivers appear only where the spec overrides the detector: brand tile numbers and live badges', () => {
+// 0.2.0: the Deep Field presentation (spec §4.3) sets text on photographs over a scrim. The detector cannot see the scrim
+// and charges white on the page ground; the finish review checks that contrast by eye on the real photographs. The impact
+// figures are large brand-blue numbers, as the tile numbers are: 3:1 applies, which the detector cannot tell at clamp().
+const WAIVERS = [
+  'wb-tile__v low-contrast', 'wb-figure__value low-contrast', 'wb-live pulsing-dot',
+  'wb-stage__title low-contrast', 'wb-stage__lead low-contrast',
+  'wb-door__title low-contrast', 'wb-door__text low-contrast',
+  'wb-feature__title low-contrast', 'wb-feature__text low-contrast',
+  'wb-nav__link low-contrast',
+];
+
+test('detector waivers appear only where the spec overrides the detector: brand-blue large numbers, live badges, text on photographs', () => {
   const raw = read('dist/index.html');
   const html = raw.replace(/<!--[\s\S]*?-->/g, '');
   const waivers = [...html.matchAll(/<\w+ class="([^"]*)" data-impeccable-ignore="([^"]*)"/g)].map((m) => `${m[1]} ${m[2]}`);
   assert.equal(waivers.length, [...html.matchAll(/data-impeccable-ignore=/g)].length, 'every waiver sits right after a class');
-  for (const w of waivers) assert.ok(['wb-tile__v low-contrast', 'wb-live pulsing-dot'].includes(w), w);
+  for (const w of waivers) assert.ok(WAIVERS.includes(w), w);
+  // A nav link is on a photograph only in the overlaid nav; everywhere else it is on the ground and is checked.
+  const outside = html.replace(/<nav class="wb-nav wb-nav--over"[\s\S]*?<\/nav>/g, '');
+  assert.doesNotMatch(outside, /class="wb-nav__link[^"]*" data-impeccable-ignore=/, 'a nav link is waived only inside .wb-nav--over');
   assert.doesNotMatch(raw, /impeccable-disable/, 'no file-wide or line waivers');
 });
 
@@ -371,6 +394,104 @@ test('on screens up to 30rem (480px) the nav links wrap onto rows instead of scr
 test('the documentation navs carry the site\'s six items, so the narrow-screen rows are on show', () => {
   const html = read('dist/index.html');
   const navs = [...html.matchAll(/<ul class="wb-nav__links">([\s\S]*?)<\/ul>/g)].map((m) => m[1]);
-  assert.equal(navs.length, 2);
+  assert.equal(navs.length, 4, 'a nav and a nav over a photograph in each theme');
   for (const nav of navs) assert.equal(nav.match(/class="wb-nav__link[ "]/g)?.length, 6);
+});
+
+// 0.2.0: the Deep Field pieces (spec §4.3, Presentation: Deep Field): the stage, the overlaid nav, the dark band, the
+// figures, the doorways, the feature, the map frame and the notice.
+const block = (sel) => rule(rules(read('dist/components.css')), sel)?.body ?? '';
+
+test('stage: full-height photo hero with the display scale on a scrim', () => {
+  assert.match(block('.wb-stage'), /min-height:\s*clamp\(32rem,\s*90vh,\s*52rem\)/);
+  assert.match(block('.wb-stage__photo'), /object-fit:\s*cover/);
+  assert.match(block('.wb-stage__title'), /font-size:\s*var\(--wb-text-display\)/);
+  assert.match(block('.wb-stage__title'), /letter-spacing:\s*var\(--wb-track-display\)/);
+  assert.match(block('.wb-stage__title'), /line-height:\s*0?\.98/);
+  assert.match(block('.wb-stage__scrim'), /linear-gradient/);
+});
+
+test('figures: brand-blue tabular numerals with 1px dividers and a 12px inset', () => {
+  assert.match(block('.wb-figure__value'), /font-size:\s*var\(--wb-text-figure\)/);
+  assert.match(block('.wb-figure__value'), /font-variant-numeric:\s*tabular-nums/);
+  assert.match(block('.wb-figure__value'), /color:\s*var\(--wb-color-brand\)/);
+  assert.match(block('.wb-figure'), /padding(-inline)?:\s*[^;]*var\(--wb-space-3\)/);
+  assert.match(block('.wb-figure + .wb-figure'), /border-inline-start:\s*1px solid var\(--wb-color-line\)/);
+});
+
+test('door and feature: the title sits on the photograph over a scrim, 4:5 and 16:9', () => {
+  assert.match(block('.wb-door'), /aspect-ratio:\s*4\s*\/\s*5/);
+  assert.match(block('.wb-feature'), /aspect-ratio:\s*16\s*\/\s*9/);
+  for (const c of ['.wb-door__body', '.wb-feature__body']) assert.match(block(c), /linear-gradient/, c);
+});
+
+test('every scrim runs from --wb-color-scrim-0 to --wb-color-scrim at the foot, and nothing else draws one', () => {
+  const scrims = rules(read('dist/components.css')).filter((r) => /linear-gradient/.test(r.body) && !/currentColor/.test(r.body));
+  assert.deepEqual(scrims.map((r) => r.selector).sort(), ['.wb-door__body', '.wb-feature__body', '.wb-stage__scrim']);
+  for (const r of scrims)
+    assert.match(r.body, /linear-gradient\(180deg,\s*var\(--wb-color-scrim-0\)[^,]*,\s*var\(--wb-color-scrim\) 100%\)/, r.selector);
+});
+
+test('text on a photograph is --wb-color-on-photo, which stays white in both themes, never the ground colour', () => {
+  for (const sel of ['.wb-stage', '.wb-door', '.wb-feature', '.wb-nav--over']) {
+    assert.match(block(sel), /(^|[;\s])color:\s*var\(--wb-color-on-photo\)/, sel);
+    assert.doesNotMatch(block(sel), /(^|[;\s])color:\s*var\(--wb-color-bg\)/, sel);
+  }
+  // The links and the logo of the overlaid nav follow it: the logo is drawn in currentColor.
+  assert.match(block('.wb-nav--over .wb-nav__link'), /color:\s*inherit/);
+  assert.match(block('.wb-nav--over .wb-nav__logo'), /color:\s*inherit/);
+  // A ghost button on the stage is drawn in the photo's text colour, not in ink, which the photograph would swallow.
+  assert.match(block('.wb-stage .wb-btn--ghost'), /color:\s*var\(--wb-color-on-photo\)/);
+});
+
+test('the overlaid nav sits transparent at the top of the photograph, its links still 44px tall', () => {
+  const over = block('.wb-nav--over');
+  has(over, [/position:\s*absolute/, /inset-inline:\s*0/, /top:\s*0/, /z-index:\s*2/, /background:\s*transparent/, /border-bottom:\s*0/], '.wb-nav--over');
+  assert.doesNotMatch(block('.wb-nav--over .wb-nav__link'), /min-height|padding|height:/, 'the link keeps its 2.75rem');
+});
+
+test('band: the dark theme\'s ground through its own tokens, no modifier; the inner grid splits at 48rem', () => {
+  has(block('.wb-band'), [/background:\s*var\(--wb-color-bg\)/, /color:\s*var\(--wb-color-ink\)/, /padding-top:\s*var\(--wb-space-8\)/,
+    /padding-bottom:\s*var\(--wb-space-8\)/], '.wb-band');
+  has(block('.wb-band__inner'), [/display:\s*grid/, /gap:\s*var\(--wb-space-6\)/], '.wb-band__inner');
+  const wide = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '').match(/@media \(min-width: 48rem\)\s*\{\s*\.wb-band__inner\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(wide, /grid-template-columns:\s*1\.1fr 1fr/);
+});
+
+test('map frame and notices: a 1px line and 12px corners; an error notice is said in ink, never a danger colour', () => {
+  has(block('.wb-map'), [/width:\s*100%/, /height:\s*clamp\(20rem,\s*60vh,\s*36rem\)/, /border:\s*1px solid var\(--wb-color-line\)/,
+    /border-radius:\s*var\(--wb-radius\)/, /overflow:\s*hidden/], '.wb-map');
+  has(block('.wb-notice'), [/padding:\s*var\(--wb-space-4\) var\(--wb-space-5\)/, /border:\s*1px solid var\(--wb-color-line\)/,
+    /border-radius:\s*var\(--wb-radius\)/, /background:\s*var\(--wb-color-panel\)/, /color:\s*var\(--wb-color-ink\)/], '.wb-notice');
+  has(block('.wb-notice--error'), [/border-color:\s*currentColor/, /color:\s*var\(--wb-color-ink\)/], '.wb-notice--error');
+  assert.doesNotMatch(read('dist/tokens.css'), /--wb-color-(error|danger)/, 'there is no danger colour');
+});
+
+test('index.html shows the Deep Field pieces in both themes, the band dark in the light section too', () => {
+  const html = read('dist/index.html');
+  const at = html.indexOf('<section data-theme="dark"');
+  for (const [theme, part] of [['light', html.slice(0, at)], ['dark', html.slice(at)]]) {
+    const stage = part.match(/<div class="wb-stage">([\s\S]*?)<\/h4>/)?.[1] ?? '';
+    assert.match(stage, /<img class="wb-stage__photo" src="\.\/media\/[a-z-]+\.jpg"/, `${theme}: the stage on a docs photograph`);
+    assert.match(stage, /<nav class="wb-nav wb-nav--over"/, `${theme}: the overlaid nav on the stage`);
+    assert.match(part, /<div class="wb-stage__actions">\s*(<a class="wb-btn [^"]*"[^>]*>[^<]+<\/a>\s*){2}<\/div>/, `${theme}: two buttons on the stage`);
+    assert.match(part, /<div class="wb-band" data-theme="dark">[\s\S]*?class="wb-video[\s\S]*?class="wb-chip[\s\S]*?(class="wb-btn [\s\S]*?){3}/, `${theme}: the band`);
+    const figures = [...part.matchAll(/<b class="wb-figure__value"[^>]*>([^<]+)<\/b><span class="wb-figure__label">([^<]+)<\/span>/g)].map((m) => `${m[1]} ${m[2]}`);
+    assert.deepEqual(figures, ['14,910 Community members', '3,000 Students', '201 Educators', '184 Species documented'], `${theme}: the four figures`);
+    assert.equal(part.match(/<a class="wb-door" /g)?.length, 3, `${theme}: three doorways`);
+    assert.equal(part.match(/<a class="wb-feature[ "]/g)?.length, 1, `${theme}: one feature`);
+    assert.match(part, /<div class="wb-map[ "][^>]*>\s*<img\b[^>]*\balt="[^"]+"/, `${theme}: the map frame`);
+    assert.match(part, /class="wb-notice"/, `${theme}: a notice`);
+    assert.match(part, /class="wb-notice wb-notice--error"/, `${theme}: an error notice`);
+  }
+});
+
+test('a doorway or feature grows to fit a long title instead of cutting it off: overflow clip, with hidden as the fallback', () => {
+  for (const sel of ['.wb-door', '.wb-feature']) assert.match(block(sel), /overflow:\s*hidden;\s*overflow:\s*clip;/, sel);
+});
+
+test('in two columns the figures draw no line at the start of the second row', () => {
+  const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
+  const narrow = [...css.matchAll(/@media \(max-width: 47\.99rem\)\s*\{([\s\S]*?)\n\}/g)].map((m) => m[1]).join('\n');
+  assert.match(narrow, /\.wb-figure:nth-child\(odd\)\s*\{\s*border-inline-start:\s*0;?\s*\}/);
 });

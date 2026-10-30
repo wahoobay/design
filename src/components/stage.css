@@ -1,0 +1,57 @@
+/* Stage: the home page's full-height photograph with the headline set on it (spec §4.3, Deep Field). About 820px at
+   1440, never taller than the viewport. The text is white in both themes (--wb-color-on-photo) over the scrim, the dark
+   ground at partial alpha from tokens.css, which darkens the foot of the photograph where the words sit. Put
+   .wb-container on .wb-stage__body to line it up with the page. */
+.wb-stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(32rem, 90vh, 52rem);
+  overflow: hidden;
+  color: var(--wb-color-on-photo);
+}
+.wb-stage__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wb-stage__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 30%, var(--wb-color-scrim) 100%);
+}
+.wb-stage__body {
+  position: relative;
+  width: 100%;
+  padding-block: var(--wb-space-7);
+}
+.wb-stage__title {
+  max-width: 11ch;
+  margin: 0;
+  font-size: var(--wb-text-display);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: var(--wb-track-display);
+  text-wrap: balance;
+}
+.wb-stage__lead {
+  max-width: 56ch;
+  margin-block: var(--wb-space-5) var(--wb-space-6);
+  font-size: var(--wb-text-xl);
+  line-height: 1.5;
+}
+.wb-stage__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wb-space-3);
+}
+/* A ghost button on the photograph is outlined in the photo's text colour: in ink, the photograph would swallow it. */
+.wb-stage .wb-btn--ghost {
+  border-color: color-mix(in srgb, var(--wb-color-on-photo) 60%, transparent);
+  color: var(--wb-color-on-photo);
+}
+.wb-stage .wb-btn--ghost:hover { border-color: var(--wb-color-on-photo); }
+/* The focus ring on the photograph is the photo's text colour, which reads on any part of it; blue would not. */
+.wb-stage :focus-visible { outline-color: var(--wb-color-on-photo); }

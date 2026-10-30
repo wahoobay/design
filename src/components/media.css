@@ -11,3 +11,12 @@
 :where(img, video).wb-media { object-fit: cover; }
 .wb-media--top { object-position: top; }
 .wb-media--bottom { object-position: bottom; }
+/* Map frame: the box an interactive map (or its still) fills, a 1px line and the 12px corners, as tall as most of the
+   viewport without filling it. */
+.wb-map {
+  width: 100%;
+  height: clamp(20rem, 60vh, 36rem);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  overflow: hidden;
+}

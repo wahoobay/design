@@ -64,3 +64,17 @@
   border-width: 2px;
   border-color: var(--wb-color-ink);
 }
+/* Notice: what a form says after it is sent (sent, closed, failed), on the panel ground with a 1px line. The error
+   notice is marked as an invalid control is, with no danger colour: a 2px border in ink, and words that say what to do. */
+.wb-notice {
+  padding: var(--wb-space-4) var(--wb-space-5);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink);
+}
+.wb-notice--error {
+  border-width: 2px;
+  border-color: currentColor;
+  color: var(--wb-color-ink);
+}

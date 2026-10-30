@@ -15,6 +15,9 @@
   --wb-color-accent-tint: #DDF3EF;
   --wb-color-on-accent: #FFFFFF;
   --wb-color-focus: #0072B5;
+  --wb-color-on-photo: #FFFFFF;
+  --wb-color-scrim: rgb(11 27 43 / 0.85);
+  --wb-color-scrim-0: rgb(11 27 43 / 0);
   --wb-font-sans: "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
   --wb-text-xs: 0.75rem;
   --wb-text-sm: 0.875rem;
@@ -23,6 +26,9 @@
   --wb-text-xl: 1.375rem;
   --wb-text-2xl: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
   --wb-text-3xl: clamp(2.25rem, 1.4rem + 3.2vw, 3.5rem);
+  --wb-text-figure: clamp(2.5rem, 5vw, 4.5rem);
+  --wb-text-display: clamp(3rem, 7.5vw, 7rem);
+  --wb-track-display: -0.04em;
   --wb-space-1: 0.25rem;
   --wb-space-2: 0.5rem;
   --wb-space-3: 0.75rem;
@@ -52,4 +58,7 @@
   --wb-color-accent-tint: #0F3A3C;
   --wb-color-on-accent: #07192B;
   --wb-color-focus: #3FA8EA;
+  --wb-color-on-photo: #FFFFFF;
+  --wb-color-scrim: rgb(11 27 43 / 0.85);
+  --wb-color-scrim-0: rgb(11 27 43 / 0);
 }

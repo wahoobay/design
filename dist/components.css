@@ -142,6 +142,22 @@ a[href^="tel:"] { white-space: nowrap; }
   box-shadow: inset 0 -2px 0 var(--wb-color-action);
 }
 .wb-nav__cta { flex: none; }
+/* Over a photograph (the home page's stage): transparent, at the top of the picture, the logo and the links white in both
+   themes. The logo follows through currentColor. Current and hovered links are underlined in the same white. */
+.wb-nav--over {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 2;
+  background: transparent;
+  border-bottom: 0;
+  color: var(--wb-color-on-photo);
+}
+.wb-nav--over .wb-nav__logo { color: inherit; }
+.wb-nav--over .wb-nav__link { color: inherit; }
+.wb-nav--over .wb-nav__link:hover,
+.wb-nav--over .wb-nav__link--on { box-shadow: inset 0 -2px 0 currentColor; }
+.wb-nav--over :focus-visible { outline-color: var(--wb-color-on-photo); }
 /* Narrow screens: logo and call to action on the first row, the links scroll on the second (they wrap on phones). */
 @media (max-width: 47.99rem) {
   .wb-nav { padding-top: var(--wb-space-3); row-gap: var(--wb-space-2); }
@@ -445,6 +461,219 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
 :where(img, video).wb-media { object-fit: cover; }
 .wb-media--top { object-position: top; }
 .wb-media--bottom { object-position: bottom; }
+/* Map frame: the box an interactive map (or its still) fills, a 1px line and the 12px corners, as tall as most of the
+   viewport without filling it. */
+.wb-map {
+  width: 100%;
+  height: clamp(20rem, 60vh, 36rem);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  overflow: hidden;
+}
+
+/* Stage: the home page's full-height photograph with the headline set on it (spec §4.3, Deep Field). About 820px at
+   1440, never taller than the viewport. The text is white in both themes (--wb-color-on-photo) over the scrim, the dark
+   ground at partial alpha from tokens.css, which darkens the foot of the photograph where the words sit. Put
+   .wb-container on .wb-stage__body to line it up with the page. */
+.wb-stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(32rem, 90vh, 52rem);
+  overflow: hidden;
+  color: var(--wb-color-on-photo);
+}
+.wb-stage__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wb-stage__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 30%, var(--wb-color-scrim) 100%);
+}
+.wb-stage__body {
+  position: relative;
+  width: 100%;
+  padding-block: var(--wb-space-7);
+}
+.wb-stage__title {
+  max-width: 11ch;
+  margin: 0;
+  font-size: var(--wb-text-display);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: var(--wb-track-display);
+  text-wrap: balance;
+}
+.wb-stage__lead {
+  max-width: 56ch;
+  margin-block: var(--wb-space-5) var(--wb-space-6);
+  font-size: var(--wb-text-xl);
+  line-height: 1.5;
+}
+.wb-stage__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wb-space-3);
+}
+/* A ghost button on the photograph is outlined in the photo's text colour: in ink, the photograph would swallow it. */
+.wb-stage .wb-btn--ghost {
+  border-color: color-mix(in srgb, var(--wb-color-on-photo) 60%, transparent);
+  color: var(--wb-color-on-photo);
+}
+.wb-stage .wb-btn--ghost:hover { border-color: var(--wb-color-on-photo); }
+/* The focus ring on the photograph is the photo's text colour, which reads on any part of it; blue would not. */
+.wb-stage :focus-visible { outline-color: var(--wb-color-on-photo); }
+
+/* Band: a full-bleed section on its own ground. The home page's live band carries data-theme="dark" and so takes the
+   live-camera ground (spec §4.3, Deep Field); it needs no modifier. Put .wb-container on .wb-band__inner: one column on
+   phones, the still and the words side by side from 48rem. The padding is in longhands: the detector reads no
+   padding-block, and would find the words flush against the ground. */
+.wb-band {
+  padding-top: var(--wb-space-8);
+  padding-bottom: var(--wb-space-8);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+}
+.wb-band__inner {
+  display: grid;
+  gap: var(--wb-space-6);
+}
+@media (min-width: 48rem) {
+  .wb-band__inner {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+  }
+}
+
+/* Figures: the impact numbers set large in brand blue (large text, so 3:1 applies), tabular, in columns separated by
+   1px lines with a 12px inset so two figures never collide (spec §4.3, Deep Field). Two columns on phones, four from
+   48rem. */
+.wb-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--wb-space-5) 0;
+}
+@media (min-width: 48rem) {
+  .wb-figures { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.wb-figure {
+  min-width: 0;
+  padding: var(--wb-space-3) var(--wb-space-3);
+}
+.wb-figure + .wb-figure { border-inline-start: 1px solid var(--wb-color-line); }
+/* In two columns the third figure starts a row: no line at the row's start. */
+@media (max-width: 47.99rem) {
+  .wb-figure:nth-child(odd) { border-inline-start: 0; }
+}
+.wb-figure__value {
+  display: block;
+  color: var(--wb-color-brand);
+  font-size: var(--wb-text-figure);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: var(--wb-track-display);
+  font-variant-numeric: tabular-nums;
+}
+.wb-figure__label {
+  display: block;
+  margin-top: var(--wb-space-3);
+  color: var(--wb-color-ink-2);
+  font-size: var(--wb-text-lg);
+  font-weight: 700;
+}
+
+/* Doorway: a 4:5 photograph that is one link into a section, the title set on the picture over the scrim, without card
+   chrome (spec §4.3, Deep Field). The photo is decorative (alt=""): the title and the sentence name the link. */
+.wb-door {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 4 / 5;
+  /* clip, not hidden: a box with an aspect ratio that is not a scroll container grows to fit its text, so a long title
+     on a phone is never cut off at the top; hidden stays as the fallback where clip is unknown. */
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--wb-radius);
+  color: var(--wb-color-on-photo);
+  text-decoration: none;
+}
+.wb-door:focus-visible {
+  outline: 2px solid var(--wb-color-focus);
+  outline-offset: 2px;
+}
+.wb-door__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wb-door__body {
+  position: relative;
+  width: 100%;
+  padding: var(--wb-space-6);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 100%);
+}
+.wb-door__title {
+  margin: 0;
+  font-size: var(--wb-text-3xl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.wb-door__text {
+  margin: var(--wb-space-2) 0 0;
+  font-size: var(--wb-text-base);
+}
+
+/* Feature: the doorway's shape at 16:9, for the one large news item: a photograph that is one link, the title set on
+   the picture over the scrim (spec §4.3, Deep Field). */
+.wb-feature {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 16 / 9;
+  /* clip, not hidden: a box with an aspect ratio that is not a scroll container grows to fit its text, so a long title
+     on a phone is never cut off at the top; hidden stays as the fallback where clip is unknown. */
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--wb-radius);
+  color: var(--wb-color-on-photo);
+  text-decoration: none;
+}
+.wb-feature:focus-visible {
+  outline: 2px solid var(--wb-color-focus);
+  outline-offset: 2px;
+}
+.wb-feature__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wb-feature__body {
+  position: relative;
+  width: 100%;
+  padding: var(--wb-space-6);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 100%);
+}
+.wb-feature__title {
+  margin: 0;
+  font-size: var(--wb-text-2xl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.wb-feature__text {
+  margin: var(--wb-space-2) 0 0;
+  font-size: var(--wb-text-base);
+}
 
 /* Chart frame with legend. Series are marked data-series="1" (brand blue) and data-series="2" (the accent). */
 .wb-chart {
@@ -597,6 +826,20 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
 .wb-textarea[aria-invalid="true"] {
   border-width: 2px;
   border-color: var(--wb-color-ink);
+}
+/* Notice: what a form says after it is sent (sent, closed, failed), on the panel ground with a 1px line. The error
+   notice is marked as an invalid control is, with no danger colour: a 2px border in ink, and words that say what to do. */
+.wb-notice {
+  padding: var(--wb-space-4) var(--wb-space-5);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink);
+}
+.wb-notice--error {
+  border-width: 2px;
+  border-color: currentColor;
+  color: var(--wb-color-ink);
 }
 
 /* Footer: full-bleed on the panel ground; content lines up with .wb-container. */

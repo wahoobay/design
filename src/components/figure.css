@@ -1,0 +1,36 @@
+/* Figures: the impact numbers set large in brand blue (large text, so 3:1 applies), tabular, in columns separated by
+   1px lines with a 12px inset so two figures never collide (spec §4.3, Deep Field). Two columns on phones, four from
+   48rem. */
+.wb-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--wb-space-5) 0;
+}
+@media (min-width: 48rem) {
+  .wb-figures { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.wb-figure {
+  min-width: 0;
+  padding: var(--wb-space-3) var(--wb-space-3);
+}
+.wb-figure + .wb-figure { border-inline-start: 1px solid var(--wb-color-line); }
+/* In two columns the third figure starts a row: no line at the row's start. */
+@media (max-width: 47.99rem) {
+  .wb-figure:nth-child(odd) { border-inline-start: 0; }
+}
+.wb-figure__value {
+  display: block;
+  color: var(--wb-color-brand);
+  font-size: var(--wb-text-figure);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: var(--wb-track-display);
+  font-variant-numeric: tabular-nums;
+}
+.wb-figure__label {
+  display: block;
+  margin-top: var(--wb-space-3);
+  color: var(--wb-color-ink-2);
+  font-size: var(--wb-text-lg);
+  font-weight: 700;
+}

@@ -1,0 +1,20 @@
+/* Band: a full-bleed section on its own ground. The home page's live band carries data-theme="dark" and so takes the
+   live-camera ground (spec §4.3, Deep Field); it needs no modifier. Put .wb-container on .wb-band__inner: one column on
+   phones, the still and the words side by side from 48rem. The padding is in longhands: the detector reads no
+   padding-block, and would find the words flush against the ground. */
+.wb-band {
+  padding-top: var(--wb-space-8);
+  padding-bottom: var(--wb-space-8);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+}
+.wb-band__inner {
+  display: grid;
+  gap: var(--wb-space-6);
+}
+@media (min-width: 48rem) {
+  .wb-band__inner {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+  }
+}
