@@ -18,7 +18,7 @@
   --wb-color-on-photo: #FFFFFF;
   --wb-color-scrim: rgb(11 27 43 / 0.85);
   --wb-color-scrim-0: rgb(11 27 43 / 0);
-  --wb-color-scrim-top: rgb(11 27 43 / 0.35);
+  --wb-color-scrim-top: rgb(11 27 43 / 0.55);
   --wb-font-sans: "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
   --wb-text-xs: 0.75rem;
   --wb-text-sm: 0.875rem;
@@ -62,5 +62,5 @@
   --wb-color-on-photo: #FFFFFF;
   --wb-color-scrim: rgb(11 27 43 / 0.85);
   --wb-color-scrim-0: rgb(11 27 43 / 0);
-  --wb-color-scrim-top: rgb(11 27 43 / 0.35);
+  --wb-color-scrim-top: rgb(11 27 43 / 0.55);
 }

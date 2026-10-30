@@ -7,8 +7,8 @@ const read = (path) => readFileSync(path, 'utf8');
 // The class names the site consumes, exactly as the design system publishes them.
 const CLASSES = [
   'wb-container',
-  'wb-nav', 'wb-nav__logo', 'wb-nav__links', 'wb-nav__link', 'wb-nav__link--on', 'wb-nav__cta', 'wb-nav--over',
-  'wb-btn', 'wb-btn--action', 'wb-btn--ghost', 'wb-btn--accent',
+  'wb-nav', 'wb-nav__logo', 'wb-nav__links', 'wb-nav__link', 'wb-nav__link--on', 'wb-nav__cta', 'wb-nav--over', 'wb-subnav',
+  'wb-btn', 'wb-btn--action', 'wb-btn--ghost', 'wb-btn--accent', 'wb-btn--busy',
   'wb-live',
   'wb-chip', 'wb-chip__meta',
   'wb-tile', 'wb-tile__k', 'wb-tile__v', 'wb-tile--accent',
@@ -22,7 +22,7 @@ const CLASSES = [
   'wb-icon', 'wb-back', 'wb-initials', 'wb-logo-tile', 'wb-logo-tile--dark', 'wb-btn--wrap', 'wb-btn__meta', 'wb-caption',
   'wb-panel--raised', 'wb-card--raised', 'wb-video',
   'wb-media', 'wb-media--top',
-  'wb-map',
+  'wb-map', 'wb-marker', 'wb-marker--camera',
   'wb-stage', 'wb-stage__photo', 'wb-stage__scrim', 'wb-stage__body', 'wb-stage__title', 'wb-stage__lead', 'wb-stage__actions',
   'wb-band', 'wb-band__inner',
   'wb-figures', 'wb-figure', 'wb-figure__value', 'wb-figure__label',
@@ -36,7 +36,8 @@ const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-live', 'wb-chip', 
   'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
-const ACCENT_OWNERS = ['wb-live', 'wb-chip', 'wb-tile--accent', 'wb-detect', 'wb-btn--accent', 'wb-chart'];
+// 0.2.2: a camera's map marker, because a camera is alive right now.
+const ACCENT_OWNERS = ['wb-live', 'wb-chip', 'wb-tile--accent', 'wb-detect', 'wb-btn--accent', 'wb-chart', 'wb-marker--camera'];
 
 const selector = (cls) => new RegExp(`\\.${cls.replace(/-/g, '\\-')}(?![\\w-])`);
 const classesUsed = (html) => new Set([...html.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)));
@@ -84,7 +85,8 @@ test('the accent appears only in the components that mean "alive right now", and
   const owns = (cls, part) => new RegExp(`\\.${cls.replace(/-/g, '\\-')}(?:__[a-z-]+)?(?![\\w-])`).test(part);
   for (const { selector: sel, body } of rules(read('dist/components.css'))) {
     if (!/--wb-color-(on-)?accent/.test(body)) continue;
-    for (const part of sel.split(',')) {
+    // Split on the commas between selectors, not the ones inside :not(…).
+    for (const part of sel.split(/,(?![^()]*\))/)) {
       assert.ok(ACCENT_OWNERS.some((cls) => owns(cls, part)), `accent used by ${part.trim()}`);
       if (owns('wb-chart', part)) assert.match(part, /\[data-series="2"\]/, `chart accent outside series 2: ${part.trim()}`);
     }
@@ -159,11 +161,15 @@ test('the logo is 34px tall on light and 30px on dark (spec §4.3)', () => {
   assert.match(css.find((r) => r.selector === '[data-theme="dark"] .wb-nav__logo :is(svg, img)').body, /height:\s*1\.875rem/);
 });
 
-test('the live badge breathes, only without reduced motion, and nothing else animates (spec §4.3)', () => {
+test('the live badge breathes, only without reduced motion; the busy ring turns; nothing else animates (spec §4.3)', () => {
   const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
   assert.match(css, /@keyframes wb-live-breathe\s*\{/);
   assert.match(css, /@media \(prefers-reduced-motion: no-preference\)\s*\{\s*\.wb-live::before\s*\{[^}]*animation:[^;]*wb-live-breathe/);
-  assert.equal(css.match(/\banimation(-name)?:/g)?.length, 1, 'one animation in components.css');
+  // 0.2.2: a busy button's ring turns while it works, a status, not decoration; reduced motion stops it.
+  assert.match(css, /@keyframes wb-spin\s*\{/);
+  const animated = rules(css).filter((r) => /\banimation(-name)?:/.test(r.body)).map((r) => `${r.selector} ${r.body.match(/animation(?:-name)?:\s*([^;]+)/)[1].trim()}`);
+  assert.deepEqual(animated, ['.wb-btn--busy::after wb-spin .8s linear infinite', '.wb-btn--busy::after none', '.wb-live::before wb-live-breathe 2.4s ease-in-out infinite']);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.wb-btn--busy::after\s*\{\s*animation:\s*none;?\s*\}/, 'reduced motion stops the ring');
 });
 
 test('the dark focus ring is not the accent, which means "alive right now"', () => {
@@ -426,22 +432,19 @@ test('door and feature: the title sits on the photograph over a scrim, 4:5 and 1
   for (const c of ['.wb-door__body', '.wb-feature__body']) assert.match(block(c), /linear-gradient/, c);
 });
 
-test('only the stage, the doorway and the feature draw a scrim; the doorway\'s and the feature\'s run from clear to the full scrim', () => {
+test('only the stage, the doorway and the feature draw a scrim', () => {
   const users = rules(read('dist/components.css')).filter((r) => /--wb-color-scrim/.test(r.body)).map((r) => r.selector).sort();
   assert.deepEqual(users, ['.wb-door__body', '.wb-feature__body', '.wb-stage__scrim']);
-  for (const sel of ['.wb-door__body', '.wb-feature__body'])
-    assert.match(block(sel), /linear-gradient\(180deg,\s*var\(--wb-color-scrim-0\) 0%,\s*var\(--wb-color-scrim\) 100%\)/, sel);
 });
 
-// 0.2.1: the stage's scrim was clear to 30% and full only at the foot, so the headline's top line sat almost on the bare
-// photograph, and the nav over it had nothing (Task 1 review). The alpha is read from the gradient's stops and the tokens.
-test('the stage scrim: a band under the nav, clear by 20%, at least 0.5 from 40% down, the full 0.85 by 65% and held', () => {
+// A scrim's alpha down its box, read from the gradient's stops and the tokens (the same in both themes).
+const scrimAt = (sel) => {
   const { light } = JSON.parse(read('tokens/tokens.json')).color;
   const alpha = (name) => Number(light[name].match(/\/\s*([\d.]+)\)$/)[1]);
-  const gradient = block('.wb-stage__scrim').match(/linear-gradient\(180deg,([^;]*)\)\s*;/)?.[1] ?? '';
+  const gradient = block(sel).match(/linear-gradient\(180deg,([^;]*)\)\s*;/)?.[1] ?? '';
   const stops = [...gradient.matchAll(/var\(--wb-color-(scrim[a-z0-9-]*)\)\s+(\d+)%/g)].map((m) => [Number(m[2]), alpha(m[1])]);
-  assert.ok(stops.length >= 3 && stops.length === gradient.split(',').length, `every stop is a scrim token at a position: ${gradient}`);
-  const at = (p) => {
+  assert.ok(stops.length >= 3 && stops.length === gradient.split(',').length, `${sel}: every stop is a scrim token at a position: ${gradient}`);
+  return (p) => {
     if (p <= stops[0][0]) return stops[0][1];
     for (let i = 1; i < stops.length; i += 1) {
       const [[p0, a0], [p1, a1]] = [stops[i - 1], stops[i]];
@@ -449,10 +452,36 @@ test('the stage scrim: a band under the nav, clear by 20%, at least 0.5 from 40%
     }
     return stops.at(-1)[1];
   };
-  assert.ok(Math.abs(at(0) - 0.35) < 0.051, `top band ${at(0)}`);
-  assert.equal(at(20), 0, 'clear by 20%');
+};
+
+// 0.2.2: on the doorways and the news feature the title and its sentence sat where the scrim was still thin, over white
+// shirts and bright water (finish review, fix 1). The scrim is full by 40% of the body and held, and the body's first
+// 4rem are padding, so the first line of text starts where the scrim is already at full strength.
+test('the doorway\'s and the feature\'s scrim: 0.6 or more at 35% of the body, the full 0.85 from 40% down; the text starts 4rem in', () => {
+  for (const sel of ['.wb-door__body', '.wb-feature__body']) {
+    const at = scrimAt(sel);
+    assert.equal(at(0), 0, `${sel}: clear at the top`);
+    assert.ok(at(35) >= 0.6, `${sel} 35%: ${at(35).toFixed(3)}`);
+    for (let p = 40; p <= 100; p += 1) assert.equal(at(p), 0.85, `${sel} ${p}%`);
+    assert.match(block(sel), /padding-top:\s*var\(--wb-space-8\)/, `${sel}: padding-top`);
+    // The deeper body made the doorway's smallest width, through its 4:5, wider than a phone (the docs page at 390px):
+    // it takes the width its row gives it.
+    const box = sel.replace('__body', '');
+    assert.match(block(box), /min-width:\s*0\s*;/, `${box}: min-width`);
+    // The shorthand comes first, so the 4rem top wins.
+    assert.ok(block(sel).search(/padding:\s*var\(--wb-space-6\)/) < block(sel).search(/padding-top:/), `${sel}: padding order`);
+  }
+});
+
+// 0.2.1: the stage's scrim was clear to 30% and full only at the foot, so the headline's top line sat almost on the bare
+// photograph, and the nav over it had nothing (Task 1 review). 0.2.2: on a phone the nav wraps onto three rows over the
+// photograph, so the top band is stronger (0.55) and deeper: held to 15%, clear by 32% (finish review, fix 2).
+test('the stage scrim: a band of 0.5 or more to 15%, clear at 32%, at least 0.5 from 40% down, the full 0.85 from 50% and held', () => {
+  const at = scrimAt('.wb-stage__scrim');
+  for (let p = 0; p <= 15; p += 1) assert.ok(at(p) >= 0.5, `top band ${p}%: ${at(p).toFixed(3)}`);
+  assert.equal(at(32), 0, 'clear at 32%');
   for (let p = 40; p <= 100; p += 1) assert.ok(at(p) >= 0.5, `${p}%: ${at(p).toFixed(3)}`);
-  for (let p = 65; p <= 100; p += 1) assert.equal(at(p), 0.85, `${p}%`);
+  for (let p = 50; p <= 100; p += 1) assert.equal(at(p), 0.85, `${p}%`);
 });
 
 test('text on a photograph is --wb-color-on-photo, which stays white in both themes, never the ground colour', () => {
@@ -517,4 +546,87 @@ test('in two columns the figures draw no line at the start of the second row', (
   const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
   const narrow = [...css.matchAll(/@media \(max-width: 47\.99rem\)\s*\{([\s\S]*?)\n\}/g)].map((m) => m[1]).join('\n');
   assert.match(narrow, /\.wb-figure:nth-child\(odd\)\s*\{\s*border-inline-start:\s*0;?\s*\}/);
+});
+
+// 0.2.2: the pieces the site's step 2a needed (finish review, fixes 3 and 7; Rulings Q and V).
+const theme = (html) => {
+  const at = html.indexOf('<section data-theme="dark"');
+  return [['light', html.slice(0, at)], ['dark', html.slice(at)]];
+};
+
+// The section navigation sat under the H1 on some pages and above it on others, its active underline 12px left of the
+// column (finish review, fix 3). One wrapping row of nav links whose labels and underlines start at the column.
+test('.wb-subnav: a wrapping row of nav links, each label (and its underline) flush with its own edge, so every row starts at the column', () => {
+  has(block('.wb-subnav'), [/display:\s*flex/, /flex-wrap:\s*wrap/, /column-gap:\s*var\(--wb-space-4\)/, /margin:\s*0/, /padding:\s*0/, /list-style:\s*none/], '.wb-subnav');
+  assert.match(block('.wb-subnav > li'), /display:\s*flex/);
+  // No inline padding on any of its links: the first is flush with the column (finish review), and so is the first of
+  // a wrapped row; the current link's underline (the nav's inset shadow, across the padding box) is as wide as its label.
+  assert.match(block('.wb-subnav .wb-nav__link'), /padding-inline:\s*0\s*;/);
+  assert.doesNotMatch(read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, ''), /\.wb-subnav [^{]*--on[^{]*\{[^}]*padding/, 'the current link keeps the alignment');
+  // An icon after a link's label (external) sits a 4px gap from it, in the bar and in the section navigation.
+  assert.match(block('.wb-nav__link'), /gap:\s*var\(--wb-space-1\)/);
+  // The ring outside the link: with no padding an inset ring would cut into the label.
+  assert.match(block('.wb-subnav .wb-nav__link:focus-visible'), /outline-offset:\s*2px/);
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    const nav = part.match(/<nav aria-label="[^"]+">\s*<ul class="wb-subnav" role="list">([\s\S]*?)<\/ul>\s*<\/nav>\s*<h4\b/)?.[1] ?? '';
+    assert.ok(nav, `${name}: a subnav right above a heading`);
+    assert.equal(nav.match(/<li><a class="wb-nav__link[ "]/g)?.length, 6, `${name}: six links`);
+    assert.match(nav, /<li><a class="wb-nav__link wb-nav__link--on" href="#" aria-current="page">/, `${name}: the current one first`);
+    assert.match(nav, /<a class="wb-nav__link" href="#" target="_blank" rel="noopener">[^<]+<svg class="wb-icon"[\s\S]*?<\/svg><span class="wb-sr-only"> \(opens in a new tab\)<\/span><\/a>/, `${name}: an external link with its icon after the label`);
+  }
+});
+
+// The photo field's "Choose Files" was the browser's own button (finish review, fix 7): it is the ghost button now.
+test('a file field\'s button is the ghost button: 1px line, 8px corners, the sans face, 44px, ink, the panel under the pointer', () => {
+  const button = block('.wb-input[type="file"]::file-selector-button');
+  has(button, [/min-height:\s*2\.75rem/, /margin-inline-end:\s*var\(--wb-space-3\)/, /border:\s*1px solid var\(--wb-color-line\)/,
+    /border-radius:\s*var\(--wb-radius-sm\)/, /font-family:\s*var\(--wb-font-sans\)/, /font-weight:\s*700/, /color:\s*var\(--wb-color-ink\)/,
+    /background:\s*var\(--wb-color-bg\)/, /cursor:\s*pointer/], 'the file button');
+  assert.doesNotMatch(button, /(^|[;\s])font:/, 'no font shorthand: it would reset the ligature setting');
+  assert.match(block('.wb-input[type="file"]::file-selector-button:hover'), /background:\s*var\(--wb-color-panel\)/);
+  // The field is the button and the file names beside it, not a box around a box.
+  has(block('.wb-input[type="file"]'), [/padding:\s*0/, /border:\s*0/, /background:\s*transparent/], 'the file field');
+  assert.match(block('.wb-input[type="file"][aria-invalid="true"]::file-selector-button'), /border:\s*2px solid var\(--wb-color-ink\)/, 'an invalid file field is marked on its button');
+  for (const [name, part] of theme(read('dist/index.html')))
+    assert.match(part, /<label class="wb-label" for="(photos-[ld])">[^<]+<\/label>\s*<input class="wb-input" id="\1" type="file"[^>]*>/, `${name}: a file field`);
+});
+
+// Ruling Q: the map's markers were the accent's chips (a sensor is not alive right now) and the map's words Mapbox's
+// Helvetica. A marker is an action-blue pin, a camera's the accent; the map speaks in the system's face.
+test('.wb-marker: a 16px action-blue pin with a 2px ring of the ground, in a 44px target; a camera\'s is the accent', () => {
+  has(block('.wb-marker'), [/display:\s*grid/, /place-items:\s*center/, /width:\s*2\.75rem/, /height:\s*2\.75rem/, /padding:\s*0/, /border:\s*0/,
+    /background:\s*transparent/, /cursor:\s*pointer/], '.wb-marker, the target');
+  has(block('.wb-marker::before'), [/content:\s*""/, /width:\s*1rem/, /height:\s*1rem/, /border-radius:\s*50%/, /background:\s*var\(--wb-color-action\)/,
+    /box-shadow:\s*0 0 0 2px var\(--wb-color-bg\),\s*var\(--wb-shadow\)/], '.wb-marker::before, the pin');
+  assert.match(block('.wb-marker--camera::before'), /background:\s*var\(--wb-color-accent\)/);
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    const map = part.match(/<div class="wb-map docs-map">([\s\S]*?)<\/div>/)?.[1] ?? '';
+    assert.match(map, /<button class="wb-marker docs-marker-[a-z]+" type="button" aria-label="[^"]+"><\/button>/, `${name}: a sensor marker on the map frame`);
+    assert.match(map, /<button class="wb-marker wb-marker--camera docs-marker-[a-z]+" type="button" aria-label="[^"]+"><\/button>/, `${name}: a camera marker`);
+  }
+});
+
+test('the map frame speaks in the system\'s face, and Mapbox GL\'s classes appear in that one rule only', () => {
+  assert.match(block('.wb-map'), /font-family:\s*var\(--wb-font-sans\)/);
+  const css = rules(read('dist/components.css'));
+  const third = css.filter((r) => /mapboxgl/.test(r.selector));
+  assert.equal(third.length, 1, 'one rule names Mapbox GL');
+  assert.deepEqual(third[0].selector.split(',').map((s) => s.trim()).sort(),
+    ['.wb-map .mapboxgl-ctrl', '.wb-map .mapboxgl-map', '.wb-map .mapboxgl-popup-content', '.wb-map.mapboxgl-map']);
+  assert.match(third[0].body, /^\s*font-family:\s*inherit;?\s*$/);
+});
+
+// Ruling V: the sighting form's submit was disabled while it sent, and looked exactly as it did before (final review).
+test('a disabled button reads as unavailable and does not darken under the pointer; a busy button keeps its label and turns a ring after it', () => {
+  has(block('.wb-btn:disabled, .wb-btn[aria-disabled="true"]'), [/opacity:\s*\.55/, /cursor:\s*not-allowed/], 'disabled');
+  const css = rules(read('dist/components.css'));
+  for (const r of css.filter((r) => /^\.wb-btn--[a-z]+[^ ]*:hover/.test(r.selector)))
+    assert.match(r.selector, /:not\(:disabled, \[aria-disabled="true"\]\):hover$/, `${r.selector}: suppressed when disabled`);
+  assert.equal(css.filter((r) => /^\.wb-btn--(action|ghost|accent)/.test(r.selector) && /:hover/.test(r.selector)).length, 3, 'the three hovers');
+  has(block('.wb-btn--busy::after'), [/content:\s*""/, /width:\s*1em/, /height:\s*1em/, /border:\s*2px solid currentColor/, /border-top-color:\s*transparent/,
+    /border-radius:\s*50%/, /animation:\s*wb-spin \.8s linear infinite/], '.wb-btn--busy::after');
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    assert.match(part, /<button class="wb-btn wb-btn--action" type="button" disabled>[^<]+<\/button>/, `${name}: a disabled button`);
+    assert.match(part, /<button class="wb-btn wb-btn--action wb-btn--busy" type="button" disabled>[^<]+<\/button>/, `${name}: a busy button`);
+  }
 });

@@ -9,6 +9,9 @@
      on a phone is never cut off at the top; hidden stays as the fallback where clip is unknown. */
   overflow: hidden;
   overflow: clip;
+  /* Its text is what sets its height, so in a grid or flex row its smallest width would follow from its text at one
+     word a line through the 4:5; it takes the width it is given instead. */
+  min-width: 0;
   border-radius: var(--wb-radius);
   color: var(--wb-color-on-photo);
   text-decoration: none;
@@ -24,11 +27,14 @@
   height: 100%;
   object-fit: cover;
 }
+/* The scrim is full by 40% of the body and held; the first 4rem are padding, so the title starts where the scrim is
+   already at full strength, whatever the photograph is bright with under it. */
 .wb-door__body {
   position: relative;
   width: 100%;
   padding: var(--wb-space-6);
-  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 100%);
+  padding-top: var(--wb-space-8);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 40%, var(--wb-color-scrim) 100%);
 }
 .wb-door__title {
   margin: 0;

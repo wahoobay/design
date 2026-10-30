@@ -97,7 +97,11 @@
     .docs-band-words { display: grid; justify-items: start; gap: var(--wb-space-4); }
     .docs-doors { display: grid; gap: var(--wb-space-4); }
     .docs-feature { max-width: 40rem; }
+    .docs-map { position: relative; }
     .docs-map img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .docs-map .wb-marker { position: absolute; translate: -50% -50%; }
+    .docs-marker-sensor { left: 34%; top: 58%; }
+    .docs-marker-camera { left: 62%; top: 72%; }
     .docs-notices { display: grid; gap: var(--wb-space-4); max-width: 32rem; }
     .docs-tokens h3 { margin-top: var(--wb-space-7); }
     .docs-tokens h3 + .docs-intro { margin-top: var(--wb-space-2); }
@@ -153,7 +157,7 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.35)</code><small>The band at the top of the stage, under the nav</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.55)</code><small>The band at the top of the stage, under the nav</small></li>
       </ul>
 
       <h3>Colour, dark</h3>
@@ -177,7 +181,7 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.35)</code><small>The band at the top of the stage, under the nav</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.55)</code><small>The band at the top of the stage, under the nav</small></li>
         </ul>
       </div>
 
@@ -264,6 +268,29 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Section navigation</h3>
+          <p>The pages of one section, above the page's heading: <code>wb-subnav</code> on the list, a row of nav links that wraps, on a phone onto as many rows as it needs. The first label starts at the column, and so does the first of every row; the current page is underlined as wide as its label. A link to another site opens in a new tab and says so: the <code>external</code> icon after its label, and the words for a screen reader.</p>
+        </div>
+        <div>
+          <div class="docs-page">
+            <nav aria-label="Example section navigation, light">
+              <ul class="wb-subnav" role="list">
+                <li><a class="wb-nav__link wb-nav__link--on" href="#" aria-current="page">Live cameras</a></li>
+                <li><a class="wb-nav__link" href="#">Highlights</a></li>
+                <li><a class="wb-nav__link" href="#">Species</a></li>
+                <li><a class="wb-nav__link" href="#">Data</a></li>
+                <li><a class="wb-nav__link" href="#">Log a sighting</a></li>
+                <li><a class="wb-nav__link" href="#" target="_blank" rel="noopener">Fish ID<!-- @wb-icon external --><span class="wb-sr-only"> (opens in a new tab)</span></a></li>
+              </ul>
+            </nav>
+            <h4>Live cameras</h4>
+            <p>The reef under the dock, live, and the pier.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Buttons</h3>
           <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
         </div>
@@ -275,6 +302,11 @@
             <button class="wb-btn wb-btn--action docs-focus" type="button">Send sighting</button>
           </div>
           <p class="docs-note">The last button is drawn as keyboard focus draws it: the ring comes from <code>base.css</code>, 2px of <code>--wb-color-focus</code> set 2px clear of the button. Press Tab to see it on the others.</p>
+          <div class="docs-row docs-states">
+            <button class="wb-btn wb-btn--action" type="button" disabled>Submissions paused</button>
+            <button class="wb-btn wb-btn--action wb-btn--busy" type="button" disabled>Sending…</button>
+          </div>
+          <p class="docs-note">A button that cannot be pressed is <code>disabled</code> (or <code>aria-disabled="true"</code>): it fades and does not answer the pointer. Its text falls below 4.5:1 on purpose, as WCAG 1.4.3 exempts an inactive control; say beside it why it is off. A button at work adds <code>wb-btn--busy</code> while it is disabled: its label stays and a ring turns after it, standing still for a reader who asks for reduced motion.</p>
         </div>
       </div>
 
@@ -471,11 +503,13 @@
       <div class="docs-specimen">
         <div>
           <h3>Map frame</h3>
-          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it.</p>
+          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it. The map's own words, its popups and buttons, are in the system's face. A place is a <code>wb-marker</code>, a pin in action blue ringed in the ground colour, in a 44px target; a camera's pin, <code>wb-marker--camera</code>, is the accent, because a camera is alive right now. Name each with <code>aria-label</code>.</p>
         </div>
         <div>
           <div class="wb-map docs-map">
             <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <button class="wb-marker docs-marker-sensor" type="button" aria-label="Wahoo Bay Water Quality"></button>
+            <button class="wb-marker wb-marker--camera docs-marker-camera" type="button" aria-label="Wahoo Bay Camera"></button>
           </div>
         </div>
       </div>
@@ -483,7 +517,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Stage</h3>
-          <p>The home page opens on a photograph as tall as most of the screen (about 820px at 1440, never taller than the viewport) with the headline on it at the display size. The scrim darkens the lower half of the picture, where the words sit, and a light band at its top keeps the navigation readable. The navigation lies over the top of it, transparent, with the logo and links in white: <code>wb-nav--over</code>. Text on a photograph is white in both themes, and a ghost button on it is outlined in white.</p>
+          <p>The home page opens on a photograph as tall as most of the screen (about 820px at 1440, never taller than the viewport) with the headline on it at the display size. The scrim darkens the lower half of the picture, where the words sit, and a band at its top, deep enough for the three rows the navigation wraps onto on a phone, keeps it readable. The navigation lies over the top of it, transparent, with the logo and links in white: <code>wb-nav--over</code>. Text on a photograph is white in both themes, and a ghost button on it is outlined in white.</p>
         </div>
         <div class="wb-stage">
           <img class="wb-stage__photo" src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
@@ -556,7 +590,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Doorways</h3>
-          <p>A 4:5 photograph that is one link into a section, its title on the picture over the scrim, with no card around it. The photo is decorative: the title and the sentence name the link.</p>
+          <p>A 4:5 photograph that is one link into a section, its title on the picture over the scrim, with no card around it. The scrim is at full strength from 40% of the words' box down and the words start below that, whatever is bright in the photograph. The photo is decorative: the title and the sentence name the link.</p>
         </div>
         <div class="docs-doors">
           <a class="wb-door" href="#">
@@ -635,7 +669,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Form controls</h3>
-          <p>Label above, help or error below. There is no danger colour: an error says what to do, in bold, and the control's border thickens.</p>
+          <p>Label above, help or error below. There is no danger colour: an error says what to do, in bold, and the control's border thickens. A file field is its button and the names of the files it holds.</p>
         </div>
         <div class="docs-form">
           <div class="wb-field">
@@ -655,6 +689,11 @@
           <div class="wb-field">
             <label class="wb-label" for="notes-l">What did you see?</label>
             <textarea class="wb-textarea" id="notes-l">Two sergeant majors guarding eggs on the north reef module.</textarea>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="photos-l">Photos (optional)</label>
+            <input class="wb-input" id="photos-l" type="file" accept="image/*" multiple aria-describedby="photos-l-help">
+            <p class="wb-help" id="photos-l-help">Its button is the ghost button's look, the names of the chosen files beside it.</p>
           </div>
           <div><button class="wb-btn wb-btn--action" type="button">Send sighting</button></div>
         </div>
@@ -731,6 +770,29 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Section navigation</h3>
+          <p>The pages of one section, above the page's heading: <code>wb-subnav</code> on the list, a row of nav links that wraps, on a phone onto as many rows as it needs. The first label starts at the column, and so does the first of every row; the current page is underlined as wide as its label. A link to another site opens in a new tab and says so: the <code>external</code> icon after its label, and the words for a screen reader.</p>
+        </div>
+        <div>
+          <div class="docs-page">
+            <nav aria-label="Example section navigation, dark">
+              <ul class="wb-subnav" role="list">
+                <li><a class="wb-nav__link wb-nav__link--on" href="#" aria-current="page">Live cameras</a></li>
+                <li><a class="wb-nav__link" href="#">Highlights</a></li>
+                <li><a class="wb-nav__link" href="#">Species</a></li>
+                <li><a class="wb-nav__link" href="#">Data</a></li>
+                <li><a class="wb-nav__link" href="#">Log a sighting</a></li>
+                <li><a class="wb-nav__link" href="#" target="_blank" rel="noopener">Fish ID<!-- @wb-icon external --><span class="wb-sr-only"> (opens in a new tab)</span></a></li>
+              </ul>
+            </nav>
+            <h4>Live cameras</h4>
+            <p>The reef under the dock, live, and the pier.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Buttons</h3>
           <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
         </div>
@@ -742,6 +804,11 @@
             <button class="wb-btn wb-btn--action docs-focus" type="button">Send sighting</button>
           </div>
           <p class="docs-note">The last button is drawn as keyboard focus draws it: the ring comes from <code>base.css</code>, 2px of <code>--wb-color-focus</code> set 2px clear of the button. Press Tab to see it on the others.</p>
+          <div class="docs-row docs-states">
+            <button class="wb-btn wb-btn--action" type="button" disabled>Submissions paused</button>
+            <button class="wb-btn wb-btn--action wb-btn--busy" type="button" disabled>Sending…</button>
+          </div>
+          <p class="docs-note">A button that cannot be pressed is <code>disabled</code> (or <code>aria-disabled="true"</code>): it fades and does not answer the pointer. Its text falls below 4.5:1 on purpose, as WCAG 1.4.3 exempts an inactive control; say beside it why it is off. A button at work adds <code>wb-btn--busy</code> while it is disabled: its label stays and a ring turns after it, standing still for a reader who asks for reduced motion.</p>
         </div>
       </div>
 
@@ -938,11 +1005,13 @@
       <div class="docs-specimen">
         <div>
           <h3>Map frame</h3>
-          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it.</p>
+          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it. The map's own words, its popups and buttons, are in the system's face. A place is a <code>wb-marker</code>, a pin in action blue ringed in the ground colour, in a 44px target; a camera's pin, <code>wb-marker--camera</code>, is the accent, because a camera is alive right now. Name each with <code>aria-label</code>.</p>
         </div>
         <div>
           <div class="wb-map docs-map">
             <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <button class="wb-marker docs-marker-sensor" type="button" aria-label="Wahoo Bay Water Quality"></button>
+            <button class="wb-marker wb-marker--camera docs-marker-camera" type="button" aria-label="Wahoo Bay Camera"></button>
           </div>
         </div>
       </div>
@@ -950,7 +1019,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Stage</h3>
-          <p>The home page opens on a photograph as tall as most of the screen (about 820px at 1440, never taller than the viewport) with the headline on it at the display size. The scrim darkens the lower half of the picture, where the words sit, and a light band at its top keeps the navigation readable. The navigation lies over the top of it, transparent, with the logo and links in white: <code>wb-nav--over</code>. Text on a photograph is white in both themes, and a ghost button on it is outlined in white.</p>
+          <p>The home page opens on a photograph as tall as most of the screen (about 820px at 1440, never taller than the viewport) with the headline on it at the display size. The scrim darkens the lower half of the picture, where the words sit, and a band at its top, deep enough for the three rows the navigation wraps onto on a phone, keeps it readable. The navigation lies over the top of it, transparent, with the logo and links in white: <code>wb-nav--over</code>. Text on a photograph is white in both themes, and a ghost button on it is outlined in white.</p>
         </div>
         <div class="wb-stage">
           <img class="wb-stage__photo" src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
@@ -1023,7 +1092,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Doorways</h3>
-          <p>A 4:5 photograph that is one link into a section, its title on the picture over the scrim, with no card around it. The photo is decorative: the title and the sentence name the link.</p>
+          <p>A 4:5 photograph that is one link into a section, its title on the picture over the scrim, with no card around it. The scrim is at full strength from 40% of the words' box down and the words start below that, whatever is bright in the photograph. The photo is decorative: the title and the sentence name the link.</p>
         </div>
         <div class="docs-doors">
           <a class="wb-door" href="#">
@@ -1102,7 +1171,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Form controls</h3>
-          <p>Label above, help or error below. There is no danger colour: an error says what to do, in bold, and the control's border thickens.</p>
+          <p>Label above, help or error below. There is no danger colour: an error says what to do, in bold, and the control's border thickens. A file field is its button and the names of the files it holds.</p>
         </div>
         <div class="docs-form">
           <div class="wb-field">
@@ -1122,6 +1191,11 @@
           <div class="wb-field">
             <label class="wb-label" for="notes-d">What did you see?</label>
             <textarea class="wb-textarea" id="notes-d">Two sergeant majors guarding eggs on the north reef module.</textarea>
+          </div>
+          <div class="wb-field">
+            <label class="wb-label" for="photos-d">Photos (optional)</label>
+            <input class="wb-input" id="photos-d" type="file" accept="image/*" multiple aria-describedby="photos-d-help">
+            <p class="wb-help" id="photos-d-help">Its button is the ghost button's look, the names of the chosen files beside it.</p>
           </div>
           <div><button class="wb-btn wb-btn--action" type="button">Send sighting</button></div>
         </div>

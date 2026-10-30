@@ -22,14 +22,39 @@
   background: var(--wb-color-action);
   color: var(--wb-color-on-action);
 }
-.wb-btn--action:hover { background: color-mix(in srgb, var(--wb-color-action) 85%, var(--wb-color-ink)); }
+.wb-btn--action:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-action) 85%, var(--wb-color-ink)); }
 .wb-btn--ghost { border-color: color-mix(in srgb, var(--wb-color-ink-3) 50%, transparent); }
-.wb-btn--ghost:hover { border-color: var(--wb-color-ink-3); }
+.wb-btn--ghost:not(:disabled, [aria-disabled="true"]):hover { border-color: var(--wb-color-ink-3); }
 .wb-btn--accent {
   background: var(--wb-color-accent);
   color: var(--wb-color-on-accent);
 }
-.wb-btn--accent:hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+.wb-btn--accent:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+/* A button that cannot be pressed (a form that is sending or closed) fades and does not answer the pointer. Its text
+   is below 4.5:1 on purpose: WCAG 1.4.3 exempts an inactive control, and the words beside it say why it is off. */
+.wb-btn:disabled,
+.wb-btn[aria-disabled="true"] {
+  opacity: .55;
+  cursor: not-allowed;
+}
+/* A button at work (a form sending): its label stays, and a ring in its text colour turns after it. With reduced
+   motion the ring stands still. */
+.wb-btn--busy::after {
+  content: "";
+  flex: none;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: wb-spin .8s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-btn--busy::after { animation: none; }
+}
+@keyframes wb-spin {
+  to { transform: rotate(1turn); }
+}
 /* A button whose label may wrap (a long migrated label, a document's title): left-aligned lines with room between them. */
 .wb-btn--wrap {
   max-width: 100%;

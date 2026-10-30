@@ -64,6 +64,29 @@
   border-width: 2px;
   border-color: var(--wb-color-ink);
 }
+/* A file field is its button, the ghost button's look on a smaller corner, then the names of the files it holds: no box
+   around a box. An invalid one is marked on its button, as a control is. */
+.wb-input[type="file"] {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.wb-input[type="file"]::file-selector-button {
+  min-height: 2.75rem;
+  margin-inline-end: var(--wb-space-3);
+  padding: var(--wb-space-2) var(--wb-space-4);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius-sm);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+  font-family: var(--wb-font-sans);
+  font-size: var(--wb-text-base);
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.wb-input[type="file"]::file-selector-button:hover { background: var(--wb-color-panel); }
+.wb-input[type="file"][aria-invalid="true"]::file-selector-button { border: 2px solid var(--wb-color-ink); }
 /* Notice: what a form says after it is sent (sent, closed, failed), on the panel ground with a 1px line. The error
    notice is marked as an invalid control is, with no danger colour: a 2px border in ink, and words that say what to do. */
 .wb-notice {

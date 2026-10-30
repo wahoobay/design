@@ -122,9 +122,11 @@ a[href^="tel:"] { white-space: nowrap; }
   list-style: none;
 }
 .wb-nav__links > li { display: flex; }
+/* An icon after the label (external, for a link to another site) sits 4px from it. */
 .wb-nav__link {
   display: inline-flex;
   align-items: center;
+  gap: var(--wb-space-1);
   min-height: 2.75rem;
   padding: 0 var(--wb-space-3);
   color: var(--wb-color-ink-2);
@@ -158,6 +160,22 @@ a[href^="tel:"] { white-space: nowrap; }
 .wb-nav--over .wb-nav__link:hover,
 .wb-nav--over .wb-nav__link--on { box-shadow: inset 0 -2px 0 currentColor; }
 .wb-nav--over :focus-visible { outline-color: var(--wb-color-on-photo); }
+/* Section navigation: the pages of one section, above a page's heading, as one row of nav links that wraps (on a phone
+   onto as many rows as it needs, never sideways). Put it on the list (<ul class="wb-subnav">, each link in an <li>) or
+   on the element whose children are the links. Its links have no inline padding, so the first label, and the first
+   of every wrapped row, starts at the content column, and the current link's underline is as wide as its label. */
+.wb-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--wb-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wb-subnav > li { display: flex; }
+.wb-subnav .wb-nav__link { padding-inline: 0; }
+/* The ring outside the link: inside it, with no padding, it would cut into the label. The row wraps, so nothing clips it. */
+.wb-subnav .wb-nav__link:focus-visible { outline-offset: 2px; }
 /* Narrow screens: logo and call to action on the first row, the links scroll on the second (they wrap on phones). */
 @media (max-width: 47.99rem) {
   .wb-nav { padding-top: var(--wb-space-3); row-gap: var(--wb-space-2); }
@@ -223,14 +241,39 @@ a[href^="tel:"] { white-space: nowrap; }
   background: var(--wb-color-action);
   color: var(--wb-color-on-action);
 }
-.wb-btn--action:hover { background: color-mix(in srgb, var(--wb-color-action) 85%, var(--wb-color-ink)); }
+.wb-btn--action:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-action) 85%, var(--wb-color-ink)); }
 .wb-btn--ghost { border-color: color-mix(in srgb, var(--wb-color-ink-3) 50%, transparent); }
-.wb-btn--ghost:hover { border-color: var(--wb-color-ink-3); }
+.wb-btn--ghost:not(:disabled, [aria-disabled="true"]):hover { border-color: var(--wb-color-ink-3); }
 .wb-btn--accent {
   background: var(--wb-color-accent);
   color: var(--wb-color-on-accent);
 }
-.wb-btn--accent:hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+.wb-btn--accent:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+/* A button that cannot be pressed (a form that is sending or closed) fades and does not answer the pointer. Its text
+   is below 4.5:1 on purpose: WCAG 1.4.3 exempts an inactive control, and the words beside it say why it is off. */
+.wb-btn:disabled,
+.wb-btn[aria-disabled="true"] {
+  opacity: .55;
+  cursor: not-allowed;
+}
+/* A button at work (a form sending): its label stays, and a ring in its text colour turns after it. With reduced
+   motion the ring stands still. */
+.wb-btn--busy::after {
+  content: "";
+  flex: none;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: wb-spin .8s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-btn--busy::after { animation: none; }
+}
+@keyframes wb-spin {
+  to { transform: rotate(1turn); }
+}
 /* A button whose label may wrap (a long migrated label, a document's title): left-aligned lines with room between them. */
 .wb-btn--wrap {
   max-width: 100%;
@@ -469,7 +512,37 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   border: 1px solid var(--wb-color-line);
   border-radius: var(--wb-radius);
   overflow: hidden;
+  font-family: var(--wb-font-sans);
 }
+/* The one place a third-party class appears: Mapbox GL sets Helvetica on its container (.mapboxgl-map, the frame or a
+   child of it), and its popups and controls take it from there, so the map would speak in a second face. Here they take
+   the frame's. */
+.wb-map .mapboxgl-map,
+.wb-map.mapboxgl-map,
+.wb-map .mapboxgl-popup-content,
+.wb-map .mapboxgl-ctrl { font-family: inherit; }
+/* Map marker: a place on the map, a 16px pin in action blue ringed in the ground colour so it reads on any picture,
+   centred in a 44px target (the box around it is clear). A camera's pin is the accent: a camera is alive right now.
+   Name it with aria-label; the map's library positions it. */
+.wb-marker {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.wb-marker::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--wb-color-action);
+  box-shadow: 0 0 0 2px var(--wb-color-bg), var(--wb-shadow);
+}
+.wb-marker--camera::before { background: var(--wb-color-accent); }
 
 /* Stage: the home page's full-height photograph with the headline set on it (spec §4.3, Deep Field). About 820px at
    1440, never taller than the viewport. The text is white in both themes (--wb-color-on-photo) over the scrim, the dark
@@ -489,12 +562,12 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   height: 100%;
   object-fit: cover;
 }
-/* The scrim: a light band under the nav, clear by 20%, then the full scrim by half way down and held to the foot, so the
-   headline's first line is already at 0.5 or more. */
+/* The scrim: a band under the nav, held to 15% so the three rows the nav wraps onto on a phone sit on it, clear by 32%,
+   then the full scrim by 45% and held to the foot, so the headline's first line is at 0.5 or more from 40% down. */
 .wb-stage__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--wb-color-scrim-top) 0%, var(--wb-color-scrim-0) 20%, var(--wb-color-scrim) 50%, var(--wb-color-scrim) 100%);
+  background: linear-gradient(180deg, var(--wb-color-scrim-top) 0%, var(--wb-color-scrim-top) 15%, var(--wb-color-scrim-0) 32%, var(--wb-color-scrim) 45%, var(--wb-color-scrim) 100%);
 }
 .wb-stage__body {
   position: relative;
@@ -599,6 +672,9 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
      on a phone is never cut off at the top; hidden stays as the fallback where clip is unknown. */
   overflow: hidden;
   overflow: clip;
+  /* Its text is what sets its height, so in a grid or flex row its smallest width would follow from its text at one
+     word a line through the 4:5; it takes the width it is given instead. */
+  min-width: 0;
   border-radius: var(--wb-radius);
   color: var(--wb-color-on-photo);
   text-decoration: none;
@@ -614,11 +690,14 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   height: 100%;
   object-fit: cover;
 }
+/* The scrim is full by 40% of the body and held; the first 4rem are padding, so the title starts where the scrim is
+   already at full strength, whatever the photograph is bright with under it. */
 .wb-door__body {
   position: relative;
   width: 100%;
   padding: var(--wb-space-6);
-  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 100%);
+  padding-top: var(--wb-space-8);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 40%, var(--wb-color-scrim) 100%);
 }
 .wb-door__title {
   margin: 0;
@@ -643,6 +722,9 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
      on a phone is never cut off at the top; hidden stays as the fallback where clip is unknown. */
   overflow: hidden;
   overflow: clip;
+  /* Its text is what sets its height, so in a grid or flex row its smallest width would follow from its text at one
+     word a line through the 16:9; it takes the width it is given instead. */
+  min-width: 0;
   border-radius: var(--wb-radius);
   color: var(--wb-color-on-photo);
   text-decoration: none;
@@ -658,11 +740,14 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   height: 100%;
   object-fit: cover;
 }
+/* The scrim is full by 40% of the body and held; the first 4rem are padding, so the title starts where the scrim is
+   already at full strength, whatever the photograph is bright with under it. */
 .wb-feature__body {
   position: relative;
   width: 100%;
   padding: var(--wb-space-6);
-  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 100%);
+  padding-top: var(--wb-space-8);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 40%, var(--wb-color-scrim) 100%);
 }
 .wb-feature__title {
   margin: 0;
@@ -828,6 +913,29 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   border-width: 2px;
   border-color: var(--wb-color-ink);
 }
+/* A file field is its button, the ghost button's look on a smaller corner, then the names of the files it holds: no box
+   around a box. An invalid one is marked on its button, as a control is. */
+.wb-input[type="file"] {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.wb-input[type="file"]::file-selector-button {
+  min-height: 2.75rem;
+  margin-inline-end: var(--wb-space-3);
+  padding: var(--wb-space-2) var(--wb-space-4);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius-sm);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+  font-family: var(--wb-font-sans);
+  font-size: var(--wb-text-base);
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.wb-input[type="file"]::file-selector-button:hover { background: var(--wb-color-panel); }
+.wb-input[type="file"][aria-invalid="true"]::file-selector-button { border: 2px solid var(--wb-color-ink); }
 /* Notice: what a form says after it is sent (sent, closed, failed), on the panel ground with a 1px line. The error
    notice is marked as an invalid control is, with no danger colour: a 2px border in ink, and words that say what to do. */
 .wb-notice {

@@ -19,4 +19,34 @@
   border: 1px solid var(--wb-color-line);
   border-radius: var(--wb-radius);
   overflow: hidden;
+  font-family: var(--wb-font-sans);
 }
+/* The one place a third-party class appears: Mapbox GL sets Helvetica on its container (.mapboxgl-map, the frame or a
+   child of it), and its popups and controls take it from there, so the map would speak in a second face. Here they take
+   the frame's. */
+.wb-map .mapboxgl-map,
+.wb-map.mapboxgl-map,
+.wb-map .mapboxgl-popup-content,
+.wb-map .mapboxgl-ctrl { font-family: inherit; }
+/* Map marker: a place on the map, a 16px pin in action blue ringed in the ground colour so it reads on any picture,
+   centred in a 44px target (the box around it is clear). A camera's pin is the accent: a camera is alive right now.
+   Name it with aria-label; the map's library positions it. */
+.wb-marker {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.wb-marker::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--wb-color-action);
+  box-shadow: 0 0 0 2px var(--wb-color-bg), var(--wb-shadow);
+}
+.wb-marker--camera::before { background: var(--wb-color-accent); }

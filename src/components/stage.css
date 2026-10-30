@@ -16,12 +16,12 @@
   height: 100%;
   object-fit: cover;
 }
-/* The scrim: a light band under the nav, clear by 20%, then the full scrim by half way down and held to the foot, so the
-   headline's first line is already at 0.5 or more. */
+/* The scrim: a band under the nav, held to 15% so the three rows the nav wraps onto on a phone sit on it, clear by 32%,
+   then the full scrim by 45% and held to the foot, so the headline's first line is at 0.5 or more from 40% down. */
 .wb-stage__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--wb-color-scrim-top) 0%, var(--wb-color-scrim-0) 20%, var(--wb-color-scrim) 50%, var(--wb-color-scrim) 100%);
+  background: linear-gradient(180deg, var(--wb-color-scrim-top) 0%, var(--wb-color-scrim-top) 15%, var(--wb-color-scrim-0) 32%, var(--wb-color-scrim) 45%, var(--wb-color-scrim) 100%);
 }
 .wb-stage__body {
   position: relative;
