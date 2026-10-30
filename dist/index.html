@@ -18,8 +18,7 @@
   <style>
     /* Documentation layout only; the components come from components.css. */
     .docs-head { padding-top: var(--wb-space-8); padding-bottom: var(--wb-space-6); background: linear-gradient(180deg, var(--wb-color-tint) 0%, var(--wb-color-bg) 100%); }
-    .docs-head h1 { font-weight: 800; }
-    .docs-lede { max-width: var(--wb-measure); margin-top: var(--wb-space-4); color: var(--wb-color-ink-2); font-size: var(--wb-text-lg); }
+    .docs-lede { margin-top: var(--wb-space-4); }
     .docs-toc { display: flex; flex-wrap: wrap; gap: var(--wb-space-2) var(--wb-space-5); margin: var(--wb-space-5) 0 0; padding: 0; list-style: none; font-weight: 700; }
     .docs-toc a { display: inline-flex; align-items: center; min-height: 2.75rem; }
     code { font-family: inherit; font-size: 0.875em; font-weight: 600; white-space: nowrap; }
@@ -73,10 +72,11 @@
   </style>
 </head>
 <body>
+  <a class="wb-skip" href="#main">Skip to content</a>
   <header class="docs-head">
     <div class="wb-container">
       <h1>Wahoo Bay design system</h1>
-      <p class="docs-lede">Tokens and components for wahoobay.net and the fish-ID app. A white ground, a pale blue wash, one sans-serif and 12px corners. Brand blue is the logo, the large headings and the large numbers, action blue is what you press, and the Seagrass accent means alive right now.</p>
+      <p class="wb-lead docs-lede">Tokens and components for wahoobay.net and the fish-ID app. A white ground, a pale blue wash, one sans-serif and 12px corners. Brand blue is the logo, the large headings and the large numbers, action blue is what you press, and the Seagrass accent means alive right now.</p>
       <ul class="docs-toc" role="list">
         <li><a href="#tokens">Tokens</a></li>
         <li><a href="#light">Components</a></li>
@@ -85,7 +85,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <section class="wb-container docs-section docs-tokens" id="tokens" aria-labelledby="tokens-title">
       <h2 id="tokens-title">Tokens</h2>
       <p class="docs-intro">Every colour and size in the components is one of these custom properties, from <code>tokens.css</code>. Use the names; the values can change.</p>
@@ -414,6 +414,17 @@
       <div class="wb-container">
         <h2 id="light-title">Components</h2>
         <p class="docs-intro">On the light ground, which is every page except the live cameras. The navigation bar above and the footer below are components too.</p>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Lead and hidden text</h3>
+          <p>A lead paragraph opens a page under its heading. Words only a screen reader needs go in <code>wb-sr-only</code>, and every page starts with a <code>wb-skip</code> link that appears when Tab reaches it.</p>
+        </div>
+        <div>
+          <p class="wb-lead">Wahoo Bay is a public marine education park at the Hillsboro Inlet, inspiring ocean literacy through hands-on learning, immersive field experiences, and community conservation.</p>
+          <p class="docs-note">A screen reader hears one more sentence here than the page shows.<span class="wb-sr-only"> This is it: text in wb-sr-only is read aloud and never drawn.</span> Press Tab from the top of the page to see the skip link.</p>
+        </div>
+      </div>
 
       <div class="docs-specimen">
         <div>
@@ -834,6 +845,17 @@
       <div class="wb-container">
         <h2 id="dark-title">The dark theme</h2>
         <p class="docs-intro">The same components on the dark ground of the live-camera pages. Nothing is redrawn: only the tokens change, and the logo turns white.</p>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Lead and hidden text</h3>
+          <p>A lead paragraph opens a page under its heading. Words only a screen reader needs go in <code>wb-sr-only</code>, and every page starts with a <code>wb-skip</code> link that appears when Tab reaches it.</p>
+        </div>
+        <div>
+          <p class="wb-lead">Wahoo Bay is a public marine education park at the Hillsboro Inlet, inspiring ocean literacy through hands-on learning, immersive field experiences, and community conservation.</p>
+          <p class="docs-note">A screen reader hears one more sentence here than the page shows.<span class="wb-sr-only"> This is it: text in wb-sr-only is read aloud and never drawn.</span> Press Tab from the top of the page to see the skip link.</p>
+        </div>
+      </div>
 
       <div class="docs-specimen">
         <div>

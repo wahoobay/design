@@ -13,6 +13,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: The tag matches package.json
+        run: |
+          version="v$(node -p "require('./package.json').version")"
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version."
+            exit 1
+          fi
       - run: npm ci
       - run: npm run build
       - run: npm test

@@ -18,6 +18,7 @@ const CLASSES = [
   'wb-detect', 'wb-detect__label',
   'wb-field', 'wb-label', 'wb-input', 'wb-select', 'wb-textarea', 'wb-help', 'wb-error',
   'wb-footer',
+  'wb-lead', 'wb-sr-only',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
@@ -166,3 +167,46 @@ test('detector waivers appear only where the spec overrides the detector: brand 
   for (const w of waivers) assert.ok(['wb-tile__v low-contrast', 'wb-live pulsing-dot'].includes(w), w);
   assert.doesNotMatch(raw, /impeccable-disable/, 'no file-wide or line waivers');
 });
+
+const rule = (css, sel) => css.find((r) => r.selector.replace(/\s+/g, ' ') === sel);
+
+test('headings stay ink: h1 and h2 at weight 800, h3 and h4 at 700, and no base rule colours a heading (spec §4.3)', () => {
+  const css = rules(read('dist/components.css'));
+  assert.match(rule(css, 'h1, h2')?.body ?? '', /font-weight:\s*800/, 'h1, h2');
+  assert.match(rule(css, 'h3, h4')?.body ?? '', /font-weight:\s*700/, 'h3, h4');
+  for (const r of css.filter((r) => /^h[1-4](, h[1-4])*$/.test(r.selector.replace(/\s+/g, ' '))))
+    assert.doesNotMatch(r.body, /(^|[;\s])color:/, r.selector);
+});
+
+test('the reset sets address upright', () => {
+  assert.match(rule(rules(read('dist/components.css')), 'address')?.body ?? '', /font-style:\s*normal/);
+});
+
+test('.wb-lead is the large paragraph in secondary ink at the reading measure', () => {
+  const body = rule(rules(read('dist/components.css')), '.wb-lead')?.body ?? '';
+  assert.match(body, /font-size:\s*var\(--wb-text-lg\)/);
+  assert.match(body, /color:\s*var\(--wb-color-ink-2\)/);
+  assert.match(body, /max-width:\s*var\(--wb-measure\)/);
+});
+
+test('.wb-sr-only is the visually-hidden rule, and .wb-skip uses it until it has focus', () => {
+  const body = rule(rules(read('dist/components.css')), '.wb-sr-only, .wb-skip:not(:focus)')?.body ?? '';
+  for (const d of [/position:\s*absolute/, /width:\s*1px/, /height:\s*1px/, /overflow:\s*hidden/, /clip:\s*rect\(0 0 0 0\)/, /clip-path:\s*inset\(50%\)/, /white-space:\s*nowrap/])
+    assert.match(body, d, String(d));
+  assert.doesNotMatch(body, /display:\s*none|visibility:\s*hidden/, 'still read by screen readers');
+});
+
+test('.wb-skip, with focus, is fixed at the top left in the action colours and 44px tall', () => {
+  const body = rule(rules(read('dist/components.css')), '.wb-skip')?.body ?? '';
+  for (const d of [/position:\s*fixed/, /top:\s*var\(--wb-space-3\)/, /left:\s*var\(--wb-space-3\)/, /z-index:/, /min-height:\s*2\.75rem/,
+    /background:\s*var\(--wb-color-action\)/, /color:\s*var\(--wb-color-on-action\)/])
+    assert.match(body, d, String(d));
+});
+
+test('index.html starts with a skip link to <main id="main"> and shows a lead and screen-reader-only text', () => {
+  const html = read('dist/index.html');
+  assert.match(html, /<body>\s*<a class="wb-skip" href="#main">Skip to content<\/a>/);
+  assert.match(html, /<main id="main">/);
+  assert.match(html, /<span class="wb-sr-only">[^<]{10,}<\/span>/);
+});
+
