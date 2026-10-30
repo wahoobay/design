@@ -311,3 +311,25 @@ test('every file in src/components/ is in components.css', () => {
   assert.ok(files.length > 0);
   for (const f of files) assert.ok(css.includes(read(`src/components/${f}`)), `${f} is missing from dist/components.css`);
 });
+
+// 0.1.3: photos in running text were square while every card, panel and tile around them had 12px corners
+// (Dan's staging review, 2026-10-30).
+test('a photo, video or embed in .wb-prose has the 12px corners; a component\'s own corners still win inside prose', () => {
+  const css = rules(read('dist/components.css'));
+  const at = css.findIndex((r) => r.selector.replace(/\s+/g, ' ') === '.wb-prose :where(img, video, iframe)');
+  assert.ok(at >= 0, '.wb-prose :where(img, video, iframe)');
+  assert.match(css[at].body, /border-radius:\s*var\(--wb-radius\)\s*;/);
+  // :where() keeps the rule at one class, so a card's photo (.wb-card__media, 8px, later in the file) keeps its corners.
+  const media = css.findIndex((r) => r.selector === '.wb-card__media');
+  assert.ok(media > at, 'the card media rule comes after the prose rule');
+});
+
+test('index.html shows a photo in a paragraph and a captioned figure in running text, in both themes', () => {
+  const html = read('dist/index.html');
+  const at = html.indexOf('<section data-theme="dark"');
+  for (const [theme, part] of [['light', html.slice(0, at)], ['dark', html.slice(at)]]) {
+    const prose = part.match(/<div class="wb-prose[^"]*">([\s\S]*?)<\/div>/)?.[1] ?? '';
+    assert.match(prose, /<p><img\b[^>]*\balt="[^"]+"[^>]*><\/p>/, `${theme}: a photo in a paragraph, as Markdown writes it`);
+    assert.match(prose, /<figure>\s*<img\b[^>]*\balt="[^"]+"[^>]*>\s*<figcaption class="wb-caption">[^<]+<\/figcaption>\s*<\/figure>/, `${theme}: a figure with its caption`);
+  }
+});

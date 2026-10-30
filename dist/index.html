@@ -72,6 +72,7 @@
     .docs-logos { display: grid; grid-template-columns: repeat(2, minmax(0, 12rem)); gap: var(--wb-space-3); margin: 0; padding: 0; list-style: none; }
     .docs-figure img { display: block; width: 100%; border-radius: var(--wb-radius-sm); }
     .docs-figure figcaption { margin-top: var(--wb-space-2); }
+    .docs-prose figcaption { margin-top: var(--wb-space-2); }
     .docs-post { align-items: start; max-width: 16rem; }
     .docs-post a { display: grid; gap: var(--wb-space-2); width: 100%; }
     .docs-post img { width: 100%; aspect-ratio: 1; }
@@ -882,6 +883,21 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Photos in running text</h3>
+          <p>A photo, video or embed in <code>wb-prose</code>, the Markdown body of a page, has the 12px corners of the cards and panels around it, whether it stands in a paragraph or in a figure with its caption. A component inside prose keeps its own corners.</p>
+        </div>
+        <div class="wb-prose docs-prose">
+          <p>Wahoo Bay sits within the Hillsboro Inlet at Roy L. Rogers Family Park.</p>
+          <p><img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet"></p>
+          <figure>
+            <img src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <figcaption class="wb-caption">A manatee came in with the tide, under the dock by the seawall.</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Chart</h3>
           <p>The frame and legend. Brand blue is the first series and the accent the second: mark them <code>data-series="1"</code> and <code>data-series="2"</code>.</p>
         </div>
@@ -1656,6 +1672,21 @@
           <div class="wb-card docs-post">
             <a class="wb-caption" href="#"><img class="wb-card__media" src="./media/manatee.jpg" width="640" height="427" alt=""><span>A manatee came in with the tide this morning, under the dock by the seawall.</span></a>
           </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Photos in running text</h3>
+          <p>A photo, video or embed in <code>wb-prose</code>, the Markdown body of a page, has the 12px corners of the cards and panels around it, whether it stands in a paragraph or in a figure with its caption. A component inside prose keeps its own corners.</p>
+        </div>
+        <div class="wb-prose docs-prose">
+          <p>Wahoo Bay sits within the Hillsboro Inlet at Roy L. Rogers Family Park.</p>
+          <p><img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet"></p>
+          <figure>
+            <img src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <figcaption class="wb-caption">A manatee came in with the tide, under the dock by the seawall.</figcaption>
+          </figure>
         </div>
       </div>
 

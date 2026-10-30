@@ -35,6 +35,9 @@ a {
 .wb-prose > * + * { margin-block-start: var(--wb-space-4); }
 .wb-prose > * + :is(h1, h2, h3, h4) { margin-block-start: var(--wb-space-7); }
 .wb-prose > :is(h1, h2, h3, h4) + * { margin-block-start: var(--wb-space-3); }
+/* A photo, video or embed in running text has the 12px corners of the cards and panels around it. :where() keeps the
+   rule at one class, so a component inside prose keeps its own corners (a card's photo, 8px). */
+.wb-prose :where(img, video, iframe) { border-radius: var(--wb-radius); }
 /* A lead paragraph: the larger, softer first paragraph under a page's heading. */
 .wb-lead {
   max-width: var(--wb-measure);
