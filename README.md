@@ -10,6 +10,8 @@ Everything consumers use is in `dist/` (committed, because consumers install fro
 - `fonts.css` - the `@font-face` rules.
 - `components.css` - component styles built on the tokens.
 - `logo/` - `wahoobay-logo.svg` and `wahoobay-mark.svg`, drawn in `currentColor`.
+- `index.html` - the documentation page, showing the tokens and components.
+- `media/` - the photos the documentation page uses.
 
 ## Consuming it
 
@@ -33,13 +35,25 @@ Logos are available as `@wahoobay/design/logo/wahoobay-logo.svg`. The site and t
 npm ci
 npm run build   # regenerates dist/ from brand/ and src
 npm test
+npm run check   # the Impeccable detector on dist/index.html
 ```
 
 CI rebuilds and fails if the committed `dist/` differs, so always commit the rebuilt `dist/`. Node 22 or later.
 
 ## Releasing
 
-Releases are tagged from `main` after CI passes; the release procedure is added in a later task.
+Releases are tagged from `main` after CI passes.
+
+1. Add an entry for the new version at the top of `CHANGELOG.md`, rebuild, and merge to `main`.
+2. Tag the `main` head and push the tag:
+
+   ```
+   git tag vX.Y.Z
+   git push origin vX.Y.Z
+   ```
+
+3. The `release` workflow runs on the tag: it builds, tests, runs the detector, checks that the committed `dist/` is current, then creates a GitHub Release with `wahoobay-design-vX.Y.Z.zip` (all of `dist/`) and `tokens.css`, `components.css` and `fonts.css` as separate assets, with generated notes.
+4. A consumer upgrades by changing the tag in its pin, for example `"@wahoobay/design": "github:wahoobay/design#vX.Y.Z"`, and reinstalling.
 
 ## The mockups
 
