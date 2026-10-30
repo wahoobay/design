@@ -30,3 +30,18 @@
   color: var(--wb-color-on-accent);
 }
 .wb-btn--accent:hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+/* A button whose label may wrap (a long migrated label, a document's title): left-aligned lines with room between them. */
+.wb-btn--wrap {
+  max-width: 100%;
+  height: auto;
+  white-space: normal;
+  line-height: 1.35;
+  text-align: start;
+}
+/* The small label after a button's text that says what it opens ("PDF", "Website"), at the end of the button. */
+.wb-btn__meta {
+  margin-inline-start: auto;
+  font-size: var(--wb-text-sm);
+  font-weight: 500;
+}
+.wb-btn--ghost .wb-btn__meta { color: var(--wb-color-ink-3); }

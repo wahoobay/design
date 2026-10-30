@@ -33,3 +33,35 @@
   letter-spacing: 0;
 }
 .wb-tile--accent .wb-tile__v { color: var(--wb-color-accent-text); }
+/* Logo tile: a partner's logo, contained, on the ground colour with a 1px line; a linked tile turns panel on hover
+   and focus. A logo drawn in white goes on the dark tile, never recoloured. */
+.wb-logo-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 7rem;
+  padding: var(--wb-space-3);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-bg);
+}
+a.wb-logo-tile:is(:hover, :focus-visible) { background: var(--wb-color-panel); }
+.wb-logo-tile :is(img, svg) {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 5rem;
+  object-fit: contain;
+}
+.wb-logo-tile--dark {
+  border-color: var(--wb-color-ink);
+  background: var(--wb-color-ink);
+  color: var(--wb-color-bg);
+}
+a.wb-logo-tile--dark:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--wb-color-ink) 85%, var(--wb-color-bg)); }
+/* A logo is drawn for its ground, not for the theme: on the dark theme the plain tile stays light and the dark tile dark. */
+[data-theme="dark"] .wb-logo-tile { border-color: var(--wb-color-ink); background: var(--wb-color-ink); }
+[data-theme="dark"] a.wb-logo-tile:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--wb-color-ink) 85%, var(--wb-color-bg)); }
+[data-theme="dark"] .wb-logo-tile--dark { border-color: var(--wb-color-line); background: var(--wb-color-bg); color: var(--wb-color-ink); }
+[data-theme="dark"] a.wb-logo-tile--dark:is(:hover, :focus-visible) { background: var(--wb-color-panel); }

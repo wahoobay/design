@@ -41,6 +41,19 @@ a {
   color: var(--wb-color-ink-2);
   font-size: var(--wb-text-lg);
 }
+/* A caption: under a photo, or the text of a link to a post or a document (its kind, its caption). A caption that is
+   a link is underlined on hover and focus only, so a block of caption text does not read as a wall of underline. */
+.wb-caption {
+  color: var(--wb-color-ink-2);
+  font-size: var(--wb-text-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+a.wb-caption { text-decoration: none; }
+a.wb-caption:is(:hover, :focus-visible) { text-decoration: underline; }
+/* A phone number never breaks at its hyphens. */
+a[href^="tel:"] { white-space: nowrap; }
 /* Text for screen readers only: read aloud, never drawn. The skip link uses the same rule until it has focus. */
 .wb-sr-only,
 .wb-skip:not(:focus) {

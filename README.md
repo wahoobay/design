@@ -10,6 +10,7 @@ Everything consumers use is in `dist/` (committed, because consumers install fro
 - `fonts.css` - the `@font-face` rules.
 - `components.css` - component styles built on the tokens.
 - `logo/` - `wahoobay-logo.svg` and `wahoobay-mark.svg`, drawn in `currentColor`.
+- `icons/` - the icon set (`arrow-left.svg`, `arrow-right.svg`, `external.svg`): 24px grid, one 2px stroke in `currentColor`. Each file carries `class="wb-icon" aria-hidden="true" focusable="false"`, so inline it as it is, next to the words that name the control.
 - `index.html` - the documentation page, showing the tokens and components.
 - `media/` - the photos the documentation page uses.
 
@@ -27,13 +28,13 @@ npm install github:wahoobay/design#v1.0.0
 @import '@wahoobay/design/components.css';
 ```
 
-Logos are available as `@wahoobay/design/logo/wahoobay-logo.svg`. The site and the fish-ID app each pin their own tag and upgrade deliberately.
+Logos are available as `@wahoobay/design/logo/wahoobay-logo.svg` and icons as `@wahoobay/design/icons/arrow-left.svg` (in Astro or Vite, `import arrowLeft from '@wahoobay/design/icons/arrow-left.svg?raw'` inlines it at build time). The site and the fish-ID app each pin their own tag and upgrade deliberately.
 
 ## Developing
 
 ```
 npm ci
-npm run build   # regenerates dist/ from brand/ and src
+npm run build   # regenerates dist/ from brand/, icons/ and src
 npm test
 npm run check   # the Impeccable detector on dist/index.html
 ```

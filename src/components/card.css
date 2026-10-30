@@ -32,3 +32,30 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   font-weight: 700;
   letter-spacing: 0;
 }
+/* Raised: the soft blue-tinted shadow, for a card over a photograph. Cards on the white page stay flat. */
+.wb-card--raised { box-shadow: var(--wb-shadow); }
+/* Initials: a person's no-photo fallback, in the photo's place. A square as wide as its parent. */
+.wb-initials {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--wb-radius-sm);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-2xl);
+  font-weight: 800;
+}
+/* Video frame: an embedded player in a 16:9 box with 12px corners; the player fills it, borderless. */
+.wb-video {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--wb-radius);
+}
+.wb-video > :is(iframe, video, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}

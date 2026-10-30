@@ -1,0 +1,8 @@
+/* Icons: one SVG set (dist/icons/), 24px grid, one 2px stroke in currentColor. Inline the file: it carries
+   class="wb-icon" aria-hidden="true" focusable="false", so the text beside it names the control. */
+.wb-icon {
+  width: 1em;
+  height: 1em;
+  flex: none;
+  vertical-align: -0.125em;
+}

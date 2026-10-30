@@ -59,6 +59,29 @@
     .docs-shape { display: flex; flex-wrap: wrap; gap: var(--wb-space-5); margin: var(--wb-space-4) 0 0; padding: 0; list-style: none; }
     .docs-shape li { display: grid; gap: var(--wb-space-2); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
     .docs-shape span { display: block; width: 7rem; height: 4.5rem; background: var(--wb-color-tint); }
+    .docs-icons { gap: var(--wb-space-3) var(--wb-space-6); }
+    .docs-icons li { display: inline-flex; align-items: center; gap: var(--wb-space-2); }
+    .docs-icons .wb-icon { font-size: 1.5rem; }
+    .docs-page { margin-top: var(--wb-space-6); }
+    .docs-page h4 { font-size: var(--wb-text-3xl); font-weight: 800; letter-spacing: -0.025em; }
+    .docs-page h4 + p { margin-top: var(--wb-space-3); }
+    .docs-buttons { display: grid; justify-items: start; gap: var(--wb-space-3); max-width: 22rem; margin: 0; padding: 0; list-style: none; }
+    .docs-avatar { flex: 0 0 6rem; width: 6rem; }
+    img.docs-avatar { height: 6rem; }
+    .docs-person { align-items: start; }
+    .docs-logos { display: grid; grid-template-columns: repeat(2, minmax(0, 12rem)); gap: var(--wb-space-3); margin: 0; padding: 0; list-style: none; }
+    .docs-figure img { display: block; width: 100%; border-radius: var(--wb-radius-sm); }
+    .docs-figure figcaption { margin-top: var(--wb-space-2); }
+    .docs-post { align-items: start; max-width: 16rem; }
+    .docs-post a { display: grid; gap: var(--wb-space-2); width: 100%; }
+    .docs-post img { width: 100%; aspect-ratio: 1; }
+    .docs-raised { display: grid; gap: var(--wb-space-5); }
+    .docs-over { display: grid; max-width: 40rem; }
+    .docs-over > * { grid-area: 1 / 1; }
+    .docs-over > img { display: block; width: 100%; border-radius: var(--wb-radius); }
+    .docs-over > .wb-panel { align-self: end; max-width: 22rem; margin: var(--wb-space-4); }
+    .docs-over .wb-panel__title { margin-bottom: var(--wb-space-2); }
+    .docs-video-frame { max-width: 40rem; }
     .docs-tokens h3 { margin-top: var(--wb-space-7); }
     .docs-tokens h3 + .docs-intro { margin-top: var(--wb-space-2); }
     @media (min-width: 48rem) {
@@ -190,6 +213,25 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Icons and the back link</h3>
+          <p>One SVG set in <code>icons/</code>, drawn with one 2px stroke in the text colour. Inline the file: it is already marked decorative, so the words beside it name the link. The back link leads up to the page a page belongs to, with the gap above the heading larger than the one below it.</p>
+        </div>
+        <div>
+          <ul class="docs-row docs-icons" role="list">
+            <li><!-- @wb-icon arrow-left --><code>arrow-left</code></li>
+            <li><!-- @wb-icon arrow-right --><code>arrow-right</code></li>
+            <li><!-- @wb-icon external --><code>external</code></li>
+          </ul>
+          <div class="docs-page">
+            <a class="wb-back" href="#"><!-- @wb-icon arrow-left --> Educational resources</a>
+            <h4>Coral reefs</h4>
+            <p>For: Educators, Fourth grade</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Buttons</h3>
           <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
         </div>
@@ -201,6 +243,19 @@
             <button class="wb-btn wb-btn--action docs-focus" type="button">Send sighting</button>
           </div>
           <p class="docs-note">The last button is drawn as keyboard focus draws it: the ring comes from <code>base.css</code>, 2px of <code>--wb-color-focus</code> set 2px clear of the button. Press Tab to see it on the others.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Document buttons</h3>
+          <p>A button with a long label wraps instead of running off a narrow screen (<code>wb-btn--wrap</code>). What it opens goes last, in <code>wb-btn__meta</code>: muted on a ghost button, in the button's own colour on a filled one. The first document is the action; the rest are ghosts.</p>
+        </div>
+        <div>
+          <ul class="docs-buttons" role="list">
+            <li><a class="wb-btn wb-btn--action wb-btn--wrap" href="#">Microplastic beach protocol, the field sheet for the north transect <span class="wb-btn__meta">PDF</span></a></li>
+            <li><a class="wb-btn wb-btn--ghost wb-btn--wrap" href="#">Sampling for microplastics, the teacher's guide with the answer key <span class="wb-btn__meta">Slides</span></a></li>
+          </ul>
         </div>
       </div>
 
@@ -250,6 +305,19 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Logo tiles</h3>
+          <p>A partner's logo, contained, on the ground colour; a linked tile turns panel under the pointer. A logo drawn in white goes on the dark tile, <code>wb-logo-tile--dark</code>, never recoloured.</p>
+        </div>
+        <div>
+          <ul class="docs-logos" role="list">
+            <li><a class="wb-logo-tile" href="#"><img src="./logo/wahoobay-logo.svg" width="8642" height="2597" alt="Wahoo Bay"></a></li>
+            <li><a class="wb-logo-tile wb-logo-tile--dark" href="#"><!-- @wb-logo --></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Panel</h3>
           <p>Groups related readings under one small title, on the panel ground.</p>
         </div>
@@ -268,6 +336,26 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Raised panel and card</h3>
+          <p>The soft blue-tinted shadow, <code>--wb-shadow</code>, is for a surface over a photograph: add <code>wb-panel--raised</code> or <code>wb-card--raised</code>. Panels and cards on the white page stay flat.</p>
+        </div>
+        <div class="docs-raised">
+          <div class="docs-over">
+            <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <div class="wb-panel wb-panel--raised">
+              <h4 class="wb-panel__title">Over a photograph</h4>
+              <p>Open sunrise to sunset, free, at the Hillsboro Inlet.</p>
+            </div>
+          </div>
+          <a class="wb-card wb-card--raised" href="#">
+            <img class="wb-card__media" src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <div class="wb-card__body"><h4>Why the manatees come in winter</h4><p>Learn · 4 min read</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Cards</h3>
           <p>A way into another page. Image beside the text where the card is wide enough, above it where it is not.</p>
         </div>
@@ -280,6 +368,39 @@
             <img class="wb-card__media" src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
             <div class="wb-card__body"><h4>Visit the park this weekend</h4><p>Open sunrise to sunset · free</p></div>
           </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Initials</h3>
+          <p>A person without a photo: their initials hold the photo's square, sized by the box around them.</p>
+        </div>
+        <div class="docs-cards">
+          <div class="wb-card docs-person">
+            <img class="wb-card__media docs-avatar" src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <div class="wb-card__body"><h4>With a photo</h4><p>The photo fills the square.</p></div>
+          </div>
+          <div class="wb-card docs-person">
+            <div class="docs-avatar"><span class="wb-initials" aria-hidden="true">SO</span></div>
+            <div class="wb-card__body"><h4>Sam Ortega</h4><p>Without one, the initials hold its place.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Captions</h3>
+          <p>Small, in secondary ink: under a photo, or the text of a link to a post. A caption link is underlined only on hover and focus.</p>
+        </div>
+        <div class="docs-cards">
+          <figure class="docs-figure">
+            <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <figcaption class="wb-caption">The park from the air, with the inlet and the pier.</figcaption>
+          </figure>
+          <div class="wb-card docs-post">
+            <a class="wb-caption" href="#"><img class="wb-card__media" src="./media/manatee.jpg" width="640" height="427" alt=""><span>A manatee came in with the tide this morning, under the dock by the seawall.</span></a>
+          </div>
         </div>
       </div>
 
@@ -312,6 +433,18 @@
             <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Video frame</h3>
+          <p>An embedded player in a 16:9 box with the panel's corners; the player fills it, borderless.</p>
+        </div>
+        <div>
+          <div class="wb-video docs-video-frame">
+            <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
           </div>
         </div>
       </div>
@@ -383,6 +516,25 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Icons and the back link</h3>
+          <p>One SVG set in <code>icons/</code>, drawn with one 2px stroke in the text colour. Inline the file: it is already marked decorative, so the words beside it name the link. The back link leads up to the page a page belongs to, with the gap above the heading larger than the one below it.</p>
+        </div>
+        <div>
+          <ul class="docs-row docs-icons" role="list">
+            <li><!-- @wb-icon arrow-left --><code>arrow-left</code></li>
+            <li><!-- @wb-icon arrow-right --><code>arrow-right</code></li>
+            <li><!-- @wb-icon external --><code>external</code></li>
+          </ul>
+          <div class="docs-page">
+            <a class="wb-back" href="#"><!-- @wb-icon arrow-left --> Educational resources</a>
+            <h4>Coral reefs</h4>
+            <p>For: Educators, Fourth grade</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Buttons</h3>
           <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
         </div>
@@ -394,6 +546,19 @@
             <button class="wb-btn wb-btn--action docs-focus" type="button">Send sighting</button>
           </div>
           <p class="docs-note">The last button is drawn as keyboard focus draws it: the ring comes from <code>base.css</code>, 2px of <code>--wb-color-focus</code> set 2px clear of the button. Press Tab to see it on the others.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Document buttons</h3>
+          <p>A button with a long label wraps instead of running off a narrow screen (<code>wb-btn--wrap</code>). What it opens goes last, in <code>wb-btn__meta</code>: muted on a ghost button, in the button's own colour on a filled one. The first document is the action; the rest are ghosts.</p>
+        </div>
+        <div>
+          <ul class="docs-buttons" role="list">
+            <li><a class="wb-btn wb-btn--action wb-btn--wrap" href="#">Microplastic beach protocol, the field sheet for the north transect <span class="wb-btn__meta">PDF</span></a></li>
+            <li><a class="wb-btn wb-btn--ghost wb-btn--wrap" href="#">Sampling for microplastics, the teacher's guide with the answer key <span class="wb-btn__meta">Slides</span></a></li>
+          </ul>
         </div>
       </div>
 
@@ -443,6 +608,19 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Logo tiles</h3>
+          <p>A partner's logo, contained, on the ground colour; a linked tile turns panel under the pointer. A logo drawn in white goes on the dark tile, <code>wb-logo-tile--dark</code>, never recoloured.</p>
+        </div>
+        <div>
+          <ul class="docs-logos" role="list">
+            <li><a class="wb-logo-tile" href="#"><img src="./logo/wahoobay-logo.svg" width="8642" height="2597" alt="Wahoo Bay"></a></li>
+            <li><a class="wb-logo-tile wb-logo-tile--dark" href="#"><!-- @wb-logo --></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Panel</h3>
           <p>Groups related readings under one small title, on the panel ground.</p>
         </div>
@@ -461,6 +639,26 @@
 
       <div class="docs-specimen">
         <div>
+          <h3>Raised panel and card</h3>
+          <p>The soft blue-tinted shadow, <code>--wb-shadow</code>, is for a surface over a photograph: add <code>wb-panel--raised</code> or <code>wb-card--raised</code>. Panels and cards on the white page stay flat.</p>
+        </div>
+        <div class="docs-raised">
+          <div class="docs-over">
+            <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <div class="wb-panel wb-panel--raised">
+              <h4 class="wb-panel__title">Over a photograph</h4>
+              <p>Open sunrise to sunset, free, at the Hillsboro Inlet.</p>
+            </div>
+          </div>
+          <a class="wb-card wb-card--raised" href="#">
+            <img class="wb-card__media" src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <div class="wb-card__body"><h4>Why the manatees come in winter</h4><p>Learn · 4 min read</p></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
           <h3>Cards</h3>
           <p>A way into another page. Image beside the text where the card is wide enough, above it where it is not.</p>
         </div>
@@ -473,6 +671,39 @@
             <img class="wb-card__media" src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
             <div class="wb-card__body"><h4>Visit the park this weekend</h4><p>Open sunrise to sunset · free</p></div>
           </a>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Initials</h3>
+          <p>A person without a photo: their initials hold the photo's square, sized by the box around them.</p>
+        </div>
+        <div class="docs-cards">
+          <div class="wb-card docs-person">
+            <img class="wb-card__media docs-avatar" src="./media/manatee.jpg" width="640" height="427" alt="A manatee over the sand in green water">
+            <div class="wb-card__body"><h4>With a photo</h4><p>The photo fills the square.</p></div>
+          </div>
+          <div class="wb-card docs-person">
+            <div class="docs-avatar"><span class="wb-initials" aria-hidden="true">SO</span></div>
+            <div class="wb-card__body"><h4>Sam Ortega</h4><p>Without one, the initials hold its place.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Captions</h3>
+          <p>Small, in secondary ink: under a photo, or the text of a link to a post. A caption link is underlined only on hover and focus.</p>
+        </div>
+        <div class="docs-cards">
+          <figure class="docs-figure">
+            <img src="./media/park.jpg" width="640" height="360" alt="The park from the air: palms, the seawall and the pier on the inlet">
+            <figcaption class="wb-caption">The park from the air, with the inlet and the pier.</figcaption>
+          </figure>
+          <div class="wb-card docs-post">
+            <a class="wb-caption" href="#"><img class="wb-card__media" src="./media/manatee.jpg" width="640" height="427" alt=""><span>A manatee came in with the tide this morning, under the dock by the seawall.</span></a>
+          </div>
         </div>
       </div>
 
@@ -505,6 +736,18 @@
             <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Video frame</h3>
+          <p>An embedded player in a 16:9 box with the panel's corners; the player fills it, borderless.</p>
+        </div>
+        <div>
+          <div class="wb-video docs-video-frame">
+            <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
           </div>
         </div>
       </div>

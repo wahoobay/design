@@ -42,6 +42,19 @@ a {
   color: var(--wb-color-ink-2);
   font-size: var(--wb-text-lg);
 }
+/* A caption: under a photo, or the text of a link to a post or a document (its kind, its caption). A caption that is
+   a link is underlined on hover and focus only, so a block of caption text does not read as a wall of underline. */
+.wb-caption {
+  color: var(--wb-color-ink-2);
+  font-size: var(--wb-text-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+a.wb-caption { text-decoration: none; }
+a.wb-caption:is(:hover, :focus-visible) { text-decoration: underline; }
+/* A phone number never breaks at its hyphens. */
+a[href^="tel:"] { white-space: nowrap; }
 /* Text for screen readers only: read aloud, never drawn. The skip link uses the same rule until it has focus. */
 .wb-sr-only,
 .wb-skip:not(:focus) {
@@ -138,6 +151,26 @@ a {
   }
   .wb-nav__cta { margin-left: auto; }
 }
+/* Back link: the way up to the page a page belongs to, above its heading. The arrow (icons/arrow-left.svg) comes
+   before the text; the gap under it is the prose rhythm's gap above a heading, so the h1 does not read as its subtitle. */
+.wb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wb-space-1);
+  margin-block-end: var(--wb-space-7);
+  color: var(--wb-color-action);
+  text-decoration: none;
+}
+.wb-back:is(:hover, :focus-visible) { text-decoration: underline; }
+
+/* Icons: one SVG set (dist/icons/), 24px grid, one 2px stroke in currentColor. Inline the file: it carries
+   class="wb-icon" aria-hidden="true" focusable="false", so the text beside it names the control. */
+.wb-icon {
+  width: 1em;
+  height: 1em;
+  flex: none;
+  vertical-align: -0.125em;
+}
 
 /* Buttons: action is the primary action, ghost the secondary, accent is Donate only. */
 .wb-btn {
@@ -171,6 +204,21 @@ a {
   color: var(--wb-color-on-accent);
 }
 .wb-btn--accent:hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+/* A button whose label may wrap (a long migrated label, a document's title): left-aligned lines with room between them. */
+.wb-btn--wrap {
+  max-width: 100%;
+  height: auto;
+  white-space: normal;
+  line-height: 1.35;
+  text-align: start;
+}
+/* The small label after a button's text that says what it opens ("PDF", "Website"), at the end of the button. */
+.wb-btn__meta {
+  margin-inline-start: auto;
+  font-size: var(--wb-text-sm);
+  font-weight: 500;
+}
+.wb-btn--ghost .wb-btn__meta { color: var(--wb-color-ink-3); }
 
 /* Live badge: the stream is on right now. */
 .wb-live {
@@ -259,6 +307,38 @@ a {
   letter-spacing: 0;
 }
 .wb-tile--accent .wb-tile__v { color: var(--wb-color-accent-text); }
+/* Logo tile: a partner's logo, contained, on the ground colour with a 1px line; a linked tile turns panel on hover
+   and focus. A logo drawn in white goes on the dark tile, never recoloured. */
+.wb-logo-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 7rem;
+  padding: var(--wb-space-3);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-bg);
+}
+a.wb-logo-tile:is(:hover, :focus-visible) { background: var(--wb-color-panel); }
+.wb-logo-tile :is(img, svg) {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 5rem;
+  object-fit: contain;
+}
+.wb-logo-tile--dark {
+  border-color: var(--wb-color-ink);
+  background: var(--wb-color-ink);
+  color: var(--wb-color-bg);
+}
+a.wb-logo-tile--dark:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--wb-color-ink) 85%, var(--wb-color-bg)); }
+/* A logo is drawn for its ground, not for the theme: on the dark theme the plain tile stays light and the dark tile dark. */
+[data-theme="dark"] .wb-logo-tile { border-color: var(--wb-color-ink); background: var(--wb-color-ink); }
+[data-theme="dark"] a.wb-logo-tile:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--wb-color-ink) 85%, var(--wb-color-bg)); }
+[data-theme="dark"] .wb-logo-tile--dark { border-color: var(--wb-color-line); background: var(--wb-color-bg); color: var(--wb-color-ink); }
+[data-theme="dark"] a.wb-logo-tile--dark:is(:hover, :focus-visible) { background: var(--wb-color-panel); }
 
 /* Panel: a pale-blue ground grouping related content under one small title. */
 .wb-panel {
@@ -276,6 +356,8 @@ a {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+/* Raised: the soft blue-tinted shadow, for a panel over a photograph. Panels on the white page stay flat. */
+.wb-panel--raised { box-shadow: var(--wb-shadow); }
 
 /* Card with image: side by side where there is room, image above the text where there is not. */
 .wb-card {
@@ -310,6 +392,33 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   font-size: var(--wb-text-base);
   font-weight: 700;
   letter-spacing: 0;
+}
+/* Raised: the soft blue-tinted shadow, for a card over a photograph. Cards on the white page stay flat. */
+.wb-card--raised { box-shadow: var(--wb-shadow); }
+/* Initials: a person's no-photo fallback, in the photo's place. A square as wide as its parent. */
+.wb-initials {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--wb-radius-sm);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-2xl);
+  font-weight: 800;
+}
+/* Video frame: an embedded player in a 16:9 box with 12px corners; the player fills it, borderless. */
+.wb-video {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--wb-radius);
+}
+.wb-video > :is(iframe, video, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
 }
 
 /* Chart frame with legend. Series are marked data-series="1" (brand blue) and data-series="2" (the accent). */

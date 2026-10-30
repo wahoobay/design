@@ -62,3 +62,14 @@
   }
   .wb-nav__cta { margin-left: auto; }
 }
+/* Back link: the way up to the page a page belongs to, above its heading. The arrow (icons/arrow-left.svg) comes
+   before the text; the gap under it is the prose rhythm's gap above a heading, so the h1 does not read as its subtitle. */
+.wb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wb-space-1);
+  margin-block-end: var(--wb-space-7);
+  color: var(--wb-color-action);
+  text-decoration: none;
+}
+.wb-back:is(:hover, :focus-visible) { text-decoration: underline; }

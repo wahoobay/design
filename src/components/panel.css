@@ -14,3 +14,5 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+/* Raised: the soft blue-tinted shadow, for a panel over a photograph. Panels on the white page stay flat. */
+.wb-panel--raised { box-shadow: var(--wb-shadow); }

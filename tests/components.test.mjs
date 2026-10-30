@@ -19,10 +19,12 @@ const CLASSES = [
   'wb-field', 'wb-label', 'wb-input', 'wb-select', 'wb-textarea', 'wb-help', 'wb-error',
   'wb-footer',
   'wb-lead', 'wb-sr-only',
+  'wb-icon', 'wb-back', 'wb-initials', 'wb-logo-tile', 'wb-logo-tile--dark', 'wb-btn--wrap', 'wb-btn__meta', 'wb-caption',
+  'wb-panel--raised', 'wb-card--raised', 'wb-video',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
-const ORDER = ['wb-prose', 'wb-nav', 'wb-btn', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
+const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
 const ACCENT_OWNERS = ['wb-live', 'wb-chip', 'wb-tile--accent', 'wb-detect', 'wb-btn--accent', 'wb-chart'];
@@ -123,7 +125,7 @@ test('body text keeps "(c)" as typed: Manrope\'s common ligatures are off', () =
 test('the inlined logo has no inline style, so it follows currentColor; components.css needs no !important', () => {
   const html = read('dist/index.html');
   const svgs = [...html.matchAll(/<svg\b[^>]*aria-labelledby="wb-logo-title-\d+"[^>]*>/g)].map((m) => m[0]);
-  assert.equal(svgs.length, 2, 'two inlined logos');
+  assert.equal(svgs.length, 4, "two navs and two dark logo tiles");
   for (const tag of svgs) assert.doesNotMatch(tag, /\sstyle=/, tag);
   assert.match(read('dist/logo/wahoobay-logo.svg'), /<svg\b[^>]*style="color:#0088D6"/, 'the <img> file keeps its default colour');
   assert.doesNotMatch(read('dist/components.css'), /!important/);
@@ -210,3 +212,95 @@ test('index.html starts with a skip link to <main id="main"> and shows a lead an
   assert.match(html, /<span class="wb-sr-only">[^<]{10,}<\/span>/);
 });
 
+
+// 0.1.2: the pieces the site styled locally (finish review, fixes 1–3).
+const has = (body, decls, where) => { for (const d of decls) assert.match(body, d, `${where}: ${d}`); };
+
+test('.wb-back: an action-blue link, icon before text, underlined on hover and focus only, the heading rhythm clear of the h1', () => {
+  const css = rules(read('dist/components.css'));
+  const body = rule(css, '.wb-back')?.body ?? '';
+  has(body, [/display:\s*inline-flex/, /align-items:\s*center/, /gap:\s*var\(--wb-space-1\)/, /color:\s*var\(--wb-color-action\)/, /text-decoration:\s*none/], '.wb-back');
+  assert.match(rule(css, '.wb-back:is(:hover, :focus-visible)')?.body ?? '', /text-decoration:\s*underline/);
+  // The gap above the heading is the prose rhythm's gap above a heading, which is larger than the one below it.
+  const above = rule(css, '.wb-prose > * + :is(h1, h2, h3, h4)')?.body.match(/margin-block-start:\s*(var\(--wb-space-\d\))/)?.[1];
+  const below = rule(css, '.wb-prose > :is(h1, h2, h3, h4) + *')?.body.match(/margin-block-start:\s*var\(--wb-space-(\d)\)/)?.[1];
+  assert.ok(above && below, 'the prose heading rhythm');
+  assert.match(body, new RegExp(`margin-block-end:\\s*${above.replace(/[()]/g, '\\$&')}`), '.wb-back margin-block-end');
+  assert.ok(Number(above.match(/\d/)[0]) > Number(below), 'above the heading > below it');
+});
+
+test('.wb-initials: the no-photo square, sized by its parent, in the look the site gave it', () => {
+  const body = rule(rules(read('dist/components.css')), '.wb-initials')?.body ?? '';
+  has(body, [/display:\s*grid/, /place-items:\s*center/, /width:\s*100%/, /aspect-ratio:\s*1\s*;/, /border-radius:\s*var\(--wb-radius-sm\)/,
+    /background:\s*var\(--wb-color-bg\)/, /color:\s*var\(--wb-color-ink-3\)/, /font-size:\s*var\(--wb-text-2xl\)/, /font-weight:\s*800/], '.wb-initials');
+});
+
+test('.wb-logo-tile: 1px line, 12px corners, the ground, the panel on hover and focus; the dark tile is ink and stays dark', () => {
+  const css = rules(read('dist/components.css'));
+  has(rule(css, '.wb-logo-tile')?.body ?? '', [/display:\s*flex/, /align-items:\s*center/, /justify-content:\s*center/, /height:\s*100%/,
+    /min-height:\s*7rem/, /padding:\s*var\(--wb-space-3\)/, /border:\s*1px solid var\(--wb-color-line\)/, /border-radius:\s*var\(--wb-radius\)/,
+    /background:\s*var\(--wb-color-bg\)/], '.wb-logo-tile');
+  assert.match(rule(css, 'a.wb-logo-tile:is(:hover, :focus-visible)')?.body ?? '', /background:\s*var\(--wb-color-panel\)/);
+  has(rule(css, '.wb-logo-tile :is(img, svg)')?.body ?? '', [/max-width:\s*100%/, /max-height:\s*5rem/, /object-fit:\s*contain/], 'the logo');
+  has(rule(css, '.wb-logo-tile--dark')?.body ?? '', [/background:\s*var\(--wb-color-ink\)/, /border-color:\s*var\(--wb-color-ink\)/], '.wb-logo-tile--dark');
+  // A logo drawn in white must keep a dark ground under the pointer: the dark tile's hover is not the panel.
+  const hover = rule(css, 'a.wb-logo-tile--dark:is(:hover, :focus-visible)')?.body ?? '';
+  assert.match(hover, /background:/);
+  assert.doesNotMatch(hover, /--wb-color-panel/);
+  assert.ok(!rules(read('dist/components.css')).some((r) => /\bfilter:/.test(r.body)), 'no logo is recoloured with a filter');
+  // A logo is drawn for its ground, not for the theme: on the dark theme the plain tile stays light and the dark one dark.
+  assert.match(rule(css, '[data-theme="dark"] .wb-logo-tile')?.body ?? '', /background:\s*var\(--wb-color-ink\)/);
+  assert.match(rule(css, '[data-theme="dark"] .wb-logo-tile--dark')?.body ?? '', /background:\s*var\(--wb-color-bg\)/);
+});
+
+test('.wb-btn--wrap lets a long label wrap; .wb-btn__meta is the small kind label at the end, muted on ghost buttons', () => {
+  const css = rules(read('dist/components.css'));
+  has(rule(css, '.wb-btn--wrap')?.body ?? '', [/max-width:\s*100%/, /height:\s*auto/, /white-space:\s*normal/, /line-height:\s*1\.35/, /text-align:\s*start/], '.wb-btn--wrap');
+  const meta = rule(css, '.wb-btn__meta')?.body ?? '';
+  has(meta, [/margin-inline-start:\s*auto/, /font-size:\s*var\(--wb-text-sm\)/, /font-weight:\s*500/], '.wb-btn__meta');
+  assert.doesNotMatch(meta, /(^|[;\s])color:/, 'the meta label inherits its colour on filled buttons');
+  assert.match(rule(css, '.wb-btn--ghost .wb-btn__meta')?.body ?? '', /color:\s*var\(--wb-color-ink-3\)/);
+});
+
+test('.wb-caption: small, 500, secondary ink, 1.4; a caption link is underlined on hover and focus only', () => {
+  const css = rules(read('dist/components.css'));
+  has(rule(css, '.wb-caption')?.body ?? '', [/color:\s*var\(--wb-color-ink-2\)/, /font-size:\s*var\(--wb-text-sm\)/, /font-weight:\s*500/, /line-height:\s*1\.4\s*;/], '.wb-caption');
+  assert.match(rule(css, 'a.wb-caption')?.body ?? '', /text-decoration:\s*none/);
+  assert.match(rule(css, 'a.wb-caption:is(:hover, :focus-visible)')?.body ?? '', /text-decoration:\s*underline/);
+});
+
+test('the raised panel and card spend the blue-tinted shadow; plain panels and cards stay flat (spec §4.3)', () => {
+  const raw = read('dist/components.css');
+  assert.match(raw, /var\(--wb-shadow\)/);
+  const css = rules(raw);
+  for (const sel of ['.wb-panel--raised', '.wb-card--raised']) assert.match(rule(css, sel)?.body ?? '', /box-shadow:\s*var\(--wb-shadow\)/, sel);
+  for (const sel of ['.wb-panel', '.wb-card']) assert.doesNotMatch(rule(css, sel)?.body ?? '', /box-shadow/, sel);
+});
+
+test('.wb-video: a 16:9 frame with 12px corners; the player fills it, borderless', () => {
+  const css = rules(read('dist/components.css'));
+  has(rule(css, '.wb-video')?.body ?? '', [/aspect-ratio:\s*16 \/ 9/, /overflow:\s*hidden/, /border-radius:\s*var\(--wb-radius\)/], '.wb-video');
+  has(rule(css, '.wb-video > :is(iframe, video, img)')?.body ?? '', [/display:\s*block/, /width:\s*100%/, /height:\s*100%/, /border:\s*0/], 'the player');
+});
+
+test('a phone number link never breaks at its hyphens', () => {
+  assert.match(rule(rules(read('dist/components.css')), 'a[href^="tel:"]')?.body ?? '', /white-space:\s*nowrap/);
+});
+
+test('index.html shows the 0.1.2 pieces in both themes as the site uses them', () => {
+  const html = read('dist/index.html');
+  const at = html.indexOf('<section data-theme="dark"');
+  for (const [theme, part] of [['light', html.slice(0, at)], ['dark', html.slice(at)]]) {
+    const backs = [...part.matchAll(/<a class="wb-back"[^>]*>([\s\S]*?)<\/a>\s*<h[1-6]\b/g)];
+    assert.equal(backs.length, 1, `${theme}: a back link right above a heading`);
+    assert.match(backs[0][1], /^\s*<svg class="wb-icon"/, `${theme}: the arrow comes before the text`);
+    assert.match(part, /<ul class="docs-row docs-icons"[\s\S]*?(<svg class="wb-icon"[\s\S]*?){3}<\/ul>/, `${theme}: an icon row`);
+    assert.match(part, /class="wb-initials[^"]*"[^>]*>[A-Z]{2}</, `${theme}: initials`);
+    assert.match(part, /class="wb-card__media[^"]*"/, `${theme}: a photo beside them`);
+    assert.equal(part.match(/class="wb-logo-tile[ "]/g)?.length, 2, `${theme}: two logo tiles`);
+    assert.equal(part.match(/class="wb-logo-tile wb-logo-tile--dark"/g)?.length, 1, `${theme}: one of them dark`);
+    assert.match(part, /<a class="wb-btn wb-btn--ghost wb-btn--wrap"[^>]*>[^<]{40,}<span class="wb-btn__meta">[^<]+<\/span>/, `${theme}: a long ghost button with its kind`);
+    assert.match(part, /<img\b[^>]*>\s*<figcaption class="wb-caption">/, `${theme}: a caption under a photo`);
+    assert.match(part, /class="wb-panel wb-panel--raised/, `${theme}: a raised panel`);
+  }
+});

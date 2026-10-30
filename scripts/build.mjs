@@ -11,6 +11,14 @@ export async function build(root = process.cwd()) {
       await cp(join(root, 'brand', name), join(dist, 'logo', name));
     }
   }
+  await mkdir(join(dist, 'icons'), { recursive: true });
+  const icons = {};
+  for (const name of await readdir(join(root, 'icons'))) {
+    if (name.endsWith('.svg')) {
+      await cp(join(root, 'icons', name), join(dist, 'icons', name));
+      icons[name.slice(0, -'.svg'.length)] = (await readFile(join(root, 'icons', name), 'utf8')).trim();
+    }
+  }
   await writeFile(join(dist, 'tokens.css'), tokensCss(JSON.parse(await readFile(join(root, 'tokens', 'tokens.json'), 'utf8'))));
   await mkdir(join(dist, 'fonts'), { recursive: true });
   for (const { file } of FONT_SUBSETS) {
@@ -22,11 +30,11 @@ export async function build(root = process.cwd()) {
   await writeFile(join(dist, 'components.css'), `${COMPONENTS_HEADER}\n${css.join('\n')}`);
   await cp(join(root, 'src', 'docs', 'media'), join(dist, 'media'), { recursive: true });
   const docs = await readFile(join(root, 'src', 'docs', 'index.html'), 'utf8');
-  await writeFile(join(dist, 'index.html'), inlineLogo(docs, await readFile(join(root, 'brand', 'wahoobay-logo.svg'), 'utf8')));
+  await writeFile(join(dist, 'index.html'), inlineIcons(inlineLogo(docs, await readFile(join(root, 'brand', 'wahoobay-logo.svg'), 'utf8')), icons));
 }
 
 // Appended to base.css in this order.
-const COMPONENT_FILES = ['nav', 'button', 'live', 'chip', 'tile', 'panel', 'card', 'chart', 'detect', 'form', 'footer', 'layout'];
+const COMPONENT_FILES = ['nav', 'icon', 'button', 'live', 'chip', 'tile', 'panel', 'card', 'chart', 'detect', 'form', 'footer', 'layout'];
 
 // Replaces each <!-- @wb-logo --> with the logo's <svg>, so it follows currentColor; each copy gets its own ids.
 // The root's inline style="color:…" is the default for <img> use (kept in dist/logo); an inline copy drops it.
@@ -36,6 +44,14 @@ function inlineLogo(page, logo) {
   return page.replaceAll('<!-- @wb-logo -->', () => {
     n += 1;
     return svg.replace(/\b(id|aria-labelledby)="([^"]+)"/g, (_, attr, id) => `${attr}="${id}-${n}"`);
+  });
+}
+
+// Replaces each <!-- @wb-icon name --> with icons/name.svg, as a consumer inlines it.
+function inlineIcons(page, icons) {
+  return page.replace(/<!-- @wb-icon ([a-z0-9-]+) -->/g, (placeholder, name) => {
+    if (!icons[name]) throw new Error(`src/docs/index.html: no icon ${name}`);
+    return icons[name];
   });
 }
 
