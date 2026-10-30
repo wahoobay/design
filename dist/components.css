@@ -142,7 +142,7 @@ a[href^="tel:"] { white-space: nowrap; }
   box-shadow: inset 0 -2px 0 var(--wb-color-action);
 }
 .wb-nav__cta { flex: none; }
-/* Narrow screens: logo and call to action on the first row, the links scroll on the second. */
+/* Narrow screens: logo and call to action on the first row, the links scroll on the second (they wrap on phones). */
 @media (max-width: 47.99rem) {
   .wb-nav { padding-top: var(--wb-space-3); row-gap: var(--wb-space-2); }
   .wb-nav__links {
@@ -153,6 +153,14 @@ a[href^="tel:"] { white-space: nowrap; }
     overflow-x: auto;
   }
   .wb-nav__cta { margin-left: auto; }
+}
+/* Phones: the links wrap onto as many rows as they need, so every one is on screen without scrolling. */
+@media (max-width: 30rem) {
+  .wb-nav__links {
+    flex-wrap: wrap;
+    row-gap: var(--wb-space-1);
+    overflow: visible;
+  }
 }
 /* Back link: the way up to the page a page belongs to, above its heading. The arrow (icons/arrow-left.svg) comes
    before the text; the gap under it is the prose rhythm's gap above a heading, so the h1 does not read as its subtitle. */
@@ -423,6 +431,20 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   border: 0;
   object-fit: cover;
 }
+
+/* Media: a standalone photo or video outside prose (a page's banner, a post's photo), with the 12px corners of the
+   cards and panels. It never sets a height: its context does (an aspect-ratio or a height), and then a photo or video
+   fills that box, centred. --top and --bottom keep a subject at that edge of the frame in frame. */
+.wb-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--wb-radius);
+  overflow: hidden;
+}
+:where(img, video).wb-media { object-fit: cover; }
+.wb-media--top { object-position: top; }
+.wb-media--bottom { object-position: bottom; }
 
 /* Chart frame with legend. Series are marked data-series="1" (brand blue) and data-series="2" (the accent). */
 .wb-chart {

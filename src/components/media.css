@@ -1,0 +1,13 @@
+/* Media: a standalone photo or video outside prose (a page's banner, a post's photo), with the 12px corners of the
+   cards and panels. It never sets a height: its context does (an aspect-ratio or a height), and then a photo or video
+   fills that box, centred. --top and --bottom keep a subject at that edge of the frame in frame. */
+.wb-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--wb-radius);
+  overflow: hidden;
+}
+:where(img, video).wb-media { object-fit: cover; }
+.wb-media--top { object-position: top; }
+.wb-media--bottom { object-position: bottom; }

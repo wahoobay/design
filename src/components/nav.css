@@ -50,7 +50,7 @@
   box-shadow: inset 0 -2px 0 var(--wb-color-action);
 }
 .wb-nav__cta { flex: none; }
-/* Narrow screens: logo and call to action on the first row, the links scroll on the second. */
+/* Narrow screens: logo and call to action on the first row, the links scroll on the second (they wrap on phones). */
 @media (max-width: 47.99rem) {
   .wb-nav { padding-top: var(--wb-space-3); row-gap: var(--wb-space-2); }
   .wb-nav__links {
@@ -61,6 +61,14 @@
     overflow-x: auto;
   }
   .wb-nav__cta { margin-left: auto; }
+}
+/* Phones: the links wrap onto as many rows as they need, so every one is on screen without scrolling. */
+@media (max-width: 30rem) {
+  .wb-nav__links {
+    flex-wrap: wrap;
+    row-gap: var(--wb-space-1);
+    overflow: visible;
+  }
 }
 /* Back link: the way up to the page a page belongs to, above its heading. The arrow (icons/arrow-left.svg) comes
    before the text; the gap under it is the prose rhythm's gap above a heading, so the h1 does not read as its subtitle. */

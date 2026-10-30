@@ -21,10 +21,11 @@ const CLASSES = [
   'wb-lead', 'wb-sr-only',
   'wb-icon', 'wb-back', 'wb-initials', 'wb-logo-tile', 'wb-logo-tile--dark', 'wb-btn--wrap', 'wb-btn__meta', 'wb-caption',
   'wb-panel--raised', 'wb-card--raised', 'wb-video',
+  'wb-media', 'wb-media--top',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
-const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
+const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
 const ACCENT_OWNERS = ['wb-live', 'wb-chip', 'wb-tile--accent', 'wb-detect', 'wb-btn--accent', 'wb-chart'];
@@ -332,4 +333,44 @@ test('index.html shows a photo in a paragraph and a captioned figure in running 
     assert.match(prose, /<p><img\b[^>]*\balt="[^"]+"[^>]*><\/p>/, `${theme}: a photo in a paragraph, as Markdown writes it`);
     assert.match(prose, /<figure>\s*<img\b[^>]*\balt="[^"]+"[^>]*>\s*<figcaption class="wb-caption">[^<]+<\/figcaption>\s*<\/figure>/, `${theme}: a figure with its caption`);
   }
+});
+
+// 0.1.4: the site's page banners and post photos stood outside prose, square beside the 12px cards (Dan's staging
+// review, 2026-10-30). .wb-media rounds any standalone photo or video; --top and --bottom keep a subject in frame.
+test('.wb-media is a rounded block that never forces a height; --top and --bottom move the crop', () => {
+  const css = rules(read('dist/components.css'));
+  const media = rule(css, '.wb-media')?.body ?? '';
+  has(media, [/display:\s*block/, /width:\s*100%/, /height:\s*auto/, /border-radius:\s*var\(--wb-radius\)\s*;/, /overflow:\s*hidden/], '.wb-media');
+  assert.doesNotMatch(media, /aspect-ratio|(^|[;\s])height:(?!\s*auto)/, 'the context sets the height, not .wb-media');
+  assert.match(rule(css, ':where(img, video).wb-media')?.body ?? '', /object-fit:\s*cover/, 'a photo or video fills the box its context gives it');
+  assert.match(rule(css, '.wb-media--top')?.body ?? '', /object-position:\s*top\s*;/);
+  assert.match(rule(css, '.wb-media--bottom')?.body ?? '', /object-position:\s*bottom\s*;/);
+});
+
+test('index.html shows a standalone photo and one kept to the top of its band, in both themes', () => {
+  const html = read('dist/index.html');
+  const at = html.indexOf('<section data-theme="dark"');
+  for (const [theme, part] of [['light', html.slice(0, at)], ['dark', html.slice(at)]]) {
+    assert.match(part, /<img class="wb-media"[^>]*\balt="[^"]+"/, `${theme}: a .wb-media photo`);
+    assert.match(part, /<img class="wb-media wb-media--top[ "][^>]*\balt="[^"]+"/, `${theme}: a .wb-media--top photo`);
+  }
+});
+
+// 0.1.4: with six items at 390px the sideways-scrolling links row put the last item off-screen (Dan's staging review).
+test('on screens up to 30rem (480px) the nav links wrap onto rows instead of scrolling; wider, the row still scrolls', () => {
+  const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
+  const narrow = css.match(/@media \(max-width: 47\.99rem\)\s*\{([\s\S]*?)\n\}/)?.[1] ?? '';
+  assert.match(narrow, /\.wb-nav__links\s*\{[^}]*overflow-x:\s*auto/, 'below 48rem the row scrolls');
+  const phone = css.match(/@media \(max-width: 30rem\)\s*\{([\s\S]*?)\n\}/);
+  assert.ok(phone, '@media (max-width: 30rem)');
+  const links = phone[1].match(/\.wb-nav__links\s*\{([^}]*)\}/)?.[1] ?? '';
+  has(links, [/flex-wrap:\s*wrap/, /overflow:\s*visible/, /row-gap:\s*var\(--wb-space-\d\)/], '.wb-nav__links at 30rem');
+  assert.ok(phone.index > css.indexOf('@media (max-width: 47.99rem)'), 'the 30rem block comes after the 48rem one, so it wins');
+});
+
+test('the documentation navs carry the site\'s six items, so the narrow-screen rows are on show', () => {
+  const html = read('dist/index.html');
+  const navs = [...html.matchAll(/<ul class="wb-nav__links">([\s\S]*?)<\/ul>/g)].map((m) => m[1]);
+  assert.equal(navs.length, 2);
+  for (const nav of navs) assert.equal(nav.match(/class="wb-nav__link[ "]/g)?.length, 6);
 });
