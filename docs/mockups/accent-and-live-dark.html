@@ -1,0 +1,210 @@
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.intro{max-width:74ch}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.25rem}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card.acc{padding:0;border:2px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-secondary);cursor:pointer;display:block}
+.card.acc.selected{border-color:var(--accent);box-shadow:0 0 0 4px var(--selected-bg)}
+.acc-head{display:flex;gap:.9rem;align-items:flex-start;padding:.9rem 1.1rem;border-bottom:1px solid var(--border)}
+.acc-head .sw{width:2rem;height:2rem;border-radius:8px;flex-shrink:0;border:1px solid rgba(0,0,0,.08)}
+.acc-head h3{margin:0 0 .2rem;font-size:1.05rem}
+.acc-head p{margin:0;color:var(--text-secondary);font-size:.9rem;line-height:1.45}
+.acc-head code{font-size:.8rem}
+
+/* B system, compact */
+.site{--bg:#FFFFFF;--panel:#F3F8FC;--line:#DCE8F1;--ink:#0F2233;--ink-70:#35495A;--ink-60:#5B6F80;--brand:#0088D6;--action:#0072B5;--blue-tint:#EAF4FB;--r:12px;
+  color:var(--ink);background:var(--bg);font-family:"Manrope",system-ui,sans-serif;font-size:13px;line-height:1.45}
+.site *{box-sizing:border-box}
+.nav{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line)}
+.nav .logo{height:26px;width:auto;display:block}
+.nav nav{display:flex;gap:12px;margin-left:auto;font-weight:600;font-size:12px}
+.nav nav .on{color:var(--action);box-shadow:inset 0 -2px 0 var(--action)}
+.btn{display:inline-block;padding:7px 12px;border-radius:9px;font-weight:700;font-size:12px;border:1.5px solid transparent;white-space:nowrap;line-height:1.2}
+.btn-action{background:var(--action);color:#fff}
+.btn-ghost{border-color:#B9C8D6;color:var(--ink)}
+.btn-acc{background:var(--acc);color:var(--acc-on)}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:14px;align-items:center;padding:18px 16px 14px;background:linear-gradient(180deg,var(--blue-tint) 0%,#fff 80%)}
+.hero h1{font-size:22px;line-height:1.1;margin:0 0 8px;font-weight:800;letter-spacing:-.025em;color:var(--ink)}
+.hero p{margin:0 0 10px;color:var(--ink-70);font-size:12.5px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.media{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/11;box-shadow:0 12px 26px -16px rgba(0,136,214,.5)}
+.media img{width:100%;height:100%;object-fit:cover;display:block}
+.live{position:absolute;left:8px;top:8px;background:var(--acc);color:var(--acc-on);font-size:11px;font-weight:800;padding:3px 7px;border-radius:999px;letter-spacing:.08em;text-transform:uppercase}
+.live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:5px;vertical-align:1px}
+.strip{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;margin:0 16px;padding:10px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
+.strip img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;display:block}
+.strip h4{margin:0 0 2px;font-size:13px;font-weight:800}
+.strip p{margin:0 0 6px;font-size:12px;color:var(--ink-70)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:11px;padding:3px 8px;border-radius:999px;background:var(--acc-tint);color:var(--acc-text);font-weight:700}
+.chip small{font-weight:500;margin-left:3px}
+.bottom{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:10px;padding:12px 16px 16px}
+.tile{padding:10px 12px;border-radius:var(--r);background:#fff;border:1px solid var(--line)}
+.tile .k{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-60);font-weight:700}
+.tile .v{font-size:22px;font-weight:800;margin-top:2px;letter-spacing:-.02em;color:var(--action)}
+.tile .v small{font-size:11px;font-weight:600;color:var(--ink-60);margin-left:2px}
+.tile.acc-tile .v{color:var(--acc-text)}
+.chart{padding:10px 12px;border-radius:var(--r);background:#fff;border:1px solid var(--line)}
+.chart .k{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-60);font-weight:700;margin-bottom:4px}
+.chart svg{width:100%;height:44px;display:block}
+.legend{display:flex;gap:10px;font-size:11px;color:var(--ink-60);margin-top:4px;font-weight:600}
+.legend i{display:inline-block;width:10px;height:3px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.link{color:var(--action);font-weight:700;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+
+.acc-teal   .site{--acc:#0B7F72;--acc-on:#fff;--acc-tint:#DDF3EF;--acc-text:#0A6E63}
+.acc-coral  .site{--acc:#C94A27;--acc-on:#fff;--acc-tint:#FBE8E1;--acc-text:#B4411F}
+.acc-green  .site{--acc:#2F7A4B;--acc-on:#fff;--acc-tint:#DFF1E5;--acc-text:#2A6E43}
+.acc-amber  .site{--acc:#F6BC45;--acc-on:#1A1400;--acc-tint:#FFF1CC;--acc-text:#8A5A00}
+
+/* Dark live page, same system */
+.dark-wrap{margin-top:2rem;border:2px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-secondary)}
+.dark-head{display:flex;gap:1rem;align-items:flex-start;justify-content:space-between;padding:.9rem 1.1rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.dark-head h3{margin:0 0 .2rem;font-size:1.05rem}
+.dark-head p{margin:0;color:var(--text-secondary);font-size:.9rem;line-height:1.45;max-width:60ch}
+.sw-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:.85rem}
+.sw-row input{position:absolute;opacity:0;pointer-events:none}
+.sw-row label{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--border);cursor:pointer;font-weight:600}
+.sw-row label i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.sw-row input:checked + label{border-color:var(--accent);background:var(--selected-bg)}
+.dark{--bg:#0B1B2B;--panel:#122738;--line:#1F3A50;--ink:#EAF2F8;--ink-70:#C3D2DF;--ink-60:#93A9BC;--brand:#0088D6;--action:#3FA8EA;--r:12px;
+  --acc:#2DD4BF;--acc-on:#07192B;--acc-text:#5FE3D1;--acc-tint:#0F3A3C;
+  color:var(--ink);background:var(--bg);font-family:"Manrope",system-ui,sans-serif;font-size:13px;line-height:1.45}
+.dark-wrap:has(#ad-coral:checked) .dark{--acc:#FF8A65;--acc-on:#1A0F0A;--acc-text:#FFA385;--acc-tint:#3A1F16}
+.dark-wrap:has(#ad-green:checked) .dark{--acc:#6DD39A;--acc-on:#07190F;--acc-text:#8BE0AE;--acc-tint:#173A28}
+.dark-wrap:has(#ad-amber:checked) .dark{--acc:#F4B942;--acc-on:#1A1400;--acc-text:#F7C864;--acc-tint:#3C2E0D}
+.dark *{box-sizing:border-box}
+.dark .nav{display:flex;align-items:center;gap:16px;padding:12px 22px;border-bottom:1px solid var(--line)}
+.dark .nav .logo{height:30px;width:auto;display:block;filter:brightness(0) invert(1)}
+.dark .nav nav{display:flex;gap:16px;margin-left:auto;font-weight:600;font-size:13px;color:var(--ink-70)}
+.dark .nav nav .on{color:var(--ink);box-shadow:inset 0 -2px 0 var(--acc)}
+.dark .btn-action{background:var(--action);color:#06111B}
+.dark .btn-acc{background:var(--acc);color:var(--acc-on)}
+.dark .btn-ghost{border-color:#2E4B63;color:var(--ink)}
+.livehead{display:flex;align-items:center;gap:12px;padding:18px 22px 10px;flex-wrap:wrap}
+.livehead h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.025em}
+.livehead .live{position:static;font-size:11px}
+.livehead .cams{margin-left:auto;display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+.livehead .cams span{padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--ink-60)}
+.livehead .cams span.on{background:var(--line);color:var(--ink)}
+.stage{display:grid;grid-template-columns:1.9fr 1fr;gap:14px;padding:0 22px 22px}
+.video{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;background:#000;border:1px solid var(--line)}
+.video img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.box{position:absolute;border:2px solid var(--acc);border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.box b{position:absolute;left:-2px;top:-22px;background:var(--acc);color:var(--acc-on);font-size:11px;font-weight:800;padding:3px 7px;border-radius:4px 4px 4px 0;white-space:nowrap;letter-spacing:.01em}
+.box b small{font-weight:600;opacity:.8;margin-left:4px}
+.vbar{position:absolute;left:0;right:0;bottom:0;display:flex;gap:12px;align-items:center;padding:12px 14px;background:linear-gradient(180deg,rgba(7,25,43,0) 0%,rgba(7,25,43,.85) 100%);font-size:12px;color:var(--ink-70)}
+.vbar b{color:var(--ink)}
+.vbar .play{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25)}
+.vbar .play svg{width:12px;height:12px;display:block;margin-left:2px}
+.vbar .hq{margin-left:auto;padding:3px 8px;border:1px solid var(--line);border-radius:6px;font-weight:700;color:var(--ink-70);font-size:11px}
+.rail{display:flex;flex-direction:column;gap:10px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.panel h5{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--acc-text);font-weight:800}
+.seen{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:12.5px}
+.seen:first-of-type{border-top:0}
+.seen b{font-weight:600}
+.seen .n{font-variant-numeric:tabular-nums;color:var(--ink-60)}
+.seen .bar{flex:1;height:5px;background:var(--line);border-radius:999px;margin:0 10px;overflow:hidden}
+.seen .bar i{display:block;height:100%;background:var(--acc)}
+.wq{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wq div{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.wq .k{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-60);font-weight:700}
+.wq .v{font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--action)}
+.wq .v small{font-size:10px;font-weight:600;color:var(--ink-60);margin-left:2px}
+.dark .chart{background:var(--panel);border-color:var(--line)}
+.dark .chart .k{color:var(--ink-60)}
+.dark .legend{color:var(--ink-60)}
+.after{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 22px 22px}
+.after a{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.after img{width:64px;height:48px;object-fit:cover;border-radius:7px}
+.after b{display:block;font-size:13px}
+.after span{font-size:12px;color:var(--ink-60)}
+.after .go{margin-left:auto;color:var(--acc-text);font-weight:800;font-size:12px}
+@media (max-width:760px){.stage{grid-template-columns:1fr}.after{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.bottom{grid-template-columns:1fr 1fr}.chart{grid-column:span 2}}
+</style>
+
+<div class="intro">
+<h2>B, with a second colour. Which accent, and does a dark live page hold?</h2>
+<p class="subtitle">Four accents on the same Clear Water page. The blue stays the brand: logo, buttons, links, headline numbers. The accent gets one job: the things that are alive right now. The live badge, species chips, the second line on charts, and the Donate button, so it never competes with the blue for "click here". Each shade was adjusted until its text passes on white; the number in each card is the contrast ratio.</p>
+<p class="subtitle">Below the four, the dark live-camera page in the same system, with a switch to try each accent on it. The teal you liked in C is the dark-page shade of option 1; on white it has to deepen to the shade shown, which is what you were sensing.</p>
+</div>
+
+<div class="grid">
+
+<div class="card acc acc-teal" data-choice="teal" onclick="toggleSelect(this)">
+  <div class="acc-head"><span class="sw" style="background:#0B7F72"></span><div><h3>1. Seagrass teal</h3><p>Sea-green rather than cyan, so it separates from the blue. <code>#0B7F72</code>, 4.9:1 on white; <code>#2DD4BF</code> on dark. Reads as water and nature; the closest relative of the blue, which is both its charm and the risk: at a glance some people see one cool family.</p></div></div>
+  <div class="site">
+    <header class="nav"><img class="logo" src="./wahoobay-logo.svg" alt="Wahoo Bay"><nav><span>Visit</span><span>Learn</span><span class="on">Live reef</span><span>Get involved</span></nav><span class="btn btn-acc">Donate</span></header>
+    <div class="hero"><div><h1>A living reef, open to everyone.</h1><p>A marine education park at Hillsboro Inlet, where the reef is the classroom. Watch it live, learn with us, help look after it.</p><div class="btns"><span class="btn btn-action">Watch the reef live</span><span class="btn btn-ghost">Plan a visit</span></div></div><div class="media"><img src="./WB-1.jpg" alt=""><span class="live">Live</span></div></div>
+    <div class="strip"><img src="./WB-camera.jpg" alt=""><div><h4>SeaHIVE reef camera</h4><p>The AI names each fish as it passes. <span class="link">1,204 sightings</span> since sunrise.</p><div class="chips"><span class="chip">Sergeant major<small>2 min</small></span><span class="chip">Blue tang<small>4 min</small></span><span class="chip">Parrotfish<small>12 min</small></span></div></div></div>
+    <div class="bottom"><div class="tile"><div class="k">Water</div><div class="v">27.4<small>°C</small></div></div><div class="tile acc-tile"><div class="k">Species today</div><div class="v">18</div></div><div class="chart"><div class="k">Water temperature and species seen, 7 days</div><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,14 16,15 32,13 48,12 64,13 80,11 100,10" fill="none" stroke="#0088D6" stroke-width="1.8" stroke-linejoin="round"/><polyline points="0,22 16,18 32,20 48,12 64,14 80,8 100,5" fill="none" stroke="#0B7F72" stroke-width="1.8" stroke-linejoin="round"/></svg><div class="legend"><span><i style="background:#0088D6"></i>Water temp</span><span><i style="background:#0B7F72"></i>Species seen</span></div></div></div>
+  </div>
+</div>
+
+<div class="card acc acc-coral" data-choice="coral" onclick="toggleSelect(this)">
+  <div class="acc-head"><span class="sw" style="background:#C94A27"></span><div><h3>2. Coral</h3><p>The reef's own warm colour and the blue's opposite, so nothing is ever confused for brand. <code>#C94A27</code>, 4.7:1 on white; <code>#FF8A65</code> on dark. Strongest "live" and "donate" signal of the four. Risk: used too widely it starts to shout.</p></div></div>
+  <div class="site">
+    <header class="nav"><img class="logo" src="./wahoobay-logo.svg" alt="Wahoo Bay"><nav><span>Visit</span><span>Learn</span><span class="on">Live reef</span><span>Get involved</span></nav><span class="btn btn-acc">Donate</span></header>
+    <div class="hero"><div><h1>A living reef, open to everyone.</h1><p>A marine education park at Hillsboro Inlet, where the reef is the classroom. Watch it live, learn with us, help look after it.</p><div class="btns"><span class="btn btn-action">Watch the reef live</span><span class="btn btn-ghost">Plan a visit</span></div></div><div class="media"><img src="./WB-1.jpg" alt=""><span class="live">Live</span></div></div>
+    <div class="strip"><img src="./WB-camera.jpg" alt=""><div><h4>SeaHIVE reef camera</h4><p>The AI names each fish as it passes. <span class="link">1,204 sightings</span> since sunrise.</p><div class="chips"><span class="chip">Sergeant major<small>2 min</small></span><span class="chip">Blue tang<small>4 min</small></span><span class="chip">Parrotfish<small>12 min</small></span></div></div></div>
+    <div class="bottom"><div class="tile"><div class="k">Water</div><div class="v">27.4<small>°C</small></div></div><div class="tile acc-tile"><div class="k">Species today</div><div class="v">18</div></div><div class="chart"><div class="k">Water temperature and species seen, 7 days</div><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,14 16,15 32,13 48,12 64,13 80,11 100,10" fill="none" stroke="#0088D6" stroke-width="1.8" stroke-linejoin="round"/><polyline points="0,22 16,18 32,20 48,12 64,14 80,8 100,5" fill="none" stroke="#C94A27" stroke-width="1.8" stroke-linejoin="round"/></svg><div class="legend"><span><i style="background:#0088D6"></i>Water temp</span><span><i style="background:#C94A27"></i>Species seen</span></div></div></div>
+  </div>
+</div>
+
+<div class="card acc acc-green" data-choice="green" onclick="toggleSelect(this)">
+  <div class="acc-head"><span class="sw" style="background:#2F7A4B"></span><div><h3>3. Mangrove green</h3><p>Picks up the tree in the logo and says conservation without a word. <code>#2F7A4B</code>, 5.2:1 on white; <code>#6DD39A</code> on dark. Calm and credible next to the blue. Risk: blue-and-green is the eco default, so the rest of the page has to carry the character.</p></div></div>
+  <div class="site">
+    <header class="nav"><img class="logo" src="./wahoobay-logo.svg" alt="Wahoo Bay"><nav><span>Visit</span><span>Learn</span><span class="on">Live reef</span><span>Get involved</span></nav><span class="btn btn-acc">Donate</span></header>
+    <div class="hero"><div><h1>A living reef, open to everyone.</h1><p>A marine education park at Hillsboro Inlet, where the reef is the classroom. Watch it live, learn with us, help look after it.</p><div class="btns"><span class="btn btn-action">Watch the reef live</span><span class="btn btn-ghost">Plan a visit</span></div></div><div class="media"><img src="./WB-1.jpg" alt=""><span class="live">Live</span></div></div>
+    <div class="strip"><img src="./WB-camera.jpg" alt=""><div><h4>SeaHIVE reef camera</h4><p>The AI names each fish as it passes. <span class="link">1,204 sightings</span> since sunrise.</p><div class="chips"><span class="chip">Sergeant major<small>2 min</small></span><span class="chip">Blue tang<small>4 min</small></span><span class="chip">Parrotfish<small>12 min</small></span></div></div></div>
+    <div class="bottom"><div class="tile"><div class="k">Water</div><div class="v">27.4<small>°C</small></div></div><div class="tile acc-tile"><div class="k">Species today</div><div class="v">18</div></div><div class="chart"><div class="k">Water temperature and species seen, 7 days</div><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,14 16,15 32,13 48,12 64,13 80,11 100,10" fill="none" stroke="#0088D6" stroke-width="1.8" stroke-linejoin="round"/><polyline points="0,22 16,18 32,20 48,12 64,14 80,8 100,5" fill="none" stroke="#2F7A4B" stroke-width="1.8" stroke-linejoin="round"/></svg><div class="legend"><span><i style="background:#0088D6"></i>Water temp</span><span><i style="background:#2F7A4B"></i>Species seen</span></div></div></div>
+  </div>
+</div>
+
+<div class="card acc acc-amber" data-choice="amber" onclick="toggleSelect(this)">
+  <div class="acc-head"><span class="sw" style="background:#F6BC45"></span><div><h3>4. Sun amber</h3><p>Sand and sunlight; the warmest and most "come outside" of the four. Amber only works as a fill with dark text (<code>#F6BC45</code>), never as coloured text, so small labels use a brown <code>#8A5A00</code>, 5.6:1. Risk: yellow reads as caution in data screens.</p></div></div>
+  <div class="site">
+    <header class="nav"><img class="logo" src="./wahoobay-logo.svg" alt="Wahoo Bay"><nav><span>Visit</span><span>Learn</span><span class="on">Live reef</span><span>Get involved</span></nav><span class="btn btn-acc">Donate</span></header>
+    <div class="hero"><div><h1>A living reef, open to everyone.</h1><p>A marine education park at Hillsboro Inlet, where the reef is the classroom. Watch it live, learn with us, help look after it.</p><div class="btns"><span class="btn btn-action">Watch the reef live</span><span class="btn btn-ghost">Plan a visit</span></div></div><div class="media"><img src="./WB-1.jpg" alt=""><span class="live">Live</span></div></div>
+    <div class="strip"><img src="./WB-camera.jpg" alt=""><div><h4>SeaHIVE reef camera</h4><p>The AI names each fish as it passes. <span class="link">1,204 sightings</span> since sunrise.</p><div class="chips"><span class="chip">Sergeant major<small>2 min</small></span><span class="chip">Blue tang<small>4 min</small></span><span class="chip">Parrotfish<small>12 min</small></span></div></div></div>
+    <div class="bottom"><div class="tile"><div class="k">Water</div><div class="v">27.4<small>°C</small></div></div><div class="tile acc-tile"><div class="k">Species today</div><div class="v">18</div></div><div class="chart"><div class="k">Water temperature and species seen, 7 days</div><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,14 16,15 32,13 48,12 64,13 80,11 100,10" fill="none" stroke="#0088D6" stroke-width="1.8" stroke-linejoin="round"/><polyline points="0,22 16,18 32,20 48,12 64,14 80,8 100,5" fill="none" stroke="#D9951A" stroke-width="1.8" stroke-linejoin="round"/></svg><div class="legend"><span><i style="background:#0088D6"></i>Water temp</span><span><i style="background:#D9951A"></i>Species seen</span></div></div></div>
+  </div>
+</div>
+
+</div>
+
+<div class="dark-wrap">
+  <div class="dark-head">
+    <div><h3>The live-camera page, dark</h3><p>Same type, same corners, same components as the light pages; only the ground changes. Dark suits a page where the video is the content: the frame disappears and the picture carries the light. Reading pages, the sighting form and the admin tools stay light. Try the accents:</p></div>
+    <div class="sw-row">
+      <input type="radio" name="acc" id="ad-teal" checked><label for="ad-teal"><i style="background:#2DD4BF"></i>Seagrass</label>
+      <input type="radio" name="acc" id="ad-coral"><label for="ad-coral"><i style="background:#FF8A65"></i>Coral</label>
+      <input type="radio" name="acc" id="ad-green"><label for="ad-green"><i style="background:#6DD39A"></i>Mangrove</label>
+      <input type="radio" name="acc" id="ad-amber"><label for="ad-amber"><i style="background:#F4B942"></i>Amber</label>
+    </div>
+  </div>
+  <div class="dark">
+    <header class="nav"><img class="logo" src="./wahoobay-logo.svg" alt="Wahoo Bay"><nav><span>Visit</span><span>Learn</span><span class="on">Live reef</span><span>Get involved</span></nav><span class="btn btn-acc">Donate</span></header>
+    <div class="livehead"><h1>SeaHIVE reef camera</h1><span class="live">Live</span><div class="cams"><span class="on">Reef</span><span>Pier</span></div></div>
+    <div class="stage">
+      <div class="video">
+        <img src="./WB-camera.jpg" alt="">
+        <div class="box" style="left:62%;top:38%;width:11%;height:14%"><b>Sergeant major<small>0.96</small></b></div>
+        <div class="box" style="left:22%;top:55%;width:13%;height:12%"><b>Grey snapper<small>0.88</small></b></div>
+        <div class="box" style="left:78%;top:60%;width:9%;height:10%"><b>Blue tang<small>0.91</small></b></div>
+        <div class="vbar"><span class="play"><svg viewBox="0 0 12 12"><path d="M2 1.5v9l8-4.5z" fill="#fff"/></svg></span><span><b>1,204 sightings</b> since sunrise · 18 species</span><span class="hq">1080p</span></div>
+      </div>
+      <div class="rail">
+        <div class="panel"><h5>Seen in the last hour</h5><div class="seen"><b>Sergeant major</b><span class="bar"><i style="width:84%"></i></span><span class="n">143</span></div><div class="seen"><b>Grey snapper</b><span class="bar"><i style="width:52%"></i></span><span class="n">88</span></div><div class="seen"><b>Blue tang</b><span class="bar"><i style="width:31%"></i></span><span class="n">52</span></div><div class="seen"><b>Stoplight parrotfish</b><span class="bar"><i style="width:14%"></i></span><span class="n">24</span></div></div>
+        <div class="panel"><h5>Water right now</h5><div class="wq"><div><div class="k">Temp</div><div class="v">27.4<small>°C</small></div></div><div><div class="k">Oxygen</div><div class="v">6.8<small>mg/L</small></div></div><div><div class="k">pH</div><div class="v">8.1</div></div><div><div class="k">Visibility</div><div class="v">6<small>m</small></div></div></div></div>
+        <div class="chart"><div class="k">Species seen, 7 days</div><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,14 16,15 32,13 48,12 64,13 80,11 100,10" fill="none" stroke="#3FA8EA" stroke-width="1.8" stroke-linejoin="round"/><polyline points="0,22 16,18 32,20 48,12 64,14 80,8 100,5" fill="none" stroke="var(--acc)" stroke-width="1.8" stroke-linejoin="round"/></svg><div class="legend"><span><i style="background:#3FA8EA"></i>Water temp</span><span><i style="background:var(--acc)"></i>Species seen</span></div></div>
+      </div>
+    </div>
+    <div class="after">
+      <a><img src="./WB-3.jpg" alt=""><div><b>Why the manatees come in winter</b><span>Learn · 4 min read</span></div><span class="go">Read →</span></a>
+      <a><img src="./WB-1.jpg" alt=""><div><b>Visit the park this weekend</b><span>Open sunrise to sunset · free</span></div><span class="go">Plan →</span></a>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:1.5rem">Click an accent card to pick it, flip the switch on the dark page to see it there, then tell me in the chat: which accent, and yes or no to dark live pages.</p>
