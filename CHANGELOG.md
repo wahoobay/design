@@ -2,6 +2,22 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.2.2 — 2026-10-30
+
+### Changed
+
+- The doorway's and the feature's scrim reaches the full `--wb-color-scrim` by 40% of the words' box and holds it to the foot (it ran from clear to full over the whole box), and the box starts with 4rem of padding (`--wb-space-8`, it was 2rem), so the title's first line sits where the scrim is already at full strength, over white shirts and bright water too. `.wb-door` and `.wb-feature` take `min-width: 0`: their text sets their height, so in a plain grid or flex row their smallest width, through the 4:5 or 16:9, could be wider than a phone.
+- The stage's top band is stronger and deeper, for the three rows the nav wraps onto over the photograph on a phone: `--wb-color-scrim-top` is `rgb(11 27 43 / 0.55)` in both themes (it was 0.35), held to 15% and clear by 32% (it was clear by 20%); the scrim then reaches the full `--wb-color-scrim` by 45% (it was 50%), so the headline's first line is still on 0.5 or more from 40% down.
+- A nav link sets a 4px gap (`--wb-space-1`) between its label and an icon after it, such as the `external` icon on a link to another site.
+
+### Added
+
+- `.wb-subnav`, the section navigation above a page's heading: on the list of `.wb-nav__link` items (each in an `<li>`), one row that wraps, `column-gap: var(--wb-space-4)`, on a phone onto as many rows as it needs, never sideways. Its links have no inline padding, so the first label, and the first of every wrapped row, starts at the content column, and the current link's underline is as wide as its label; the focus ring sits 2px outside the link.
+- A file field's button (`.wb-input[type="file"]::file-selector-button`) is the ghost button's look: a 1px line in `--wb-color-line`, the 8px corners (`--wb-radius-sm`), the sans face at 700, 44px tall, ink text on the ground, the panel under the pointer, `--wb-space-3` before the file names. The field itself drops the input's box, so there is no box around a box; an invalid one is marked on its button with 2px of ink.
+- `.wb-marker`, a place on a map: a 16px pin in action blue (`--wb-color-action`) ringed with 2px of the ground colour and `--wb-shadow`, centred in a clear 44px target. `.wb-marker--camera` is the accent, because a camera is alive right now (it joins the accent's owners). `.wb-map` sets the sans face, and Mapbox GL's container, popups and controls inside it take it (`font-family: inherit` on `.mapboxgl-map`, `.mapboxgl-popup-content` and `.mapboxgl-ctrl`): the one rule that names a third-party class, because Mapbox GL sets Helvetica on its container.
+- Button states. A disabled button (`:disabled` or `aria-disabled="true"`) fades to `opacity: .55`, shows `cursor: not-allowed` and does not darken under the pointer; its text is below 4.5:1 on purpose, as WCAG 1.4.3 exempts an inactive control (no token pair is added: the fade is opacity, not a colour). `.wb-btn--busy`, on a button at work and disabled while it is: the label stays and a 1em ring in its text colour, open at the top, turns after it (`wb-spin`, 0.8s), standing still under `prefers-reduced-motion: reduce`. It is the only animation besides the live badge.
+- The documentation page shows, in both themes: the section navigation above a heading, with the current page first and an external link with its icon; a disabled and a busy button; a file field; a sensor's and a camera's marker on the map frame; and the new scrim values.
+
 ## 0.2.1 — 2026-10-30
 
 ### Changed
