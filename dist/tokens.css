@@ -1,0 +1,55 @@
+/* Wahoo Bay design tokens — generated from tokens/tokens.json; values from docs/superpowers/specs/2026-10-29-wahoobay-net-overhaul-design.md §4.3 (wahoobay/infra). Do not edit by hand. */
+:root {
+  --wb-color-brand: #0088D6;
+  --wb-color-action: #0072B5;
+  --wb-color-on-action: #FFFFFF;
+  --wb-color-ink: #0F2233;
+  --wb-color-ink-2: #35495A;
+  --wb-color-ink-3: #5B6F80;
+  --wb-color-bg: #FFFFFF;
+  --wb-color-panel: #F3F8FC;
+  --wb-color-line: #DCE8F1;
+  --wb-color-tint: #EAF4FB;
+  --wb-color-accent: #0B7F72;
+  --wb-color-accent-text: #0A6E63;
+  --wb-color-accent-tint: #DDF3EF;
+  --wb-color-on-accent: #FFFFFF;
+  --wb-color-focus: #0072B5;
+  --wb-font-sans: "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wb-text-xs: 0.75rem;
+  --wb-text-sm: 0.875rem;
+  --wb-text-base: 1rem;
+  --wb-text-lg: 1.125rem;
+  --wb-text-xl: 1.375rem;
+  --wb-text-2xl: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  --wb-text-3xl: clamp(2.25rem, 1.4rem + 3.2vw, 3.5rem);
+  --wb-space-1: 0.25rem;
+  --wb-space-2: 0.5rem;
+  --wb-space-3: 0.75rem;
+  --wb-space-4: 1rem;
+  --wb-space-5: 1.5rem;
+  --wb-space-6: 2rem;
+  --wb-space-7: 3rem;
+  --wb-space-8: 4rem;
+  --wb-radius: 12px;
+  --wb-radius-sm: 8px;
+  --wb-radius-pill: 999px;
+  --wb-shadow: 0 14px 30px -18px rgba(0,136,214,.45);
+  --wb-measure: 70ch;
+}
+[data-theme="dark"] {
+  --wb-color-bg: #0B1B2B;
+  --wb-color-panel: #122738;
+  --wb-color-line: #1F3A50;
+  --wb-color-tint: #0E2A40;
+  --wb-color-ink: #EAF2F8;
+  --wb-color-ink-2: #C3D2DF;
+  --wb-color-ink-3: #93A9BC;
+  --wb-color-action: #3FA8EA;
+  --wb-color-on-action: #06111B;
+  --wb-color-accent: #2DD4BF;
+  --wb-color-accent-text: #5FE3D1;
+  --wb-color-accent-tint: #0F3A3C;
+  --wb-color-on-accent: #07192B;
+  --wb-color-focus: #5FE3D1;
+}
