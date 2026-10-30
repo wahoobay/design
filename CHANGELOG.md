@@ -2,6 +2,26 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.2.0 — 2026-10-30
+
+### Added
+
+- The Deep Field pieces (spec §4.3, Presentation: Deep Field), for the home page:
+  - `.wb-stage`, the full-height photograph the home page opens on, `min-height: clamp(32rem, 90vh, 52rem)`: the photo (`.wb-stage__photo`) covers it, the scrim (`.wb-stage__scrim`) darkens its foot, and the body (`.wb-stage__body`, with `.wb-container`) sits at the bottom with the headline (`.wb-stage__title`: the display size, weight 800, tracking -0.04em, line-height 0.98, at most 11ch wide), the lead (`.wb-stage__lead`, the xl size) and the actions (`.wb-stage__actions`). Text on the stage is white in both themes; a ghost button on it is outlined in white, and a focus ring on it is white.
+  - `.wb-nav--over`, the navigation over the stage: at the top of the photograph, transparent, with no bottom line, the logo and the links white in both themes (the logo through `currentColor`). The current and hovered links are underlined in white; the links keep their 44px height.
+  - `.wb-band` and `.wb-band__inner`: a full-bleed section on its own ground, 4rem above and below. With `data-theme="dark"` it is the home page's live band on the live-camera ground, with no modifier. Inside, the still and the words sit side by side from 48rem.
+  - `.wb-figures`, `.wb-figure`, `.wb-figure__value` and `.wb-figure__label`: the impact numbers at the figure size in brand blue, weight 800, tracking -0.04em, tabular numerals, two columns on phones and four from 48rem, divided by 1px lines with a 12px inset. In two columns no line starts the second row.
+  - `.wb-door`, with `__photo`, `__body`, `__title` and `__text`: a 4:5 photograph that is one link into a section, the title at the 3xl size on the picture over a scrim, without card chrome.
+  - `.wb-feature`, with the same parts: the doorway's shape at 16:9 with the title at the 2xl size, for the one large news item. A doorway or a feature grows to fit a long title instead of cutting it off (`overflow: clip`, with `hidden` as the fallback).
+  - `.wb-map`, the frame an interactive map or its still fills: full width, `clamp(20rem, 60vh, 36rem)` tall, a 1px line and the 12px corners.
+  - `.wb-notice` and `.wb-notice--error`: what a form says once it is sent, closed or failed, on the panel ground with a 1px line. There is still no danger colour: the error notice's border is 2px of ink.
+- Tokens: `--wb-text-display` (`clamp(3rem, 7.5vw, 7rem)`), `--wb-text-figure` (`clamp(2.5rem, 5vw, 4.5rem)`) and `--wb-track-display` (`-0.04em`); `--wb-color-on-photo` (`#FFFFFF`), `--wb-color-scrim` (`rgb(11 27 43 / 0.85)`, the dark ground at partial alpha) and `--wb-color-scrim-0` (`rgb(11 27 43 / 0)`), the same in both themes. Every scrim runs from `--wb-color-scrim-0` to `--wb-color-scrim`, so `components.css` still carries no colour literal. The scrims have no contrast pair in `scripts/contrast.mjs`: what shows through them is a photograph.
+
+### Changed
+
+- The documentation page shows the stage with the overlaid nav, the band (dark in the light section too), the four impact figures, three doorways, a feature, the map frame and both notices, in both themes, with the new tokens among the swatches and in the type scale.
+- Detector waivers, element by element: `data-impeccable-ignore="low-contrast"` on text set on a photograph (the stage's title and lead, the doorways' and the feature's titles and text, and the links of the overlaid nav, only there) and on the light impact figures. The spec's Deep Field presentation sets text on photographs over a scrim; the detector sees neither the photograph nor the scrim and measures white on the page ground, so the finish review checks that contrast by eye on the real photographs. The impact figures are large brand-blue numbers, as the tile numbers are (3.8:1 on white, where 3:1 applies), which the detector cannot tell at a `clamp()` size. A consumer's pages need the same waivers on the same elements; `tests/components.test.mjs` pins where they may appear here.
+
 ## 0.1.4 — 2026-10-30
 
 ### Added
