@@ -32,5 +32,6 @@ test('tokens: text on photographs and its scrim are the same in both themes', ()
     assert.match(block, /--wb-color-on-photo: #FFFFFF;/, `${theme}: on-photo`);
     assert.match(block, /--wb-color-scrim: rgb\(11 27 43 \/ 0\.85\);/, `${theme}: scrim`);
     assert.match(block, /--wb-color-scrim-0: rgb\(11 27 43 \/ 0\);/, `${theme}: scrim-0`);
+    assert.match(block, /--wb-color-scrim-top: rgb\(11 27 43 \/ 0\.35\);/, `${theme}: scrim-top`);
   }
 });

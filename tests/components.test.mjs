@@ -403,7 +403,8 @@ test('the documentation navs carry the site\'s six items, so the narrow-screen r
 const block = (sel) => rule(rules(read('dist/components.css')), sel)?.body ?? '';
 
 test('stage: full-height photo hero with the display scale on a scrim', () => {
-  assert.match(block('.wb-stage'), /min-height:\s*clamp\(32rem,\s*90vh,\s*52rem\)/);
+  // 0.2.1: a 20rem floor (was 32rem), so the stage is never taller than a landscape phone's viewport (spec §4.3).
+  assert.match(block('.wb-stage'), /min-height:\s*clamp\(20rem,\s*90vh,\s*52rem\)/);
   assert.match(block('.wb-stage__photo'), /object-fit:\s*cover/);
   assert.match(block('.wb-stage__title'), /font-size:\s*var\(--wb-text-display\)/);
   assert.match(block('.wb-stage__title'), /letter-spacing:\s*var\(--wb-track-display\)/);
@@ -425,11 +426,33 @@ test('door and feature: the title sits on the photograph over a scrim, 4:5 and 1
   for (const c of ['.wb-door__body', '.wb-feature__body']) assert.match(block(c), /linear-gradient/, c);
 });
 
-test('every scrim runs from --wb-color-scrim-0 to --wb-color-scrim at the foot, and nothing else draws one', () => {
-  const scrims = rules(read('dist/components.css')).filter((r) => /linear-gradient/.test(r.body) && !/currentColor/.test(r.body));
-  assert.deepEqual(scrims.map((r) => r.selector).sort(), ['.wb-door__body', '.wb-feature__body', '.wb-stage__scrim']);
-  for (const r of scrims)
-    assert.match(r.body, /linear-gradient\(180deg,\s*var\(--wb-color-scrim-0\)[^,]*,\s*var\(--wb-color-scrim\) 100%\)/, r.selector);
+test('only the stage, the doorway and the feature draw a scrim; the doorway\'s and the feature\'s run from clear to the full scrim', () => {
+  const users = rules(read('dist/components.css')).filter((r) => /--wb-color-scrim/.test(r.body)).map((r) => r.selector).sort();
+  assert.deepEqual(users, ['.wb-door__body', '.wb-feature__body', '.wb-stage__scrim']);
+  for (const sel of ['.wb-door__body', '.wb-feature__body'])
+    assert.match(block(sel), /linear-gradient\(180deg,\s*var\(--wb-color-scrim-0\) 0%,\s*var\(--wb-color-scrim\) 100%\)/, sel);
+});
+
+// 0.2.1: the stage's scrim was clear to 30% and full only at the foot, so the headline's top line sat almost on the bare
+// photograph, and the nav over it had nothing (Task 1 review). The alpha is read from the gradient's stops and the tokens.
+test('the stage scrim: a band under the nav, clear by 20%, at least 0.5 from 40% down, the full 0.85 by 65% and held', () => {
+  const { light } = JSON.parse(read('tokens/tokens.json')).color;
+  const alpha = (name) => Number(light[name].match(/\/\s*([\d.]+)\)$/)[1]);
+  const gradient = block('.wb-stage__scrim').match(/linear-gradient\(180deg,([^;]*)\)\s*;/)?.[1] ?? '';
+  const stops = [...gradient.matchAll(/var\(--wb-color-(scrim[a-z0-9-]*)\)\s+(\d+)%/g)].map((m) => [Number(m[2]), alpha(m[1])]);
+  assert.ok(stops.length >= 3 && stops.length === gradient.split(',').length, `every stop is a scrim token at a position: ${gradient}`);
+  const at = (p) => {
+    if (p <= stops[0][0]) return stops[0][1];
+    for (let i = 1; i < stops.length; i += 1) {
+      const [[p0, a0], [p1, a1]] = [stops[i - 1], stops[i]];
+      if (p <= p1) return a0 + ((a1 - a0) * (p - p0)) / (p1 - p0);
+    }
+    return stops.at(-1)[1];
+  };
+  assert.ok(Math.abs(at(0) - 0.35) < 0.051, `top band ${at(0)}`);
+  assert.equal(at(20), 0, 'clear by 20%');
+  for (let p = 40; p <= 100; p += 1) assert.ok(at(p) >= 0.5, `${p}%: ${at(p).toFixed(3)}`);
+  for (let p = 65; p <= 100; p += 1) assert.equal(at(p), 0.85, `${p}%`);
 });
 
 test('text on a photograph is --wb-color-on-photo, which stays white in both themes, never the ground colour', () => {

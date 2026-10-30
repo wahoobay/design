@@ -473,13 +473,12 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
 
 /* Stage: the home page's full-height photograph with the headline set on it (spec §4.3, Deep Field). About 820px at
    1440, never taller than the viewport. The text is white in both themes (--wb-color-on-photo) over the scrim, the dark
-   ground at partial alpha from tokens.css, which darkens the foot of the photograph where the words sit. Put
-   .wb-container on .wb-stage__body to line it up with the page. */
+   ground at partial alpha from tokens.css. Put .wb-container on .wb-stage__body to line it up with the page. */
 .wb-stage {
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: clamp(32rem, 90vh, 52rem);
+  min-height: clamp(20rem, 90vh, 52rem);
   overflow: hidden;
   color: var(--wb-color-on-photo);
 }
@@ -490,10 +489,12 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   height: 100%;
   object-fit: cover;
 }
+/* The scrim: a light band under the nav, clear by 20%, then the full scrim by half way down and held to the foot, so the
+   headline's first line is already at 0.5 or more. */
 .wb-stage__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--wb-color-scrim-0) 30%, var(--wb-color-scrim) 100%);
+  background: linear-gradient(180deg, var(--wb-color-scrim-top) 0%, var(--wb-color-scrim-0) 20%, var(--wb-color-scrim) 50%, var(--wb-color-scrim) 100%);
 }
 .wb-stage__body {
   position: relative;
