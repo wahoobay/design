@@ -2,6 +2,13 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.2.1 — 2026-10-30
+
+### Changed
+
+- The stage's scrim opens with a band of the new `--wb-color-scrim-top` (`rgb(11 27 43 / 0.35)`, both themes) under the overlaid nav, clear by 20%, and reaches the full `--wb-color-scrim` by 50%, held to the foot, so the headline's first line sits on 0.5 or more (it was clear to 30% and full only at the foot).
+- The stage's height floor is 20rem, `min-height: clamp(20rem, 90vh, 52rem)` (it was 32rem), so the stage is never taller than a landscape phone's viewport.
+
 ## 0.2.0 — 2026-10-30
 
 ### Added
