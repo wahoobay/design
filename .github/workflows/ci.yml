@@ -16,4 +16,5 @@ jobs:
       - run: npm run build
       - run: npm test
       - name: dist is up to date
-        run: git diff --exit-code -- dist
+        # porcelain status catches untracked files too, which git diff does not
+        run: test -z "$(git status --porcelain -- dist)"
