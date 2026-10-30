@@ -25,6 +25,13 @@ export async function build(root = process.cwd()) {
     await cp(join(root, 'node_modules', '@fontsource-variable', 'manrope', 'files', file), join(dist, 'fonts', file));
   }
   await writeFile(join(dist, 'fonts.css'), fontsCss());
+  const onDisk = (await readdir(join(root, 'src', 'components'))).filter((n) => n.endsWith('.css')).map((n) => n.slice(0, -'.css'.length)).sort();
+  const listed = [...COMPONENT_FILES].sort();
+  const missing = onDisk.filter((n) => !listed.includes(n));
+  const extra = listed.filter((n) => !onDisk.includes(n));
+  if (missing.length || extra.length) {
+    throw new Error(`COMPONENT_FILES in scripts/build.mjs does not match src/components/: not listed [${missing}], listed but absent [${extra}]`);
+  }
   const css = [await readFile(join(root, 'src', 'base.css'), 'utf8')];
   for (const name of COMPONENT_FILES) css.push(await readFile(join(root, 'src', 'components', `${name}.css`), 'utf8'));
   await writeFile(join(dist, 'components.css'), `${COMPONENTS_HEADER}\n${css.join('\n')}`);

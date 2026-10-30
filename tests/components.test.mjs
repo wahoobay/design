@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 
 const read = (path) => readFileSync(path, 'utf8');
 
@@ -303,4 +303,11 @@ test('index.html shows the 0.1.2 pieces in both themes as the site uses them', (
     assert.match(part, /<img\b[^>]*>\s*<figcaption class="wb-caption">/, `${theme}: a caption under a photo`);
     assert.match(part, /class="wb-panel wb-panel--raised/, `${theme}: a raised panel`);
   }
+});
+
+test('every file in src/components/ is in components.css', () => {
+  const css = read('dist/components.css');
+  const files = readdirSync('src/components').filter((f) => f.endsWith('.css'));
+  assert.ok(files.length > 0);
+  for (const f of files) assert.ok(css.includes(read(`src/components/${f}`)), `${f} is missing from dist/components.css`);
 });
