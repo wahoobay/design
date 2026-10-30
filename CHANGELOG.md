@@ -2,6 +2,17 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.1.4 — 2026-10-30
+
+### Added
+
+- `.wb-media`, a standalone photo or video outside prose (a page's banner, a post's photo): a block as wide as its column with the 12px corners, `var(--wb-radius)`. It never sets a height; where its context gives it one (an aspect-ratio or a height), a photo or video fills the box, cropped about its centre. `.wb-media--top` and `.wb-media--bottom` crop from that edge instead, so a subject there stays in frame without an inline style.
+
+### Changed
+
+- On screens up to 30rem (480px), the navigation's links wrap onto as many rows as they need, with a 4px gap between rows, instead of scrolling sideways, so every item is on screen. Wider than that, nothing changes.
+- The documentation page shows a standalone photo and one kept to the top of a 21:9 band, in both themes; its example navigation bars carry the site's six items.
+
 ## 0.1.3 — 2026-10-30
 
 ### Changed
