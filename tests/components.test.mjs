@@ -118,3 +118,51 @@ test('body text keeps "(c)" as typed: Manrope\'s common ligatures are off', () =
   const body = rules(read('dist/components.css')).find((r) => r.selector === 'body');
   assert.match(body.body, /font-variant-ligatures:\s*no-common-ligatures/);
 });
+
+test('the inlined logo has no inline style, so it follows currentColor; components.css needs no !important', () => {
+  const html = read('dist/index.html');
+  const svgs = [...html.matchAll(/<svg\b[^>]*aria-labelledby="wb-logo-title-\d+"[^>]*>/g)].map((m) => m[0]);
+  assert.equal(svgs.length, 2, 'two inlined logos');
+  for (const tag of svgs) assert.doesNotMatch(tag, /\sstyle=/, tag);
+  assert.match(read('dist/logo/wahoobay-logo.svg'), /<svg\b[^>]*style="color:#0088D6"/, 'the <img> file keeps its default colour');
+  assert.doesNotMatch(read('dist/components.css'), /!important/);
+});
+
+test('stat tile numbers are brand blue (spec §4.3: large numbers); the accent tile keeps the accent', () => {
+  const css = rules(read('dist/components.css'));
+  assert.match(css.find((r) => r.selector === '.wb-tile__v').body, /color:\s*var\(--wb-color-brand\)/);
+  assert.match(css.find((r) => r.selector === '.wb-tile--accent .wb-tile__v').body, /color:\s*var\(--wb-color-accent-text\)/);
+});
+
+test('nav links draw the focus ring inside the link, where the scrolling row cannot clip it', () => {
+  const rule = rules(read('dist/components.css')).find((r) => r.selector === '.wb-nav__link:focus-visible');
+  assert.ok(rule, '.wb-nav__link:focus-visible');
+  assert.match(rule.body, /outline-offset:\s*-2px/);
+});
+
+test('the logo is 34px tall on light and 30px on dark (spec §4.3)', () => {
+  const css = rules(read('dist/components.css'));
+  assert.match(css.find((r) => r.selector === '.wb-nav__logo :is(svg, img)').body, /height:\s*2\.125rem/);
+  assert.match(css.find((r) => r.selector === '[data-theme="dark"] .wb-nav__logo :is(svg, img)').body, /height:\s*1\.875rem/);
+});
+
+test('the live badge breathes, only without reduced motion, and nothing else animates (spec §4.3)', () => {
+  const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.match(css, /@keyframes wb-live-breathe\s*\{/);
+  assert.match(css, /@media \(prefers-reduced-motion: no-preference\)\s*\{\s*\.wb-live::before\s*\{[^}]*animation:[^;]*wb-live-breathe/);
+  assert.equal(css.match(/\banimation(-name)?:/g)?.length, 1, 'one animation in components.css');
+});
+
+test('the dark focus ring is not the accent, which means "alive right now"', () => {
+  const { dark } = JSON.parse(read('tokens/tokens.json')).color;
+  assert.ok(!['accent', 'accent-text', 'accent-tint'].some((k) => dark[k] === dark.focus), dark.focus);
+});
+
+test('detector waivers appear only where the spec overrides the detector: brand tile numbers and live badges', () => {
+  const raw = read('dist/index.html');
+  const html = raw.replace(/<!--[\s\S]*?-->/g, '');
+  const waivers = [...html.matchAll(/<\w+ class="([^"]*)" data-impeccable-ignore="([^"]*)"/g)].map((m) => `${m[1]} ${m[2]}`);
+  assert.equal(waivers.length, [...html.matchAll(/data-impeccable-ignore=/g)].length, 'every waiver sits right after a class');
+  for (const w of waivers) assert.ok(['wb-tile__v low-contrast', 'wb-live pulsing-dot'].includes(w), w);
+  assert.doesNotMatch(raw, /impeccable-disable/, 'no file-wide or line waivers');
+});

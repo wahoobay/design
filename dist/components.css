@@ -54,10 +54,9 @@ a {
   width: auto;
   height: 2.125rem;
 }
-/* The logo file sets an inline default colour for use as an <img>; an inlined copy takes the nav's colour. */
-.wb-nav__logo svg { color: inherit !important; }
-/* Spec: the logo is never recoloured except to white, on the dark ground. */
+/* Spec §4.3: 30px tall and white on the dark ground, never recoloured otherwise. */
 [data-theme="dark"] .wb-nav__logo { color: var(--wb-color-ink); }
+[data-theme="dark"] .wb-nav__logo :is(svg, img) { height: 1.875rem; }
 .wb-nav__links {
   display: flex;
   align-self: stretch;
@@ -78,6 +77,8 @@ a {
   white-space: nowrap;
 }
 .wb-nav__link:hover { color: var(--wb-color-ink); }
+/* Inside the link, so the row that scrolls on narrow screens cannot clip the ring. */
+.wb-nav__link:focus-visible { outline-offset: -2px; }
 .wb-nav__link--on,
 .wb-nav__link--on:hover {
   color: var(--wb-color-action);
@@ -152,6 +153,13 @@ a {
   border-radius: 50%;
   background: currentColor;
 }
+/* Spec §4.3: the live badge breathes (the live pages' one authored moment, with the detection boxes' entrance). */
+@media (prefers-reduced-motion: no-preference) {
+  .wb-live::before { animation: wb-live-breathe 2.4s ease-in-out infinite; }
+}
+@keyframes wb-live-breathe {
+  50% { opacity: 0.45; transform: scale(0.75); }
+}
 
 /* Species chip: a species seen recently, with when. Long names wrap; nothing is cut off. */
 .wb-chip {
@@ -175,7 +183,7 @@ a {
   white-space: nowrap;
 }
 
-/* Stat tile: a label and a large number. The accent tile is a count of something alive now. */
+/* Stat tile: a label and a large number in brand blue (large text, so 3:1 applies). The accent tile counts something alive now. */
 .wb-tile {
   min-width: 0;
   padding: var(--wb-space-3) var(--wb-space-4);
@@ -195,7 +203,7 @@ a {
 }
 .wb-tile__v {
   margin: var(--wb-space-1) 0 0;
-  color: var(--wb-color-action);
+  color: var(--wb-color-brand);
   font-size: var(--wb-text-2xl);
   font-weight: 800;
   line-height: 1.1;

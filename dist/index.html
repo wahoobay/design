@@ -9,6 +9,12 @@
   <link rel="stylesheet" href="./fonts.css">
   <link rel="stylesheet" href="./tokens.css">
   <link rel="stylesheet" href="./components.css">
+  <!-- Detector waivers on this page, element by element (tests/components.test.mjs pins where they may appear):
+       data-impeccable-ignore="low-contrast" on the light brand-blue tile numbers: spec §4.3 sets large display numbers in
+         brand blue; --wb-text-2xl is at least 28px at weight 800, so WCAG's 3:1 for large text applies (brand blue is 3.8:1
+         on white). The detector cannot resolve clamp() sizes and applies 4.5:1.
+       data-impeccable-ignore="pulsing-dot" on every live badge: spec §4.3, the live badge breathes as part of the live pages'
+         one authored moment; it is shown only while a stream is live and stops under prefers-reduced-motion. -->
   <style>
     /* Documentation layout only; the components come from components.css. */
     .docs-head { padding-top: var(--wb-space-8); padding-bottom: var(--wb-space-6); background: linear-gradient(180deg, var(--wb-color-tint) 0%, var(--wb-color-bg) 100%); }
@@ -70,7 +76,7 @@
   <header class="docs-head">
     <div class="wb-container">
       <h1>Wahoo Bay design system</h1>
-      <p class="docs-lede">Tokens and components for wahoobay.net and the fish-ID app. A white ground, a pale blue wash, one sans-serif and 12px corners. Brand blue is the logo and the large type, action blue is what you press, and the Seagrass accent means alive right now.</p>
+      <p class="docs-lede">Tokens and components for wahoobay.net and the fish-ID app. A white ground, a pale blue wash, one sans-serif and 12px corners. Brand blue is the logo, the large headings and the large numbers, action blue is what you press, and the Seagrass accent means alive right now.</p>
       <ul class="docs-toc" role="list">
         <li><a href="#tokens">Tokens</a></li>
         <li><a href="#light">Components</a></li>
@@ -86,7 +92,7 @@
 
       <h3>Colour, light</h3>
       <ul class="docs-swatches" role="list">
-        <li class="docs-swatch"><span style="background: var(--wb-color-brand)"></span><code>--wb-color-brand</code> <code>#0088D6</code><small>Logo, display headings, first chart series</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-brand)"></span><code>--wb-color-brand</code> <code>#0088D6</code><small>Logo, display headings, large numbers, first chart series</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-action)"></span><code>--wb-color-action</code> <code>#0072B5</code><small>Buttons, links, active navigation</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-on-action)"></span><code>--wb-color-on-action</code> <code>#FFFFFF</code><small>Text on action</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-ink)"></span><code>--wb-color-ink</code> <code>#0F2233</code><small>Text</small></li>
@@ -120,7 +126,7 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-accent-text)"></span><code>--wb-color-accent-text</code> <code>#5FE3D1</code><small>Accent text on tints</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#0F3A3C</code><small>Chip ground</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#07192B</code><small>Text on accent</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#5FE3D1</code><small>Focus ring</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#3FA8EA</code><small>Focus ring</small></li>
         </ul>
       </div>
 
@@ -158,7 +164,7 @@
 
     <section class="docs-theme" id="light" aria-labelledby="light-title">
     <nav class="wb-nav" aria-label="Example navigation, light">
-      <a class="wb-nav__logo" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8642.4 2596.6" style="color:#0088D6" fill="currentColor" role="img" aria-labelledby="wb-logo-title-1">
+      <a class="wb-nav__logo" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8642.4 2596.6" fill="currentColor" role="img" aria-labelledby="wb-logo-title-1">
 <title id="wb-logo-title-1">Wahoo Bay</title>
 <g id="mark-1">
 <path d="M1744.9,1546.6c-7.6-0.7-15.8-0.1-23.2,1.8c-10.5,2.7-20.8,6.7-30.8,11.1c-21.4,9.5-43.8,15.6-66.3,22
@@ -428,10 +434,10 @@
       <div class="docs-specimen">
         <div>
           <h3>Live badge</h3>
-          <p>Shown only while a stream is on.</p>
+          <p>Shown only while a stream is on. Its dot breathes, unless the reader asks for reduced motion.</p>
         </div>
         <div>
-          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live">Live</span></p>
+          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span></p>
         </div>
       </div>
 
@@ -454,16 +460,16 @@
       <div class="docs-specimen">
         <div>
           <h3>Stat tiles</h3>
-          <p>A reading and its unit, the number in action blue. The accent tile counts something alive today.</p>
+          <p>A reading and its unit, the number in brand blue. The accent tile counts something alive today.</p>
         </div>
         <div>
           <div class="docs-tiles">
-            <div class="wb-tile"><p class="wb-tile__k">Water</p><p class="wb-tile__v">27.4<small>°C</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Water</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">27.4<small>°C</small></p></div>
             <div class="wb-tile wb-tile--accent"><p class="wb-tile__k">Species today</p><p class="wb-tile__v">18</p></div>
-            <div class="wb-tile"><p class="wb-tile__k">Oxygen</p><p class="wb-tile__v">6.8<small>mg/L</small></p></div>
-            <div class="wb-tile"><p class="wb-tile__k">Salinity</p><p class="wb-tile__v">36<small>ppt</small></p></div>
-            <div class="wb-tile"><p class="wb-tile__k">Visibility</p><p class="wb-tile__v">6<small>m</small></p></div>
-            <div class="wb-tile"><p class="wb-tile__k">Dissolved oxygen, north reef module buoy</p><p class="wb-tile__v">6.9<small>mg/L</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Oxygen</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">6.8<small>mg/L</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Salinity</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">36<small>ppt</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Visibility</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">6<small>m</small></p></div>
+            <div class="wb-tile"><p class="wb-tile__k">Dissolved oxygen, north reef module buoy</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">6.9<small>mg/L</small></p></div>
           </div>
           <p class="docs-note">Fixture: the last tile's label is exactly 40 characters, there to show that a long label wraps inside the tile and never overflows it.</p>
         </div>
@@ -529,7 +535,7 @@
         <div>
           <div class="docs-video">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
-            <span class="wb-live">Live</span>
+            <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span>
             <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
@@ -578,7 +584,7 @@
 
     <section data-theme="dark" class="docs-theme" id="dark" aria-labelledby="dark-title">
     <nav class="wb-nav" aria-label="Example navigation, dark">
-      <a class="wb-nav__logo" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8642.4 2596.6" style="color:#0088D6" fill="currentColor" role="img" aria-labelledby="wb-logo-title-2">
+      <a class="wb-nav__logo" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8642.4 2596.6" fill="currentColor" role="img" aria-labelledby="wb-logo-title-2">
 <title id="wb-logo-title-2">Wahoo Bay</title>
 <g id="mark-2">
 <path d="M1744.9,1546.6c-7.6-0.7-15.8-0.1-23.2,1.8c-10.5,2.7-20.8,6.7-30.8,11.1c-21.4,9.5-43.8,15.6-66.3,22
@@ -848,10 +854,10 @@
       <div class="docs-specimen">
         <div>
           <h3>Live badge</h3>
-          <p>Shown only while a stream is on.</p>
+          <p>Shown only while a stream is on. Its dot breathes, unless the reader asks for reduced motion.</p>
         </div>
         <div>
-          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live">Live</span></p>
+          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span></p>
         </div>
       </div>
 
@@ -874,7 +880,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Stat tiles</h3>
-          <p>A reading and its unit, the number in action blue. The accent tile counts something alive today.</p>
+          <p>A reading and its unit, the number in brand blue. The accent tile counts something alive today.</p>
         </div>
         <div>
           <div class="docs-tiles">
@@ -949,7 +955,7 @@
         <div>
           <div class="docs-video">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
-            <span class="wb-live">Live</span>
+            <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span>
             <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>

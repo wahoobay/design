@@ -20,3 +20,10 @@
   border-radius: 50%;
   background: currentColor;
 }
+/* Spec §4.3: the live badge breathes (the live pages' one authored moment, with the detection boxes' entrance). */
+@media (prefers-reduced-motion: no-preference) {
+  .wb-live::before { animation: wb-live-breathe 2.4s ease-in-out infinite; }
+}
+@keyframes wb-live-breathe {
+  50% { opacity: 0.45; transform: scale(0.75); }
+}

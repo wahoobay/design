@@ -29,8 +29,9 @@ export async function build(root = process.cwd()) {
 const COMPONENT_FILES = ['nav', 'button', 'live', 'chip', 'tile', 'panel', 'card', 'chart', 'detect', 'form', 'footer', 'layout'];
 
 // Replaces each <!-- @wb-logo --> with the logo's <svg>, so it follows currentColor; each copy gets its own ids.
+// The root's inline style="color:…" is the default for <img> use (kept in dist/logo); an inline copy drops it.
 function inlineLogo(page, logo) {
-  const svg = logo.slice(logo.indexOf('<svg')).trim();
+  const svg = logo.slice(logo.indexOf('<svg')).trim().replace(/^(<svg\b[^>]*?)\s+style="[^"]*"/, '$1');
   let n = 0;
   return page.replaceAll('<!-- @wb-logo -->', () => {
     n += 1;

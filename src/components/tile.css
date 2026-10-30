@@ -1,4 +1,4 @@
-/* Stat tile: a label and a large number. The accent tile is a count of something alive now. */
+/* Stat tile: a label and a large number in brand blue (large text, so 3:1 applies). The accent tile counts something alive now. */
 .wb-tile {
   min-width: 0;
   padding: var(--wb-space-3) var(--wb-space-4);
@@ -18,7 +18,7 @@
 }
 .wb-tile__v {
   margin: var(--wb-space-1) 0 0;
-  color: var(--wb-color-action);
+  color: var(--wb-color-brand);
   font-size: var(--wb-text-2xl);
   font-weight: 800;
   line-height: 1.1;
