@@ -22,3 +22,12 @@ export const pairs = [
   ['accent-text', 'bg'], ['accent-text', 'accent-tint'],
   ['on-accent', 'accent'],
 ];
+
+// White text (the on-photo colour) over a scrim of the given alpha laid on a photograph pixel. The scrim colour is the
+// dark ground, rgb(11 27 43); the default photograph pixel is pure white, the worst case a photograph can give (a real
+// mid-tone region has more headroom: at 0.65 this is 5.44:1 over white and 9.06:1 over a mid-grey of 160).
+export const SCRIM_RGB = [11, 27, 43];
+export function whiteOnScrim(alpha, photo = [255, 255, 255]) {
+  const mixed = '#' + SCRIM_RGB.map((c, i) => Math.round(alpha * c + (1 - alpha) * photo[i]).toString(16).padStart(2, '0')).join('');
+  return contrast('#FFFFFF', mixed);
+}

@@ -32,7 +32,7 @@ test('tokens: text on photographs and its scrim are the same in both themes', ()
     assert.match(block, /--wb-color-on-photo: #FFFFFF;/, `${theme}: on-photo`);
     assert.match(block, /--wb-color-scrim: rgb\(11 27 43 \/ 0\.85\);/, `${theme}: scrim`);
     assert.match(block, /--wb-color-scrim-0: rgb\(11 27 43 \/ 0\);/, `${theme}: scrim-0`);
-    assert.match(block, /--wb-color-scrim-top: rgb\(11 27 43 \/ 0\.55\);/, `${theme}: scrim-top`);
+    assert.match(block, /--wb-color-scrim-top: rgb\(11 27 43 \/ 0\.7\);/, `${theme}: scrim-top`);
   }
 });
 // 0.3.0: chart series 3 to 8 are the Wong colour-blind-safe set (spec §4.3), after brand blue (series 1) and the accent
@@ -46,4 +46,16 @@ test('tokens: chart series 3 to 8 are the Wong set, the same in both themes, and
     assert.equal(block.match(/--wb-color-series-\d+:/g)?.length, 6, `${theme}: six series tokens, none for 1 and 2`);
   }
   assert.ok(!pairs.flat().some((name) => name.startsWith('series')), 'no series token in a text pair');
+});
+
+// 0.3.2: the neutral "other" series is the muted ink of each theme (a tail of small species folded together should not
+// borrow a colour from the eight). It is a mark colour, never text, so it has no contrast pair either.
+test('tokens: --wb-color-series-other is the muted ink of each theme and never a text pair', () => {
+  const t = readFileSync('dist/tokens.css', 'utf8');
+  const tokens = JSON.parse(readFileSync('tokens/tokens.json', 'utf8'));
+  const [light, dark] = [t.match(/:root\s*\{([^}]*)\}/)[1], t.match(/\[data-theme="dark"\]\s*\{([^}]*)\}/)[1]];
+  assert.match(light, /--wb-color-series-other: #5B6F80;/, 'light');
+  assert.match(dark, /--wb-color-series-other: #93A9BC;/, 'dark');
+  for (const theme of ['light', 'dark']) assert.equal(tokens.color[theme]['series-other'], tokens.color[theme]['ink-3'], `${theme}: the value of ink-3`);
+  assert.ok(!pairs.flat().some((name) => name.includes('series-other')), 'not in a text pair');
 });

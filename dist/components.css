@@ -621,12 +621,13 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   height: 100%;
   object-fit: cover;
 }
-/* The scrim: a band under the nav, held to 15% so the three rows the nav wraps onto on a phone sit on it, clear by 32%,
-   then the full scrim by 45% and held to the foot, so the headline's first line is at 0.5 or more from 40% down. */
+/* The scrim: a band under the nav (0.7), held to 15% so the three rows the nav wraps onto on a phone sit on it, clear by
+   30%, then the full scrim (0.85) by 40% and held to the foot. White small text, the nav links and the lede, is 4.5:1 or
+   better in the band and from 38% down even over a white photograph; the headline is on 0.5 or more from 40% down. */
 .wb-stage__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--wb-color-scrim-top) 0%, var(--wb-color-scrim-top) 15%, var(--wb-color-scrim-0) 32%, var(--wb-color-scrim) 45%, var(--wb-color-scrim) 100%);
+  background: linear-gradient(180deg, var(--wb-color-scrim-top) 0%, var(--wb-color-scrim-top) 15%, var(--wb-color-scrim-0) 30%, var(--wb-color-scrim) 40%, var(--wb-color-scrim) 100%);
 }
 .wb-stage__body {
   position: relative;
@@ -749,14 +750,15 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   height: 100%;
   object-fit: cover;
 }
-/* The scrim is full by 40% of the body and held; the first 4rem are padding, so the title starts where the scrim is
-   already at full strength, whatever the photograph is bright with under it. */
+/* The scrim is full by 30% of the body and held; the first 4rem are padding, so the title starts where the scrim is
+   already at full strength, whatever the photograph is bright with under it. White body text is 4.5:1 or better from
+   23% of the body down even over a white photograph. */
 .wb-door__body {
   position: relative;
   width: 100%;
   padding: var(--wb-space-6);
   padding-top: var(--wb-space-8);
-  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 40%, var(--wb-color-scrim) 100%);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 30%, var(--wb-color-scrim) 100%);
 }
 .wb-door__title {
   margin: 0;
@@ -799,14 +801,15 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   height: 100%;
   object-fit: cover;
 }
-/* The scrim is full by 40% of the body and held; the first 4rem are padding, so the title starts where the scrim is
-   already at full strength, whatever the photograph is bright with under it. */
+/* The scrim is full by 30% of the body and held; the first 4rem are padding, so the title starts where the scrim is
+   already at full strength, whatever the photograph is bright with under it. White body text is 4.5:1 or better from
+   23% of the body down even over a white photograph. */
 .wb-feature__body {
   position: relative;
   width: 100%;
   padding: var(--wb-space-6);
   padding-top: var(--wb-space-8);
-  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 40%, var(--wb-color-scrim) 100%);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 30%, var(--wb-color-scrim) 100%);
 }
 .wb-feature__title {
   margin: 0;
@@ -820,7 +823,7 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   font-size: var(--wb-text-base);
 }
 
-/* Chart frame with legend. A mark in the SVG and its legend item carry data-series="1" to "8": brand blue first, the
+/* Chart frame with legend. A mark in the SVG and its legend item carry data-series="1" to "8" (or "other"): brand blue first, the
    accent second, then the Wong colour-blind-safe set (spec §4.3), the same in both themes. Each series sets its colour
    once, as `color`; its line, its bars and its legend key take it as currentColor. A series colour is never text. */
 .wb-chart {
@@ -845,7 +848,7 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   display: block;
   width: 100%;
   height: auto;
-  min-height: 4rem;
+  min-height: 8.75rem;
   aspect-ratio: 5 / 1;
   overflow: visible;
 }
@@ -865,6 +868,8 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
 .wb-chart svg [data-series="6"], .wb-chart__legend [data-series="6"]::before { color: var(--wb-color-series-6); }
 .wb-chart svg [data-series="7"], .wb-chart__legend [data-series="7"]::before { color: var(--wb-color-series-7); }
 .wb-chart svg [data-series="8"], .wb-chart__legend [data-series="8"]::before { color: var(--wb-color-series-8); }
+/* Other: the neutral series for the tail folded together, the muted ink of each theme. */
+.wb-chart svg [data-series="other"], .wb-chart__legend [data-series="other"]::before { color: var(--wb-color-series-other); }
 /* A bar (an SVG <rect class="wb-chart__bar" data-series="…">) is filled with its series colour, with no outline. */
 .wb-chart svg .wb-chart__bar[data-series] {
   fill: currentColor;
@@ -971,6 +976,20 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   left: -2px;
   bottom: auto;
   border-radius: 0.25rem 0 0.25rem 0;
+}
+/* A box near the frame's right edge would run its label past the edge, so the label is anchored to the box's right edge
+   instead (corner radii mirrored). It combines with --inside: the label is then pinned inside, at the top-right. */
+.wb-detect--right .wb-detect__label {
+  left: auto;
+  right: -2px;
+  border-radius: 0.25rem 0.25rem 0 0.25rem;
+}
+.wb-detect--right.wb-detect--inside .wb-detect__label {
+  top: -2px;
+  right: -2px;
+  bottom: auto;
+  left: auto;
+  border-radius: 0 0.25rem 0 0.25rem;
 }
 /* Spec §4.3, Ruling 9: a box and its label appear together, fading in over 150ms: with the live badge's breath, the live
    page's one authored moment. It plays when the box enters the page; a box that only moves (the same element, new
@@ -1118,4 +1137,17 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   margin-right: auto;
   padding-left: var(--wb-space-4);
   padding-right: var(--wb-space-4);
+}
+
+/* Utilities, last in the build so they win over the component rules. */
+/* Keep a label's case: the tile label, the chart caption and the panel title set small capitals' worth of uppercase and
+   tracking, which would turn "pH" into "PH". Those component rules are more specific than one class (.wb-chart figcaption
+   is 0,1,1), so each gets its own, one class more specific. */
+.wb-as-is {
+  text-transform: none;
+  letter-spacing: normal;
+}
+.wb-as-is, .wb-tile__k.wb-as-is, .wb-chart figcaption.wb-as-is, .wb-panel__title.wb-as-is {
+  text-transform: none;
+  letter-spacing: normal;
 }

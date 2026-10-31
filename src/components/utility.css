@@ -1,0 +1,12 @@
+/* Utilities, last in the build so they win over the component rules. */
+/* Keep a label's case: the tile label, the chart caption and the panel title set small capitals' worth of uppercase and
+   tracking, which would turn "pH" into "PH". Those component rules are more specific than one class (.wb-chart figcaption
+   is 0,1,1), so each gets its own, one class more specific. */
+.wb-as-is {
+  text-transform: none;
+  letter-spacing: normal;
+}
+.wb-as-is, .wb-tile__k.wb-as-is, .wb-chart figcaption.wb-as-is, .wb-panel__title.wb-as-is {
+  text-transform: none;
+  letter-spacing: normal;
+}

@@ -33,6 +33,20 @@
   bottom: auto;
   border-radius: 0.25rem 0 0.25rem 0;
 }
+/* A box near the frame's right edge would run its label past the edge, so the label is anchored to the box's right edge
+   instead (corner radii mirrored). It combines with --inside: the label is then pinned inside, at the top-right. */
+.wb-detect--right .wb-detect__label {
+  left: auto;
+  right: -2px;
+  border-radius: 0.25rem 0.25rem 0 0.25rem;
+}
+.wb-detect--right.wb-detect--inside .wb-detect__label {
+  top: -2px;
+  right: -2px;
+  bottom: auto;
+  left: auto;
+  border-radius: 0 0.25rem 0 0.25rem;
+}
 /* Spec §4.3, Ruling 9: a box and its label appear together, fading in over 150ms: with the live badge's breath, the live
    page's one authored moment. It plays when the box enters the page; a box that only moves (the same element, new
    geometry) does not fade again. With reduced motion a box simply appears. */

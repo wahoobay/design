@@ -1,4 +1,4 @@
-/* Chart frame with legend. A mark in the SVG and its legend item carry data-series="1" to "8": brand blue first, the
+/* Chart frame with legend. A mark in the SVG and its legend item carry data-series="1" to "8" (or "other"): brand blue first, the
    accent second, then the Wong colour-blind-safe set (spec §4.3), the same in both themes. Each series sets its colour
    once, as `color`; its line, its bars and its legend key take it as currentColor. A series colour is never text. */
 .wb-chart {
@@ -23,7 +23,7 @@
   display: block;
   width: 100%;
   height: auto;
-  min-height: 4rem;
+  min-height: 8.75rem;
   aspect-ratio: 5 / 1;
   overflow: visible;
 }
@@ -43,6 +43,8 @@
 .wb-chart svg [data-series="6"], .wb-chart__legend [data-series="6"]::before { color: var(--wb-color-series-6); }
 .wb-chart svg [data-series="7"], .wb-chart__legend [data-series="7"]::before { color: var(--wb-color-series-7); }
 .wb-chart svg [data-series="8"], .wb-chart__legend [data-series="8"]::before { color: var(--wb-color-series-8); }
+/* Other: the neutral series for the tail folded together, the muted ink of each theme. */
+.wb-chart svg [data-series="other"], .wb-chart__legend [data-series="other"]::before { color: var(--wb-color-series-other); }
 /* A bar (an SVG <rect class="wb-chart__bar" data-series="…">) is filled with its series colour, with no outline. */
 .wb-chart svg .wb-chart__bar[data-series] {
   fill: currentColor;

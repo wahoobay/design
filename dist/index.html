@@ -194,6 +194,7 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-series-6)"></span><code>--wb-color-series-6</code> <code>#CC79A7</code><small>Series 6, reddish purple</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-series-7)"></span><code>--wb-color-series-7</code> <code>#009E73</code><small>Series 7, bluish green</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-series-8)"></span><code>--wb-color-series-8</code> <code>#F0E442</code><small>Series 8, yellow</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-series-other)"></span><code>--wb-color-series-other</code> <code>#5B6F80</code> (light) <code>#93A9BC</code> (dark)<small>Other, the muted ink: the neutral series for everything folded together</small></li>
       </ul>
 
       <h3>Type scale</h3>
@@ -604,10 +605,11 @@
       <div class="docs-specimen">
         <div>
           <h3>Stat tiles</h3>
-          <p>A reading and its unit, the number in brand blue. The accent tile counts something alive today.</p>
+          <p>A reading and its unit, the number in brand blue. The accent tile counts something alive today. <code>wb-as-is</code> on a label keeps its case, as in pH.</p>
         </div>
         <div>
           <div class="docs-tiles">
+            <div class="wb-tile"><p class="wb-tile__k wb-as-is">pH</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">8.1</p></div>
             <div class="wb-tile"><p class="wb-tile__k">Water</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">27.4<small>°C</small></p></div>
             <div class="wb-tile wb-tile--accent"><p class="wb-tile__k">Species today</p><p class="wb-tile__v">18</p></div>
             <div class="wb-tile"><p class="wb-tile__k">Oxygen</p><p class="wb-tile__v" data-impeccable-ignore="low-contrast">6.8<small>mg/L</small></p></div>
@@ -1384,7 +1386,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Bars, axes and the eight series</h3>
-          <p>The tall frame, <code>wb-chart--tall</code>, is 2:1, for the trends page. A bar is a <code>&lt;rect class="wb-chart__bar"&gt;</code> filled with its series colour; a <code>wb-chart__grid</code> group holds the dashed gridlines and a <code>wb-chart__axis</code> group the 1px axis and its labels. Eight series is the most a chart has: fold the rest into the eighth, as Other. Text in an SVG scales with the drawing, so draw a chart in CSS pixels at the size it is shown; this one is drawn for 600px.</p>
+          <p>The tall frame, <code>wb-chart--tall</code>, is 2:1, for the trends page. A bar is a <code>&lt;rect class="wb-chart__bar"&gt;</code> filled with its series colour; a <code>wb-chart__grid</code> group holds the dashed gridlines and a <code>wb-chart__axis</code> group the 1px axis and its labels. Eight series is the most a chart has: fold the rest into Other, <code>data-series="other"</code>, the neutral muted ink, which the legend names last. Text in an SVG scales with the drawing, so draw a chart in CSS pixels at the size it is shown; this one is drawn for 600px.</p>
         </div>
         <div class="docs-chart">
           <figure class="wb-chart wb-chart--tall">
@@ -1403,7 +1405,7 @@
               <rect class="wb-chart__bar" data-series="5" x="58" y="139.4" width="44" height="11"/>
               <rect class="wb-chart__bar" data-series="6" x="58" y="129" width="44" height="8.4"/>
               <rect class="wb-chart__bar" data-series="7" x="58" y="121.2" width="44" height="5.8"/>
-              <rect class="wb-chart__bar" data-series="8" x="58" y="107.5" width="44" height="11.7"/>
+              <rect class="wb-chart__bar" data-series="other" x="58" y="107.5" width="44" height="11.7"/>
               <rect class="wb-chart__bar" data-series="1" x="138" y="225.2" width="44" height="44.8"/>
               <rect class="wb-chart__bar" data-series="2" x="138" y="192.7" width="44" height="30.5"/>
               <rect class="wb-chart__bar" data-series="3" x="138" y="173.2" width="44" height="17.5"/>
@@ -1411,7 +1413,7 @@
               <rect class="wb-chart__bar" data-series="5" x="138" y="143.3" width="44" height="9.7"/>
               <rect class="wb-chart__bar" data-series="6" x="138" y="134.2" width="44" height="7.1"/>
               <rect class="wb-chart__bar" data-series="7" x="138" y="127.7" width="44" height="4.5"/>
-              <rect class="wb-chart__bar" data-series="8" x="138" y="115.3" width="44" height="10.4"/>
+              <rect class="wb-chart__bar" data-series="other" x="138" y="115.3" width="44" height="10.4"/>
               <rect class="wb-chart__bar" data-series="1" x="218" y="214.8" width="44" height="55.2"/>
               <rect class="wb-chart__bar" data-series="2" x="218" y="188.8" width="44" height="24"/>
               <rect class="wb-chart__bar" data-series="3" x="218" y="161.5" width="44" height="25.3"/>
@@ -1419,7 +1421,7 @@
               <rect class="wb-chart__bar" data-series="5" x="218" y="132.9" width="44" height="13.6"/>
               <rect class="wb-chart__bar" data-series="6" x="218" y="121.2" width="44" height="9.7"/>
               <rect class="wb-chart__bar" data-series="7" x="218" y="112.1" width="44" height="7.1"/>
-              <rect class="wb-chart__bar" data-series="8" x="218" y="97.1" width="44" height="13"/>
+              <rect class="wb-chart__bar" data-series="other" x="218" y="97.1" width="44" height="13"/>
               <rect class="wb-chart__bar" data-series="1" x="298" y="233" width="44" height="37"/>
               <rect class="wb-chart__bar" data-series="2" x="298" y="209.6" width="44" height="21.4"/>
               <rect class="wb-chart__bar" data-series="3" x="298" y="191.4" width="44" height="16.2"/>
@@ -1427,7 +1429,7 @@
               <rect class="wb-chart__bar" data-series="5" x="298" y="169.3" width="44" height="8.4"/>
               <rect class="wb-chart__bar" data-series="6" x="298" y="161.5" width="44" height="5.8"/>
               <rect class="wb-chart__bar" data-series="7" x="298" y="156.3" width="44" height="3.2"/>
-              <rect class="wb-chart__bar" data-series="8" x="298" y="145.2" width="44" height="9.1"/>
+              <rect class="wb-chart__bar" data-series="other" x="298" y="145.2" width="44" height="9.1"/>
               <rect class="wb-chart__bar" data-series="1" x="378" y="209.6" width="44" height="60.4"/>
               <rect class="wb-chart__bar" data-series="2" x="378" y="174.5" width="44" height="33.1"/>
               <rect class="wb-chart__bar" data-series="3" x="378" y="148.5" width="44" height="24"/>
@@ -1435,7 +1437,7 @@
               <rect class="wb-chart__bar" data-series="5" x="378" y="112.1" width="44" height="14.9"/>
               <rect class="wb-chart__bar" data-series="6" x="378" y="99.1" width="44" height="11"/>
               <rect class="wb-chart__bar" data-series="7" x="378" y="88.7" width="44" height="8.4"/>
-              <rect class="wb-chart__bar" data-series="8" x="378" y="72.4" width="44" height="14.3"/>
+              <rect class="wb-chart__bar" data-series="other" x="378" y="72.4" width="44" height="14.3"/>
               <rect class="wb-chart__bar" data-series="1" x="458" y="204.4" width="44" height="65.6"/>
               <rect class="wb-chart__bar" data-series="2" x="458" y="165.4" width="44" height="37"/>
               <rect class="wb-chart__bar" data-series="3" x="458" y="134.2" width="44" height="29.2"/>
@@ -1443,7 +1445,7 @@
               <rect class="wb-chart__bar" data-series="5" x="458" y="95.2" width="44" height="16.2"/>
               <rect class="wb-chart__bar" data-series="6" x="458" y="80.9" width="44" height="12.3"/>
               <rect class="wb-chart__bar" data-series="7" x="458" y="69.2" width="44" height="9.7"/>
-              <rect class="wb-chart__bar" data-series="8" x="458" y="51.6" width="44" height="15.6"/>
+              <rect class="wb-chart__bar" data-series="other" x="458" y="51.6" width="44" height="15.6"/>
               <rect class="wb-chart__bar" data-series="1" x="538" y="212.2" width="44" height="57.8"/>
               <rect class="wb-chart__bar" data-series="2" x="538" y="178.4" width="44" height="31.8"/>
               <rect class="wb-chart__bar" data-series="3" x="538" y="153.7" width="44" height="22.7"/>
@@ -1451,7 +1453,7 @@
               <rect class="wb-chart__bar" data-series="5" x="538" y="122.5" width="44" height="12.3"/>
               <rect class="wb-chart__bar" data-series="6" x="538" y="110.8" width="44" height="9.7"/>
               <rect class="wb-chart__bar" data-series="7" x="538" y="101.7" width="44" height="7.1"/>
-              <rect class="wb-chart__bar" data-series="8" x="538" y="86.7" width="44" height="13"/>
+              <rect class="wb-chart__bar" data-series="other" x="538" y="86.7" width="44" height="13"/>
               <g class="wb-chart__axis">
                 <line x1="40" x2="600" y1="270" y2="270"/>
                 <text x="32" y="274" text-anchor="end">0</text>
@@ -1468,7 +1470,7 @@
                 <text x="560" y="290" text-anchor="middle">Oct 30</text>
               </g>
             </svg>
-            <ul class="wb-chart__legend" role="list"><li data-series="1" data-kind="bar">Sergeant major</li><li data-series="2" data-kind="bar">Blue tang</li><li data-series="3" data-kind="bar">Grey snapper</li><li data-series="4" data-kind="bar">Stoplight parrotfish</li><li data-series="5" data-kind="bar">Bluehead wrasse</li><li data-series="6" data-kind="bar">French grunt</li><li data-series="7" data-kind="bar">Yellowtail snapper</li><li data-series="8" data-kind="bar">Other species</li></ul>
+            <ul class="wb-chart__legend" role="list"><li data-series="1" data-kind="bar">Sergeant major</li><li data-series="2" data-kind="bar">Blue tang</li><li data-series="3" data-kind="bar">Grey snapper</li><li data-series="4" data-kind="bar">Stoplight parrotfish</li><li data-series="5" data-kind="bar">Bluehead wrasse</li><li data-series="6" data-kind="bar">French grunt</li><li data-series="7" data-kind="bar">Yellowtail snapper</li><li data-series="other" data-kind="bar">Other species</li></ul>
           </figure>
         </div>
       </div>
@@ -1489,13 +1491,14 @@
       <div class="docs-specimen">
         <div>
           <h3>Detection boxes</h3>
-          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion. A box whose top is within about 1.5em of the frame's top edge takes <code>wb-detect--inside</code>, which pins its label inside the box, at its top-left; the page adds it when it measures that.</p>
+          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion. A box whose top is within about 1.5em of the frame's top edge takes <code>wb-detect--inside</code>, which pins its label inside the box, at its top-left; the page adds it when it measures that. A box near the right edge takes <code>wb-detect--right</code>, which anchors the label to the box's right edge so it stays in the frame; it combines with <code>wb-detect--inside</code>.</p>
         </div>
         <div>
           <div class="wb-video docs-video-frame">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
             <div class="wb-detect wb-detect--inside" style="left: 20%; top: 2%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 58%; width: 14%; height: 12%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+            <div class="wb-detect wb-detect--right" style="left: 84%; top: 30%; width: 14%; height: 12%"><span class="wb-detect__label">Yellowtail snapper<small>0.88</small></span></div>
           </div>
         </div>
       </div>
@@ -1941,10 +1944,11 @@
       <div class="docs-specimen">
         <div>
           <h3>Stat tiles</h3>
-          <p>A reading and its unit, the number in brand blue. The accent tile counts something alive today.</p>
+          <p>A reading and its unit, the number in brand blue. The accent tile counts something alive today. <code>wb-as-is</code> on a label keeps its case, as in pH.</p>
         </div>
         <div>
           <div class="docs-tiles">
+            <div class="wb-tile"><p class="wb-tile__k wb-as-is">pH</p><p class="wb-tile__v">8.1</p></div>
             <div class="wb-tile"><p class="wb-tile__k">Water</p><p class="wb-tile__v">27.4<small>°C</small></p></div>
             <div class="wb-tile wb-tile--accent"><p class="wb-tile__k">Species today</p><p class="wb-tile__v">18</p></div>
             <div class="wb-tile"><p class="wb-tile__k">Oxygen</p><p class="wb-tile__v">6.8<small>mg/L</small></p></div>
@@ -2721,7 +2725,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Bars, axes and the eight series</h3>
-          <p>The tall frame, <code>wb-chart--tall</code>, is 2:1, for the trends page. A bar is a <code>&lt;rect class="wb-chart__bar"&gt;</code> filled with its series colour; a <code>wb-chart__grid</code> group holds the dashed gridlines and a <code>wb-chart__axis</code> group the 1px axis and its labels. Eight series is the most a chart has: fold the rest into the eighth, as Other. Text in an SVG scales with the drawing, so draw a chart in CSS pixels at the size it is shown; this one is drawn for 600px.</p>
+          <p>The tall frame, <code>wb-chart--tall</code>, is 2:1, for the trends page. A bar is a <code>&lt;rect class="wb-chart__bar"&gt;</code> filled with its series colour; a <code>wb-chart__grid</code> group holds the dashed gridlines and a <code>wb-chart__axis</code> group the 1px axis and its labels. Eight series is the most a chart has: fold the rest into Other, <code>data-series="other"</code>, the neutral muted ink, which the legend names last. Text in an SVG scales with the drawing, so draw a chart in CSS pixels at the size it is shown; this one is drawn for 600px.</p>
         </div>
         <div class="docs-chart">
           <figure class="wb-chart wb-chart--tall">
@@ -2740,7 +2744,7 @@
               <rect class="wb-chart__bar" data-series="5" x="58" y="139.4" width="44" height="11"/>
               <rect class="wb-chart__bar" data-series="6" x="58" y="129" width="44" height="8.4"/>
               <rect class="wb-chart__bar" data-series="7" x="58" y="121.2" width="44" height="5.8"/>
-              <rect class="wb-chart__bar" data-series="8" x="58" y="107.5" width="44" height="11.7"/>
+              <rect class="wb-chart__bar" data-series="other" x="58" y="107.5" width="44" height="11.7"/>
               <rect class="wb-chart__bar" data-series="1" x="138" y="225.2" width="44" height="44.8"/>
               <rect class="wb-chart__bar" data-series="2" x="138" y="192.7" width="44" height="30.5"/>
               <rect class="wb-chart__bar" data-series="3" x="138" y="173.2" width="44" height="17.5"/>
@@ -2748,7 +2752,7 @@
               <rect class="wb-chart__bar" data-series="5" x="138" y="143.3" width="44" height="9.7"/>
               <rect class="wb-chart__bar" data-series="6" x="138" y="134.2" width="44" height="7.1"/>
               <rect class="wb-chart__bar" data-series="7" x="138" y="127.7" width="44" height="4.5"/>
-              <rect class="wb-chart__bar" data-series="8" x="138" y="115.3" width="44" height="10.4"/>
+              <rect class="wb-chart__bar" data-series="other" x="138" y="115.3" width="44" height="10.4"/>
               <rect class="wb-chart__bar" data-series="1" x="218" y="214.8" width="44" height="55.2"/>
               <rect class="wb-chart__bar" data-series="2" x="218" y="188.8" width="44" height="24"/>
               <rect class="wb-chart__bar" data-series="3" x="218" y="161.5" width="44" height="25.3"/>
@@ -2756,7 +2760,7 @@
               <rect class="wb-chart__bar" data-series="5" x="218" y="132.9" width="44" height="13.6"/>
               <rect class="wb-chart__bar" data-series="6" x="218" y="121.2" width="44" height="9.7"/>
               <rect class="wb-chart__bar" data-series="7" x="218" y="112.1" width="44" height="7.1"/>
-              <rect class="wb-chart__bar" data-series="8" x="218" y="97.1" width="44" height="13"/>
+              <rect class="wb-chart__bar" data-series="other" x="218" y="97.1" width="44" height="13"/>
               <rect class="wb-chart__bar" data-series="1" x="298" y="233" width="44" height="37"/>
               <rect class="wb-chart__bar" data-series="2" x="298" y="209.6" width="44" height="21.4"/>
               <rect class="wb-chart__bar" data-series="3" x="298" y="191.4" width="44" height="16.2"/>
@@ -2764,7 +2768,7 @@
               <rect class="wb-chart__bar" data-series="5" x="298" y="169.3" width="44" height="8.4"/>
               <rect class="wb-chart__bar" data-series="6" x="298" y="161.5" width="44" height="5.8"/>
               <rect class="wb-chart__bar" data-series="7" x="298" y="156.3" width="44" height="3.2"/>
-              <rect class="wb-chart__bar" data-series="8" x="298" y="145.2" width="44" height="9.1"/>
+              <rect class="wb-chart__bar" data-series="other" x="298" y="145.2" width="44" height="9.1"/>
               <rect class="wb-chart__bar" data-series="1" x="378" y="209.6" width="44" height="60.4"/>
               <rect class="wb-chart__bar" data-series="2" x="378" y="174.5" width="44" height="33.1"/>
               <rect class="wb-chart__bar" data-series="3" x="378" y="148.5" width="44" height="24"/>
@@ -2772,7 +2776,7 @@
               <rect class="wb-chart__bar" data-series="5" x="378" y="112.1" width="44" height="14.9"/>
               <rect class="wb-chart__bar" data-series="6" x="378" y="99.1" width="44" height="11"/>
               <rect class="wb-chart__bar" data-series="7" x="378" y="88.7" width="44" height="8.4"/>
-              <rect class="wb-chart__bar" data-series="8" x="378" y="72.4" width="44" height="14.3"/>
+              <rect class="wb-chart__bar" data-series="other" x="378" y="72.4" width="44" height="14.3"/>
               <rect class="wb-chart__bar" data-series="1" x="458" y="204.4" width="44" height="65.6"/>
               <rect class="wb-chart__bar" data-series="2" x="458" y="165.4" width="44" height="37"/>
               <rect class="wb-chart__bar" data-series="3" x="458" y="134.2" width="44" height="29.2"/>
@@ -2780,7 +2784,7 @@
               <rect class="wb-chart__bar" data-series="5" x="458" y="95.2" width="44" height="16.2"/>
               <rect class="wb-chart__bar" data-series="6" x="458" y="80.9" width="44" height="12.3"/>
               <rect class="wb-chart__bar" data-series="7" x="458" y="69.2" width="44" height="9.7"/>
-              <rect class="wb-chart__bar" data-series="8" x="458" y="51.6" width="44" height="15.6"/>
+              <rect class="wb-chart__bar" data-series="other" x="458" y="51.6" width="44" height="15.6"/>
               <rect class="wb-chart__bar" data-series="1" x="538" y="212.2" width="44" height="57.8"/>
               <rect class="wb-chart__bar" data-series="2" x="538" y="178.4" width="44" height="31.8"/>
               <rect class="wb-chart__bar" data-series="3" x="538" y="153.7" width="44" height="22.7"/>
@@ -2788,7 +2792,7 @@
               <rect class="wb-chart__bar" data-series="5" x="538" y="122.5" width="44" height="12.3"/>
               <rect class="wb-chart__bar" data-series="6" x="538" y="110.8" width="44" height="9.7"/>
               <rect class="wb-chart__bar" data-series="7" x="538" y="101.7" width="44" height="7.1"/>
-              <rect class="wb-chart__bar" data-series="8" x="538" y="86.7" width="44" height="13"/>
+              <rect class="wb-chart__bar" data-series="other" x="538" y="86.7" width="44" height="13"/>
               <g class="wb-chart__axis">
                 <line x1="40" x2="600" y1="270" y2="270"/>
                 <text x="32" y="274" text-anchor="end">0</text>
@@ -2805,7 +2809,7 @@
                 <text x="560" y="290" text-anchor="middle">Oct 30</text>
               </g>
             </svg>
-            <ul class="wb-chart__legend" role="list"><li data-series="1" data-kind="bar">Sergeant major</li><li data-series="2" data-kind="bar">Blue tang</li><li data-series="3" data-kind="bar">Grey snapper</li><li data-series="4" data-kind="bar">Stoplight parrotfish</li><li data-series="5" data-kind="bar">Bluehead wrasse</li><li data-series="6" data-kind="bar">French grunt</li><li data-series="7" data-kind="bar">Yellowtail snapper</li><li data-series="8" data-kind="bar">Other species</li></ul>
+            <ul class="wb-chart__legend" role="list"><li data-series="1" data-kind="bar">Sergeant major</li><li data-series="2" data-kind="bar">Blue tang</li><li data-series="3" data-kind="bar">Grey snapper</li><li data-series="4" data-kind="bar">Stoplight parrotfish</li><li data-series="5" data-kind="bar">Bluehead wrasse</li><li data-series="6" data-kind="bar">French grunt</li><li data-series="7" data-kind="bar">Yellowtail snapper</li><li data-series="other" data-kind="bar">Other species</li></ul>
           </figure>
         </div>
       </div>
@@ -2826,13 +2830,14 @@
       <div class="docs-specimen">
         <div>
           <h3>Detection boxes</h3>
-          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion. A box whose top is within about 1.5em of the frame's top edge takes <code>wb-detect--inside</code>, which pins its label inside the box, at its top-left; the page adds it when it measures that.</p>
+          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion. A box whose top is within about 1.5em of the frame's top edge takes <code>wb-detect--inside</code>, which pins its label inside the box, at its top-left; the page adds it when it measures that. A box near the right edge takes <code>wb-detect--right</code>, which anchors the label to the box's right edge so it stays in the frame; it combines with <code>wb-detect--inside</code>.</p>
         </div>
         <div>
           <div class="wb-video docs-video-frame">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
             <div class="wb-detect wb-detect--inside" style="left: 20%; top: 2%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 58%; width: 14%; height: 12%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+            <div class="wb-detect wb-detect--right" style="left: 84%; top: 30%; width: 14%; height: 12%"><span class="wb-detect__label">Yellowtail snapper<small>0.88</small></span></div>
           </div>
         </div>
       </div>

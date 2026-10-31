@@ -41,7 +41,7 @@ export async function build(root = process.cwd()) {
 }
 
 // Appended to base.css in this order.
-const COMPONENT_FILES = ['nav', 'icon', 'button', 'seg', 'live', 'chip', 'tile', 'panel', 'card', 'media', 'stage', 'band', 'figure', 'door', 'feature', 'chart', 'detect', 'form', 'footer', 'layout'];
+const COMPONENT_FILES = ['nav', 'icon', 'button', 'seg', 'live', 'chip', 'tile', 'panel', 'card', 'media', 'stage', 'band', 'figure', 'door', 'feature', 'chart', 'detect', 'form', 'footer', 'layout', 'utility'];
 
 // Replaces each <!-- @wb-logo --> with the logo's <svg>, so it follows currentColor; each copy gets its own ids.
 // The root's inline style="color:…" is the default for <img> use (kept in dist/logo); an inline copy drops it.

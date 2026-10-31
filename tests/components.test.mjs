@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
+import { whiteOnScrim } from '../scripts/contrast.mjs';
 
 const read = (path) => readFileSync(path, 'utf8');
 
@@ -29,13 +30,13 @@ const CLASSES = [
   'wb-door', 'wb-door__photo', 'wb-door__body', 'wb-door__title', 'wb-door__text',
   'wb-feature', 'wb-feature__photo', 'wb-feature__body', 'wb-feature__title', 'wb-feature__text',
   'wb-notice', 'wb-notice--error',
-  'wb-live--off', 'wb-seg', 'wb-seg__btn', 'wb-detect--inside',
+  'wb-live--off', 'wb-seg', 'wb-seg__btn', 'wb-detect--inside', 'wb-detect--right', 'wb-as-is',
   'wb-chart--tall', 'wb-chart__axis', 'wb-chart__grid', 'wb-chart__bar', 'wb-chart__empty',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
 const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-seg', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media',
-  'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
+  'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container', 'wb-as-is'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
 // 0.2.2: a camera's map marker, because a camera is alive right now.
@@ -466,12 +467,14 @@ const scrimAt = (sel) => {
 // 0.2.2: on the doorways and the news feature the title and its sentence sat where the scrim was still thin, over white
 // shirts and bright water (finish review, fix 1). The scrim is full by 40% of the body and held, and the body's first
 // 4rem are padding, so the first line of text starts where the scrim is already at full strength.
-test('the doorway\'s and the feature\'s scrim: 0.6 or more at 35% of the body, the full 0.85 from 40% down; the text starts 4rem in', () => {
+test('the doorway\'s and the feature\'s scrim: full by 30% of the body, white text 4.5:1 or better from 23% down even over a white photograph; the text starts 4rem in', () => {
   for (const sel of ['.wb-door__body', '.wb-feature__body']) {
     const at = scrimAt(sel);
     assert.equal(at(0), 0, `${sel}: clear at the top`);
-    assert.ok(at(35) >= 0.6, `${sel} 35%: ${at(35).toFixed(3)}`);
-    for (let p = 40; p <= 100; p += 1) assert.equal(at(p), 0.85, `${sel} ${p}%`);
+    // 0.3.2 (finish review): the full scrim came at 40%, so body text 3.6-3.8:1 over the lighter photographs. Full at 30%.
+    for (let p = 30; p <= 100; p += 1) assert.equal(at(p), 0.85, `${sel} ${p}%`);
+    for (let p = 23; p <= 100; p += 1) assert.ok(whiteOnScrim(at(p)) >= 4.5, `${sel} ${p}%: ${whiteOnScrim(at(p)).toFixed(2)}:1`);
+    assert.ok(whiteOnScrim(at(100)) >= 11, `${sel}: 11:1 at full over white (${whiteOnScrim(at(100)).toFixed(2)})`);
     assert.match(block(sel), /padding-top:\s*var\(--wb-space-8\)/, `${sel}: padding-top`);
     // The deeper body made the doorway's smallest width, through its 4:5, wider than a phone (the docs page at 390px):
     // it takes the width its row gives it.
@@ -485,12 +488,19 @@ test('the doorway\'s and the feature\'s scrim: 0.6 or more at 35% of the body, t
 // 0.2.1: the stage's scrim was clear to 30% and full only at the foot, so the headline's top line sat almost on the bare
 // photograph, and the nav over it had nothing (Task 1 review). 0.2.2: on a phone the nav wraps onto three rows over the
 // photograph, so the top band is stronger (0.55) and deeper: held to 15%, clear by 32% (finish review, fix 2).
-test('the stage scrim: a band of 0.5 or more to 15%, clear at 32%, at least 0.5 from 40% down, the full 0.85 from 50% and held', () => {
+test('the stage scrim: a band of 0.7 to 15% and clear at 30%; the full 0.85 from 40% down; white small text 4.5:1 or better in the band and from 38% down, even over a white photograph', () => {
   const at = scrimAt('.wb-stage__scrim');
-  for (let p = 0; p <= 15; p += 1) assert.ok(at(p) >= 0.5, `top band ${p}%: ${at(p).toFixed(3)}`);
-  assert.equal(at(32), 0, 'clear at 32%');
+  // 0.3.2 (finish review): over-nav links ~3.5:1 and the lede ~4.2:1 on the real photographs. The band is 0.7 (0.55 before)
+  // and the full scrim comes by 40% (45% before).
+  for (let p = 0; p <= 15; p += 1) {
+    assert.ok(at(p) >= 0.7, `top band ${p}%: ${at(p).toFixed(3)}`);
+    assert.ok(whiteOnScrim(at(p)) >= 4.5, `nav links ${p}%: ${whiteOnScrim(at(p)).toFixed(2)}:1`);
+  }
+  assert.equal(at(30), 0, 'clear at 30%');
+  for (let p = 38; p <= 100; p += 1) assert.ok(whiteOnScrim(at(p)) >= 4.5, `lede ${p}%: ${whiteOnScrim(at(p)).toFixed(2)}:1`);
+  // The display headline's region is at least where it was (0.5 or more from 40% down, the full 0.85 from the ramp's end).
   for (let p = 40; p <= 100; p += 1) assert.ok(at(p) >= 0.5, `${p}%: ${at(p).toFixed(3)}`);
-  for (let p = 50; p <= 100; p += 1) assert.equal(at(p), 0.85, `${p}%`);
+  for (let p = 40; p <= 100; p += 1) assert.equal(at(p), 0.85, `${p}%`);
 });
 
 test('text on a photograph is --wb-color-on-photo, which stays white in both themes, never the ground colour', () => {
@@ -643,9 +653,9 @@ test('a disabled button reads as unavailable and does not darken under the point
 // 0.3.0: the pieces the site's live page and trends page draw with (plan 7, Task 5): chart series 3 to 8, axes,
 // gridlines, bars, the tall chart and the empty chart; the offline badge; the segmented control; the video frame as the
 // detection boxes' container.
-const SERIES = { 1: 'brand', 2: 'accent', 3: 'series-3', 4: 'series-4', 5: 'series-5', 6: 'series-6', 7: 'series-7', 8: 'series-8' };
+const SERIES = { 1: 'brand', 2: 'accent', 3: 'series-3', 4: 'series-4', 5: 'series-5', 6: 'series-6', 7: 'series-7', 8: 'series-8', other: 'series-other' };
 
-test('chart series 1 to 8: each sets its colour once, for its marks and its legend key; lines, bars and keys take it', () => {
+test('chart series 1 to 8 and other: each sets its colour once, for its marks and its legend key; lines, bars and keys take it', () => {
   for (const [n, token] of Object.entries(SERIES))
     assert.match(block(`.wb-chart svg [data-series="${n}"], .wb-chart__legend [data-series="${n}"]::before`), new RegExp(`^\\s*color:\\s*var\\(--wb-color-${token}\\);?\\s*$`), `series ${n}`);
   assert.match(block('.wb-chart svg [data-series]'), /stroke:\s*currentColor/, 'a line is drawn in its series colour');
@@ -655,7 +665,7 @@ test('chart series 1 to 8: each sets its colour once, for its marks and its lege
   for (const { selector: sel, body } of rules(read('dist/components.css'))) {
     if (!/--wb-color-series-/.test(body)) continue;
     for (const part of sel.split(','))
-      assert.match(part.trim(), /^(\.wb-chart svg \[data-series="[3-8]"\]|\.wb-chart__legend \[data-series="[3-8]"\]::before)$/, `series colour on ${part.trim()}`);
+      assert.match(part.trim(), /^(\.wb-chart svg \[data-series="([3-8]|other)"\]|\.wb-chart__legend \[data-series="([3-8]|other)"\]::before)$/, `series colour on ${part.trim()}`);
   }
   assert.match(block('.wb-chart__legend'), /color:\s*var\(--wb-color-ink-3\)/);
 });
@@ -710,7 +720,7 @@ test('.wb-video positions what it holds, so a detection box is placed in the fra
   assert.match(block('.wb-detect'), /position:\s*absolute/);
 });
 
-test('index.html shows the 0.3.0 pieces in both themes: both badges, the range control, eight series in a tall bar chart, an empty chart, two boxes on a video frame', () => {
+test('index.html shows the 0.3.0 pieces in both themes: both badges, the range control, seven series and Other in a tall bar chart, an empty chart, three boxes on a video frame', () => {
   const html = read('dist/index.html');
   const swatches = { 3: '#E69F00', 4: '#56B4E9', 5: '#D55E00', 6: '#CC79A7', 7: '#009E73', 8: '#F0E442' };
   for (const [n, hex] of Object.entries(swatches)) assert.ok(html.includes(`<code>--wb-color-series-${n}</code> <code>${hex}</code>`), `a swatch for series ${n}`);
@@ -725,14 +735,14 @@ test('index.html shows the 0.3.0 pieces in both themes: both badges, the range c
     assert.equal(pressed.filter((p) => p === 'true').length, 1, `${name}: one of them chosen`);
     const bars = [...part.matchAll(/<figure class="wb-chart wb-chart--tall">([\s\S]*?)<\/figure>/g)].map((m) => m[1]).find((c) => /class="wb-chart__bar"/.test(c)) ?? '';
     assert.ok(bars, `${name}: a tall bar chart`);
-    assert.deepEqual([...new Set([...bars.matchAll(/<rect class="wb-chart__bar" data-series="(\d)"/g)].map((m) => m[1]))].sort(), ['1', '2', '3', '4', '5', '6', '7', '8'], `${name}: eight series of bars`);
-    assert.deepEqual([...bars.matchAll(/<li data-series="(\d)"(?: data-kind="bar")?>[^<]+<\/li>/g)].map((m) => m[1]), ['1', '2', '3', '4', '5', '6', '7', '8'], `${name}: a legend of the eight, in order`);
+    assert.deepEqual([...new Set([...bars.matchAll(/<rect class="wb-chart__bar" data-series="(\d|other)"/g)].map((m) => m[1]))].sort(), ['1', '2', '3', '4', '5', '6', '7', 'other'], `${name}: seven series and Other, of bars`);
+    assert.deepEqual([...bars.matchAll(/<li data-series="(\d|other)"(?: data-kind="bar")?>[^<]+<\/li>/g)].map((m) => m[1]), ['1', '2', '3', '4', '5', '6', '7', 'other'], `${name}: a legend of the seven and Other, in order`);
     assert.match(bars, /<g class="wb-chart__grid">\s*(<line\b[^>]*\/>\s*){2,}<\/g>/, `${name}: gridlines`);
     assert.match(bars, /<g class="wb-chart__axis">\s*<line\b[^>]*\/>(\s*<text\b[^>]*>[^<]+<\/text>){4,}\s*<\/g>/, `${name}: an axis with its labels`);
     assert.match(part, /<figure class="wb-chart">\s*<figcaption>[^<]+<\/figcaption>\s*<p class="wb-chart__empty">[^<]+<\/p>\s*<\/figure>/, `${name}: an empty chart, its sentence instead of the drawing`);
-    const frame = part.match(/<div class="wb-video[^"]*">\s*<img\b[^>]*>\s*((?:<div class="wb-detect(?: wb-detect--inside)?" style="[^"]*"><span class="wb-detect__label">[^<]+<small>[\d.]+<\/small><\/span><\/div>\s*)+)<\/div>/)?.[1] ?? '';
+    const frame = part.match(/<div class="wb-video[^"]*">\s*<img\b[^>]*>\s*((?:<div class="wb-detect(?: wb-detect--(?:inside|right))*" style="[^"]*"><span class="wb-detect__label">[^<]+<small>[\d.]+<\/small><\/span><\/div>\s*)+)<\/div>/)?.[1] ?? '';
     const boxes = [...frame.matchAll(/style="([^"]*)"/g)].map((m) => m[1]);
-    assert.equal(boxes.length, 2, `${name}: two detection boxes on a video frame`);
+    assert.equal(boxes.length, 3, `${name}: three detection boxes on a video frame`);
     for (const box of boxes) assert.match(box, /^left: [\d.]+%; top: [\d.]+%; width: [\d.]+%; height: [\d.]+%$/, `${name}: a box's geometry, in percent of the frame`);
   }
 });
@@ -760,7 +770,49 @@ test('0.3.1: a bar legend key is a square in the series colour, and the docs bar
   has(block('.wb-chart__legend [data-kind="bar"]::before'), [/width:\s*0\.75em/, /height:\s*0\.75em/], 'the square key');
   for (const [name, part] of theme(read('dist/index.html'))) {
     const bars = [...part.matchAll(/<figure class="wb-chart wb-chart--tall">([\s\S]*?)<\/figure>/g)].map((m) => m[1]).find((c) => /class="wb-chart__bar"/.test(c)) ?? '';
-    assert.equal([...bars.matchAll(/<li data-series="\d" data-kind="bar">/g)].length, 8, `${name}: eight square keys`);
+    assert.equal([...bars.matchAll(/<li data-series="(?:\d|other)" data-kind="bar">/g)].length, 8, `${name}: eight square keys`);
     assert.match(bars, /<figcaption>Fish seen per day, 7 days<\/figcaption>\s*<svg[^>]*aria-label="Fish seen per day /, `${name}: caption and label agree`);
   }
+});
+
+// 0.3.2: the finish-wave additions.
+test('0.3.2: .wb-detect--right anchors the label to the box\'s right edge, alone and with --inside; the docs show a box near the right edge per theme', () => {
+  has(block('.wb-detect--right .wb-detect__label'), [/left:\s*auto/, /right:\s*-2px/, /border-radius:\s*0\.25rem 0\.25rem 0 0\.25rem/], 'the right label');
+  has(block('.wb-detect--right.wb-detect--inside .wb-detect__label'), [/top:\s*-2px/, /right:\s*-2px/, /left:\s*auto/, /bottom:\s*auto/, /border-radius:\s*0 0\.25rem 0 0\.25rem/], 'right and inside');
+  // The combined rule is more specific than either, and --right comes after --inside, so neither can undo the other.
+  const css = read('dist/components.css');
+  assert.ok(css.indexOf('.wb-detect--right .wb-detect__label') > css.indexOf('.wb-detect--inside .wb-detect__label'), '--right after --inside');
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    const frame = part.match(/<div class="wb-video docs-video-frame">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/)?.[1] ?? '';
+    const right = frame.match(/class="wb-detect wb-detect--right" style="left: ([\d.]+)%; top: [\d.]+%; width: ([\d.]+)%/);
+    assert.ok(right, `${name}: a box with --right in the video frame`);
+    assert.ok(Number(right[1]) + Number(right[2]) >= 95, `${name}: the box is near the right edge (${Number(right[1]) + Number(right[2])}%)`);
+  }
+});
+
+test('0.3.2: .wb-as-is keeps the case of a label, and wins on the tile label, the chart caption and the panel title; the docs show a tile "pH"', () => {
+  has(block('.wb-as-is'), [/text-transform:\s*none/, /letter-spacing:\s*normal/], '.wb-as-is');
+  const css = read('dist/components.css');
+  // The component rules out-rank a lone class (.wb-chart figcaption is 0,1,1), so each gets its own, more specific pair.
+  for (const sel of ['.wb-tile__k.wb-as-is', '.wb-chart figcaption.wb-as-is', '.wb-panel__title.wb-as-is'])
+    has(block(`.wb-as-is, .wb-tile__k.wb-as-is, .wb-chart figcaption.wb-as-is, .wb-panel__title.wb-as-is`), [/text-transform:\s*none/, /letter-spacing:\s*normal/], sel);
+  const at = css.indexOf('.wb-tile__k.wb-as-is');
+  for (const earlier of ['.wb-tile__k {', '.wb-chart figcaption {', '.wb-panel__title {', '.wb-caption {']) assert.ok(css.indexOf(earlier) < at, `${earlier} before the utility`);
+  for (const [name, part] of theme(read('dist/index.html')))
+    assert.match(part, /<p class="wb-tile__k wb-as-is">pH<\/p>/, `${name}: a tile labelled pH`);
+});
+
+test('0.3.2: a neutral "other" series takes --wb-color-series-other, as series 1 to 8 do', () => {
+  assert.match(block('.wb-chart svg [data-series="other"], .wb-chart__legend [data-series="other"]::before'), /^\s*color:\s*var\(--wb-color-series-other\);?\s*$/);
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    const bars = [...part.matchAll(/<figure class="wb-chart wb-chart--tall">([\s\S]*?)<\/figure>/g)].map((m) => m[1]).find((c) => /class="wb-chart__bar"/.test(c)) ?? '';
+    assert.match(bars, /<rect class="wb-chart__bar" data-series="other"/, `${name}: Other bars`);
+    assert.match(bars, /<li data-series="other" data-kind="bar">Other species<\/li>/, `${name}: Other in the legend`);
+    assert.doesNotMatch(bars, /data-series="8"/, `${name}: no eighth series: it is Other`);
+  }
+});
+
+test('0.3.2: a chart\'s drawing is at least 140px (8.75rem) tall, so a narrow panel keeps a readable plot; the tall chart is unchanged', () => {
+  assert.match(block('.wb-chart svg'), /min-height:\s*8\.75rem\s*;/);
+  assert.match(block('.wb-chart--tall svg, .wb-chart--tall .wb-chart__empty'), /^\s*aspect-ratio:\s*2 \/ 1;?\s*$/);
 });

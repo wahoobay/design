@@ -2,6 +2,21 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.3.2 — 2026-10-31
+
+The fix wave from the wahoobay.net step-2b finish review.
+
+### Changed
+
+- The scrims reach 4.5:1 for white small text. The finish review measured, on the real home photographs, the over-nav links at about 3.5:1 (1440) and 3.8:1 (390), the stage lede at about 4.2:1 and the doorways' body text at 3.6 to 3.8:1. `--wb-color-scrim-top` is `rgb(11 27 43 / 0.7)` in both themes (it was 0.55). The stage's gradient is now the band held to 15%, clear at 30% (it was 32%) and the full scrim (0.85, unchanged) at 40% (it was 45%), held to the foot. The doorway's and the feature's gradient reaches the full scrim at 30% of the words' box (it was 40%); the box's 4rem of top padding, the photographs' aspect ratios and every text size are unchanged. What the bands now guarantee, computed in `tests/components.test.mjs` with `whiteOnScrim()` in `scripts/contrast.mjs` against a pure white photograph, the worst case a photograph can give (a mid-tone region has more room: 7 to 10:1): white small text is at least 4.5:1 in the stage's top band, 0 to 15% (6.5:1, it was 3.9:1), and from 38% of the stage down (6.0:1 at 38%, 11.1:1 from 40%); in the doorway and the feature from 23% of the body down (5.5:1 at 23%, 11.1:1 from 30%). The headline's region is unchanged or stronger (0.85 from 40% down; it was at least 0.5).
+- `.wb-chart svg` has `min-height: 8.75rem` (140px; it was 4rem), so a chart in a narrow panel keeps a readable plot. `.wb-chart--tall` is unchanged.
+
+### Added
+
+- `.wb-detect--right`, for a box near the frame's right edge: its label is anchored to the box's right edge (`left: auto; right: -2px`) with the corner radii mirrored (`0.25rem 0.25rem 0 0.25rem`). It combines with `.wb-detect--inside`: the label is then pinned inside at the top-right (`top: -2px; right: -2px; bottom: auto`, radii `0 0.25rem 0 0.25rem`). The docs' video frame shows a box near the right edge with it, in both themes.
+- `.wb-as-is`, a utility that keeps a label's case: `text-transform: none; letter-spacing: normal`. It is the last file in the build (`utility.css`), and because `.wb-chart figcaption` out-ranks a single class it also comes as `.wb-tile__k.wb-as-is`, `.wb-chart figcaption.wb-as-is` and `.wb-panel__title.wb-as-is`, so it wins on the tile label, the chart caption and the panel title. The docs show a tile labelled "pH".
+- A neutral "other" series: `--wb-color-series-other`, the muted ink's value in each theme (`#5B6F80` light, `#93A9BC` dark, the same as `--wb-color-ink-3`), taken by `data-series="other"` on a chart mark and on a legend item as series 1 to 8 are. It is a mark colour, never text. The docs' stacked bar chart's last series is `data-series="other"` (it was 8), and the series swatches list the token.
+
 ## 0.3.1 — 2026-10-31
 
 ### Added

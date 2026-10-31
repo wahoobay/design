@@ -27,14 +27,15 @@
   height: 100%;
   object-fit: cover;
 }
-/* The scrim is full by 40% of the body and held; the first 4rem are padding, so the title starts where the scrim is
-   already at full strength, whatever the photograph is bright with under it. */
+/* The scrim is full by 30% of the body and held; the first 4rem are padding, so the title starts where the scrim is
+   already at full strength, whatever the photograph is bright with under it. White body text is 4.5:1 or better from
+   23% of the body down even over a white photograph. */
 .wb-door__body {
   position: relative;
   width: 100%;
   padding: var(--wb-space-6);
   padding-top: var(--wb-space-8);
-  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 40%, var(--wb-color-scrim) 100%);
+  background: linear-gradient(180deg, var(--wb-color-scrim-0) 0%, var(--wb-color-scrim) 30%, var(--wb-color-scrim) 100%);
 }
 .wb-door__title {
   margin: 0;

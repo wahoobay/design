@@ -18,13 +18,14 @@
   --wb-color-on-photo: #FFFFFF;
   --wb-color-scrim: rgb(11 27 43 / 0.85);
   --wb-color-scrim-0: rgb(11 27 43 / 0);
-  --wb-color-scrim-top: rgb(11 27 43 / 0.55);
+  --wb-color-scrim-top: rgb(11 27 43 / 0.7);
   --wb-color-series-3: #E69F00;
   --wb-color-series-4: #56B4E9;
   --wb-color-series-5: #D55E00;
   --wb-color-series-6: #CC79A7;
   --wb-color-series-7: #009E73;
   --wb-color-series-8: #F0E442;
+  --wb-color-series-other: #5B6F80;
   --wb-font-sans: "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
   --wb-text-xs: 0.75rem;
   --wb-text-sm: 0.875rem;
@@ -68,11 +69,12 @@
   --wb-color-on-photo: #FFFFFF;
   --wb-color-scrim: rgb(11 27 43 / 0.85);
   --wb-color-scrim-0: rgb(11 27 43 / 0);
-  --wb-color-scrim-top: rgb(11 27 43 / 0.55);
+  --wb-color-scrim-top: rgb(11 27 43 / 0.7);
   --wb-color-series-3: #E69F00;
   --wb-color-series-4: #56B4E9;
   --wb-color-series-5: #D55E00;
   --wb-color-series-6: #CC79A7;
   --wb-color-series-7: #009E73;
   --wb-color-series-8: #F0E442;
+  --wb-color-series-other: #93A9BC;
 }
