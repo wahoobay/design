@@ -1373,6 +1373,7 @@
         </div>
         <div>
           <div class="wb-seg" role="group" aria-label="Chart range">
+            <button class="wb-seg__btn" type="button" aria-pressed="false">24 hours</button>
             <button class="wb-seg__btn" type="button" aria-pressed="false">7 days</button>
             <button class="wb-seg__btn" type="button" aria-pressed="true">30 days</button>
             <button class="wb-seg__btn" type="button" aria-pressed="false">1 year</button>
@@ -1387,7 +1388,7 @@
         </div>
         <div class="docs-chart">
           <figure class="wb-chart wb-chart--tall">
-            <figcaption>Species seen per day, 7 days</figcaption>
+            <figcaption>Fish seen per day, 7 days</figcaption>
             <svg viewBox="0 0 600 300" role="img" aria-label="Fish seen per day over the seven days to October 30, from 96 to 168 a day, sergeant majors the most every day">
               <g class="wb-chart__grid">
                 <line x1="40" x2="600" y1="205" y2="205"/>
@@ -1467,7 +1468,7 @@
                 <text x="560" y="290" text-anchor="middle">Oct 30</text>
               </g>
             </svg>
-            <ul class="wb-chart__legend" role="list"><li data-series="1">Sergeant major</li><li data-series="2">Blue tang</li><li data-series="3">Grey snapper</li><li data-series="4">Stoplight parrotfish</li><li data-series="5">Bluehead wrasse</li><li data-series="6">French grunt</li><li data-series="7">Yellowtail snapper</li><li data-series="8">Other species</li></ul>
+            <ul class="wb-chart__legend" role="list"><li data-series="1" data-kind="bar">Sergeant major</li><li data-series="2" data-kind="bar">Blue tang</li><li data-series="3" data-kind="bar">Grey snapper</li><li data-series="4" data-kind="bar">Stoplight parrotfish</li><li data-series="5" data-kind="bar">Bluehead wrasse</li><li data-series="6" data-kind="bar">French grunt</li><li data-series="7" data-kind="bar">Yellowtail snapper</li><li data-series="8" data-kind="bar">Other species</li></ul>
           </figure>
         </div>
       </div>
@@ -1488,12 +1489,12 @@
       <div class="docs-specimen">
         <div>
           <h3>Detection boxes</h3>
-          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion.</p>
+          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion. A box whose top is within about 1.5em of the frame's top edge takes <code>wb-detect--inside</code>, which pins its label inside the box, at its top-left; the page adds it when it measures that.</p>
         </div>
         <div>
           <div class="wb-video docs-video-frame">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
-            <div class="wb-detect" style="left: 20%; top: 66%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
+            <div class="wb-detect wb-detect--inside" style="left: 20%; top: 2%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 58%; width: 14%; height: 12%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
           </div>
         </div>
@@ -2709,6 +2710,7 @@
         </div>
         <div>
           <div class="wb-seg" role="group" aria-label="Chart range">
+            <button class="wb-seg__btn" type="button" aria-pressed="false">24 hours</button>
             <button class="wb-seg__btn" type="button" aria-pressed="false">7 days</button>
             <button class="wb-seg__btn" type="button" aria-pressed="true">30 days</button>
             <button class="wb-seg__btn" type="button" aria-pressed="false">1 year</button>
@@ -2723,7 +2725,7 @@
         </div>
         <div class="docs-chart">
           <figure class="wb-chart wb-chart--tall">
-            <figcaption>Species seen per day, 7 days</figcaption>
+            <figcaption>Fish seen per day, 7 days</figcaption>
             <svg viewBox="0 0 600 300" role="img" aria-label="Fish seen per day over the seven days to October 30, from 96 to 168 a day, sergeant majors the most every day">
               <g class="wb-chart__grid">
                 <line x1="40" x2="600" y1="205" y2="205"/>
@@ -2803,7 +2805,7 @@
                 <text x="560" y="290" text-anchor="middle">Oct 30</text>
               </g>
             </svg>
-            <ul class="wb-chart__legend" role="list"><li data-series="1">Sergeant major</li><li data-series="2">Blue tang</li><li data-series="3">Grey snapper</li><li data-series="4">Stoplight parrotfish</li><li data-series="5">Bluehead wrasse</li><li data-series="6">French grunt</li><li data-series="7">Yellowtail snapper</li><li data-series="8">Other species</li></ul>
+            <ul class="wb-chart__legend" role="list"><li data-series="1" data-kind="bar">Sergeant major</li><li data-series="2" data-kind="bar">Blue tang</li><li data-series="3" data-kind="bar">Grey snapper</li><li data-series="4" data-kind="bar">Stoplight parrotfish</li><li data-series="5" data-kind="bar">Bluehead wrasse</li><li data-series="6" data-kind="bar">French grunt</li><li data-series="7" data-kind="bar">Yellowtail snapper</li><li data-series="8" data-kind="bar">Other species</li></ul>
           </figure>
         </div>
       </div>
@@ -2824,12 +2826,12 @@
       <div class="docs-specimen">
         <div>
           <h3>Detection boxes</h3>
-          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion.</p>
+          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion. A box whose top is within about 1.5em of the frame's top edge takes <code>wb-detect--inside</code>, which pins its label inside the box, at its top-left; the page adds it when it measures that.</p>
         </div>
         <div>
           <div class="wb-video docs-video-frame">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
-            <div class="wb-detect" style="left: 20%; top: 66%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
+            <div class="wb-detect wb-detect--inside" style="left: 20%; top: 2%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
             <div class="wb-detect" style="left: 70%; top: 58%; width: 14%; height: 12%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
           </div>
         </div>

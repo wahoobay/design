@@ -25,6 +25,14 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
+/* A box whose top sits within about 1.5em of the frame's top edge (the page adds the class when it measures that) would
+   push its label out of the frame, so the label is pinned inside the box at its top-left; its outer corner matches the box. */
+.wb-detect--inside .wb-detect__label {
+  top: -2px;
+  left: -2px;
+  bottom: auto;
+  border-radius: 0.25rem 0 0.25rem 0;
+}
 /* Spec §4.3, Ruling 9: a box and its label appear together, fading in over 150ms: with the live badge's breath, the live
    page's one authored moment. It plays when the box enters the page; a box that only moves (the same element, new
    geometry) does not fade again. With reduced motion a box simply appears. */

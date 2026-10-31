@@ -29,7 +29,7 @@ const CLASSES = [
   'wb-door', 'wb-door__photo', 'wb-door__body', 'wb-door__title', 'wb-door__text',
   'wb-feature', 'wb-feature__photo', 'wb-feature__body', 'wb-feature__title', 'wb-feature__text',
   'wb-notice', 'wb-notice--error',
-  'wb-live--off', 'wb-seg', 'wb-seg__btn',
+  'wb-live--off', 'wb-seg', 'wb-seg__btn', 'wb-detect--inside',
   'wb-chart--tall', 'wb-chart__axis', 'wb-chart__grid', 'wb-chart__bar', 'wb-chart__empty',
 ];
 
@@ -689,7 +689,7 @@ test('.wb-live--off: off the accent, on the panel ground in secondary ink, its d
 });
 
 test('.wb-seg: buttons in a group with a 1px line and 12px corners, each 44px, in ink; the chosen one on the panel wash; themed by tokens alone', () => {
-  has(block('.wb-seg'), [/display:\s*inline-flex/, /border:\s*1px solid var\(--wb-color-line\)/, /border-radius:\s*var\(--wb-radius\)/, /background:\s*var\(--wb-color-bg\)/], '.wb-seg');
+  has(block('.wb-seg'), [/display:\s*flex;/, /flex-wrap:\s*wrap/, /border:\s*1px solid var\(--wb-color-line\)/, /border-radius:\s*var\(--wb-radius\)/, /background:\s*var\(--wb-color-bg\)/], '.wb-seg');
   assert.doesNotMatch(block('.wb-seg'), /overflow/, 'nothing clips a button or its focus ring');
   has(block('.wb-seg__btn'), [/min-width:\s*2\.75rem/, /min-height:\s*2\.75rem/, /margin:\s*0/, /border:\s*0/, /background:\s*transparent/, /color:\s*var\(--wb-color-ink\)/,
     /font:\s*inherit/, /font-weight:\s*700/, /cursor:\s*pointer/], '.wb-seg__btn');
@@ -726,13 +726,41 @@ test('index.html shows the 0.3.0 pieces in both themes: both badges, the range c
     const bars = [...part.matchAll(/<figure class="wb-chart wb-chart--tall">([\s\S]*?)<\/figure>/g)].map((m) => m[1]).find((c) => /class="wb-chart__bar"/.test(c)) ?? '';
     assert.ok(bars, `${name}: a tall bar chart`);
     assert.deepEqual([...new Set([...bars.matchAll(/<rect class="wb-chart__bar" data-series="(\d)"/g)].map((m) => m[1]))].sort(), ['1', '2', '3', '4', '5', '6', '7', '8'], `${name}: eight series of bars`);
-    assert.deepEqual([...bars.matchAll(/<li data-series="(\d)">[^<]+<\/li>/g)].map((m) => m[1]), ['1', '2', '3', '4', '5', '6', '7', '8'], `${name}: a legend of the eight, in order`);
+    assert.deepEqual([...bars.matchAll(/<li data-series="(\d)"(?: data-kind="bar")?>[^<]+<\/li>/g)].map((m) => m[1]), ['1', '2', '3', '4', '5', '6', '7', '8'], `${name}: a legend of the eight, in order`);
     assert.match(bars, /<g class="wb-chart__grid">\s*(<line\b[^>]*\/>\s*){2,}<\/g>/, `${name}: gridlines`);
     assert.match(bars, /<g class="wb-chart__axis">\s*<line\b[^>]*\/>(\s*<text\b[^>]*>[^<]+<\/text>){4,}\s*<\/g>/, `${name}: an axis with its labels`);
     assert.match(part, /<figure class="wb-chart">\s*<figcaption>[^<]+<\/figcaption>\s*<p class="wb-chart__empty">[^<]+<\/p>\s*<\/figure>/, `${name}: an empty chart, its sentence instead of the drawing`);
-    const frame = part.match(/<div class="wb-video[^"]*">\s*<img\b[^>]*>\s*((?:<div class="wb-detect" style="[^"]*"><span class="wb-detect__label">[^<]+<small>[\d.]+<\/small><\/span><\/div>\s*)+)<\/div>/)?.[1] ?? '';
+    const frame = part.match(/<div class="wb-video[^"]*">\s*<img\b[^>]*>\s*((?:<div class="wb-detect(?: wb-detect--inside)?" style="[^"]*"><span class="wb-detect__label">[^<]+<small>[\d.]+<\/small><\/span><\/div>\s*)+)<\/div>/)?.[1] ?? '';
     const boxes = [...frame.matchAll(/style="([^"]*)"/g)].map((m) => m[1]);
     assert.equal(boxes.length, 2, `${name}: two detection boxes on a video frame`);
     for (const box of boxes) assert.match(box, /^left: [\d.]+%; top: [\d.]+%; width: [\d.]+%; height: [\d.]+%$/, `${name}: a box's geometry, in percent of the frame`);
+  }
+});
+
+test('0.3.1: .wb-detect--inside pins the label inside the box; the docs show one box of each placement per theme', () => {
+  has(block('.wb-detect--inside .wb-detect__label'), [/top:\s*-2px/, /left:\s*-2px/, /bottom:\s*auto/, /border-radius:\s*0\.25rem 0 0\.25rem 0/], 'the inside label');
+  const html = read('dist/index.html');
+  for (const [name, part] of theme(html)) {
+    const frame = part.match(/<div class="wb-video docs-video-frame">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/)?.[1] ?? '';
+    assert.equal((frame.match(/class="wb-detect wb-detect--inside"/g) ?? []).length, 1, `${name}: one box inside`);
+    assert.equal((frame.match(/class="wb-detect"/g) ?? []).length, 1, `${name}: one box above`);
+  }
+});
+
+test('0.3.1: .wb-seg wraps on a narrow screen and its buttons grow; the docs show four labels in both themes', () => {
+  assert.match(block('.wb-seg'), /flex-wrap:\s*wrap/);
+  assert.match(block('.wb-seg__btn'), /flex:\s*1 1 auto/);
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    const seg = part.match(/<div class="wb-seg" role="group" aria-label="[^"]+">([\s\S]*?)<\/div>/)?.[1] ?? '';
+    assert.deepEqual([...seg.matchAll(/aria-pressed="(?:true|false)">([^<]+)</g)].map((m) => m[1]), ['24 hours', '7 days', '30 days', '1 year'], `${name}: the four-label range`);
+  }
+});
+
+test('0.3.1: a bar legend key is a square in the series colour, and the docs bar legend uses it', () => {
+  has(block('.wb-chart__legend [data-kind="bar"]::before'), [/width:\s*0\.75em/, /height:\s*0\.75em/], 'the square key');
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    const bars = [...part.matchAll(/<figure class="wb-chart wb-chart--tall">([\s\S]*?)<\/figure>/g)].map((m) => m[1]).find((c) => /class="wb-chart__bar"/.test(c)) ?? '';
+    assert.equal([...bars.matchAll(/<li data-series="\d" data-kind="bar">/g)].length, 8, `${name}: eight square keys`);
+    assert.match(bars, /<figcaption>Fish seen per day, 7 days<\/figcaption>\s*<svg[^>]*aria-label="Fish seen per day /, `${name}: caption and label agree`);
   }
 });

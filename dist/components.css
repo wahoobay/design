@@ -296,7 +296,8 @@ a[href^="tel:"] { white-space: nowrap; }
    panel wash and underlined in action blue, as the current nav link is, because on the white page the wash alone is
    faint. Both themes through the tokens. */
 .wb-seg {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   max-width: 100%;
   border: 1px solid var(--wb-color-line);
   border-radius: var(--wb-radius);
@@ -306,6 +307,7 @@ a[href^="tel:"] { white-space: nowrap; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 1 1 auto;
   min-width: 2.75rem;
   min-height: 2.75rem;
   margin: 0;
@@ -928,6 +930,12 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   background: currentColor;
   vertical-align: middle;
 }
+/* A bar chart's key is a square, not a line. */
+.wb-chart__legend [data-kind="bar"]::before {
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 0.125em;
+}
 
 /* Detection box and label, drawn over the video: inside a .wb-video frame (or another positioned parent), the box gets
    left/top/width/height in percent of the frame. */
@@ -955,6 +963,14 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   font-size: inherit;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+/* A box whose top sits within about 1.5em of the frame's top edge (the page adds the class when it measures that) would
+   push its label out of the frame, so the label is pinned inside the box at its top-left; its outer corner matches the box. */
+.wb-detect--inside .wb-detect__label {
+  top: -2px;
+  left: -2px;
+  bottom: auto;
+  border-radius: 0.25rem 0 0.25rem 0;
 }
 /* Spec §4.3, Ruling 9: a box and its label appear together, fading in over 150ms: with the live badge's breath, the live
    page's one authored moment. It plays when the box enters the page; a box that only moves (the same element, new

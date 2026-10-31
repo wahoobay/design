@@ -4,7 +4,8 @@
    panel wash and underlined in action blue, as the current nav link is, because on the white page the wash alone is
    faint. Both themes through the tokens. */
 .wb-seg {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   max-width: 100%;
   border: 1px solid var(--wb-color-line);
   border-radius: var(--wb-radius);
@@ -14,6 +15,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 1 1 auto;
   min-width: 2.75rem;
   min-height: 2.75rem;
   margin: 0;

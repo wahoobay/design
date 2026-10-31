@@ -2,6 +2,19 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.3.1 — 2026-10-31
+
+### Added
+
+- `.wb-detect--inside`, for a detection box whose top sits within about 1.5em of the frame's top edge (the page adds it when it measures that): its label is pinned inside the box at the top-left (`top: -2px; left: -2px; bottom: auto`) with the corner radii adjusted (`0.25rem 0 0.25rem 0`) so the label's outer corner matches the box. Nothing else about the box or label changes, and the fade-in applies to both. The docs' video frame shows one box of each placement.
+- A square legend key for bar charts: `data-kind="bar"` on a legend item makes its key a 0.75em square in the series colour (the line key stays for lines). The docs' stacked bar chart uses it.
+
+### Changed
+
+- `.wb-seg` wraps on a narrow screen: `display: flex; flex-wrap: wrap` (the border and corners stay on the group) and `.wb-seg__btn` takes `flex: 1 1 auto`, so four labels such as "24 hours / 7 days / 30 days / 1 year" fit a 320px viewport; buttons stay at least 44px tall and wide. The docs' example has those four labels.
+- The docs' stacked bar chart's caption says "Fish seen per day, 7 days", as its `aria-label` and its y-axis do (it said "Species seen per day").
+- Reworded the 0.3.0 entry for the docs page's positioning: only the positioned container for the boxes went; `.docs-still .wb-live` still places the band's badge.
+
 ## 0.3.0 — 2026-10-30
 
 ### Added
@@ -17,7 +30,7 @@ All notable changes to `@wahoobay/design` are recorded here, newest first. The f
 - `.wb-video` is `position: relative`, so what is drawn over the video (detection boxes placed with `left`, `top`, `width` and `height` in percent, a badge) is placed in the frame and clipped to it. A consumer that positioned the frame itself can keep doing so.
 - A chart series now sets `color` on its marks and its legend key, and lines (`stroke`), bars (`fill`) and legend keys (`background`) take it as `currentColor`; the markup is unchanged (`data-series="1"` to `"8"`).
 - The live badge's breathing rule is `.wb-live:not(.wb-live--off)::before`, so the offline badge is outside it.
-- The documentation page shows, in both themes: the live and the offline badge side by side, the segmented control, a tall stacked bar chart of the eight series with its axis and gridlines, an empty chart, and two detection boxes in a `.wb-video` frame (the docs page's own positioning for them and for the band's badge is gone). The six series are among the swatches.
+- The documentation page shows, in both themes: the live and the offline badge side by side, the segmented control, a tall stacked bar chart of the eight series with its axis and gridlines, an empty chart, and two detection boxes in a `.wb-video` frame (the docs page's own positioned container for the boxes is gone; `.docs-still .wb-live` still places the band's badge). The six series are among the swatches.
 
 ## 0.2.2 — 2026-10-30
 

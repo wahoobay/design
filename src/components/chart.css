@@ -108,3 +108,9 @@
   background: currentColor;
   vertical-align: middle;
 }
+/* A bar chart's key is a square, not a line. */
+.wb-chart__legend [data-kind="bar"]::before {
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 0.125em;
+}
