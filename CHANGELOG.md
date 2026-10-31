@@ -2,6 +2,23 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.3.0 — 2026-10-30
+
+### Added
+
+- Chart series 3 to 8, the Wong colour-blind-safe set (spec §4.3), after brand blue (series 1) and the accent (series 2), the same in both themes: `--wb-color-series-3` `#E69F00`, `-4` `#56B4E9`, `-5` `#D55E00`, `-6` `#CC79A7`, `-7` `#009E73`, `-8` `#F0E442`. They are the strokes and fills of chart marks, never text, so they have no contrast pair in `scripts/contrast.mjs`; a legend in ink names each one.
+- Chart pieces, for the trends page and the live page's chart: `.wb-chart__bar` on an SVG `<rect data-series="…">` is filled with its series colour, with no outline; `.wb-chart__axis`, a `<g>` of lines and `<text>` labels, draws 1px lines in `--wb-color-line` and its labels at `--wb-text-xs` in `--wb-color-ink-3` with tabular numerals; `.wb-chart__grid`, a `<g>` of lines, draws them 1px in `--wb-color-line` at half strength, dashed. Text in an SVG scales with its viewBox, so a chart drawn in CSS pixels at the size it is shown keeps its labels at that size. `.wb-chart--tall` makes the drawing 2:1 (it is 5:1). `.wb-chart__empty` is the sentence a chart with no data shows in place of its SVG, `--wb-text-sm` in muted ink, centred in the box the drawing would fill, so the frame keeps its size.
+- `.wb-live--off`, the badge of a stream that is off: off the accent, on `--wb-color-panel` in `--wb-color-ink-2`, its dot `--wb-color-ink-3` and still. The page sets the word ("Offline"). It needs no detector waiver.
+- `.wb-seg`, a segmented control for one choice of a few, such as a chart's range: a `role="group"` (with a name) of `<button class="wb-seg__btn" type="button" aria-pressed="…">`, in a 1px `--wb-color-line` frame with the 12px corners, each button at least 44px square in ink. The page sets `aria-pressed="true"` on the chosen one, which is on the panel wash and, because the wash alone is faint on the white page, underlined in action blue as the current nav link is. The focus ring is drawn inside the button, as in the nav. Both themes through the tokens.
+- The detection box's entrance (spec §4.3, Ruling 9): a `.wb-detect` and its label fade in together over 150ms as the box enters the page, only without `prefers-reduced-motion: reduce`. A box that only moves does not fade again. With the live badge's breath it is the live page's one authored moment; the busy button's ring is the only other animation.
+
+### Changed
+
+- `.wb-video` is `position: relative`, so what is drawn over the video (detection boxes placed with `left`, `top`, `width` and `height` in percent, a badge) is placed in the frame and clipped to it. A consumer that positioned the frame itself can keep doing so.
+- A chart series now sets `color` on its marks and its legend key, and lines (`stroke`), bars (`fill`) and legend keys (`background`) take it as `currentColor`; the markup is unchanged (`data-series="1"` to `"8"`).
+- The live badge's breathing rule is `.wb-live:not(.wb-live--off)::before`, so the offline badge is outside it.
+- The documentation page shows, in both themes: the live and the offline badge side by side, the segmented control, a tall stacked bar chart of the eight series with its axis and gridlines, an empty chart, and two detection boxes in a `.wb-video` frame (the docs page's own positioning for them and for the band's badge is gone). The six series are among the swatches.
+
 ## 0.2.2 — 2026-10-30
 
 ### Changed
