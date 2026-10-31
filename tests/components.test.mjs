@@ -29,10 +29,12 @@ const CLASSES = [
   'wb-door', 'wb-door__photo', 'wb-door__body', 'wb-door__title', 'wb-door__text',
   'wb-feature', 'wb-feature__photo', 'wb-feature__body', 'wb-feature__title', 'wb-feature__text',
   'wb-notice', 'wb-notice--error',
+  'wb-live--off', 'wb-seg', 'wb-seg__btn',
+  'wb-chart--tall', 'wb-chart__axis', 'wb-chart__grid', 'wb-chart__bar', 'wb-chart__empty',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
-const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media',
+const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-seg', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media',
   'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
@@ -161,15 +163,22 @@ test('the logo is 34px tall on light and 30px on dark (spec §4.3)', () => {
   assert.match(css.find((r) => r.selector === '[data-theme="dark"] .wb-nav__logo :is(svg, img)').body, /height:\s*1\.875rem/);
 });
 
-test('the live badge breathes, only without reduced motion; the busy ring turns; nothing else animates (spec §4.3)', () => {
+test('the live badge breathes and a detection box fades in, only without reduced motion; the busy ring turns; nothing else animates (spec §4.3)', () => {
   const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
   assert.match(css, /@keyframes wb-live-breathe\s*\{/);
-  assert.match(css, /@media \(prefers-reduced-motion: no-preference\)\s*\{\s*\.wb-live::before\s*\{[^}]*animation:[^;]*wb-live-breathe/);
+  // 0.3.0: the offline badge is not in the breathing rule at all (the detector reads the selector, not the cascade).
+  assert.match(css, /@media \(prefers-reduced-motion: no-preference\)\s*\{\s*\.wb-live:not\(\.wb-live--off\)::before\s*\{[^}]*animation:[^;]*wb-live-breathe/);
   // 0.2.2: a busy button's ring turns while it works, a status, not decoration; reduced motion stops it.
   assert.match(css, /@keyframes wb-spin\s*\{/);
+  // 0.3.0 (Ruling 9): a detection box and its label fade in together, 150ms of opacity, as the box appears: with the
+  // badge, the live page's one authored moment. Without the media query's no-preference there is no fade at all.
+  assert.match(css, /@keyframes wb-detect-in\s*\{\s*from\s*\{\s*opacity:\s*0;?\s*\}\s*\}/, 'the fade animates opacity only');
+  assert.match(css, /@media \(prefers-reduced-motion: no-preference\)\s*\{\s*\.wb-detect\s*\{\s*animation:\s*wb-detect-in 150ms ease-out;?\s*\}\s*\}/, 'the fade, only without reduced motion');
   const animated = rules(css).filter((r) => /\banimation(-name)?:/.test(r.body)).map((r) => `${r.selector} ${r.body.match(/animation(?:-name)?:\s*([^;]+)/)[1].trim()}`);
-  assert.deepEqual(animated, ['.wb-btn--busy::after wb-spin .8s linear infinite', '.wb-btn--busy::after none', '.wb-live::before wb-live-breathe 2.4s ease-in-out infinite']);
+  assert.deepEqual(animated, ['.wb-btn--busy::after wb-spin .8s linear infinite', '.wb-btn--busy::after none', '.wb-live:not(.wb-live--off)::before wb-live-breathe 2.4s ease-in-out infinite',
+    '.wb-detect wb-detect-in 150ms ease-out']);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.wb-btn--busy::after\s*\{\s*animation:\s*none;?\s*\}/, 'reduced motion stops the ring');
+  assert.doesNotMatch(css, /\btransition(-[a-z]+)?:/, 'nothing moves by transition either');
 });
 
 test('the dark focus ring is not the accent, which means "alive right now"', () => {
@@ -628,5 +637,102 @@ test('a disabled button reads as unavailable and does not darken under the point
   for (const [name, part] of theme(read('dist/index.html'))) {
     assert.match(part, /<button class="wb-btn wb-btn--action" type="button" disabled>[^<]+<\/button>/, `${name}: a disabled button`);
     assert.match(part, /<button class="wb-btn wb-btn--action wb-btn--busy" type="button" disabled>[^<]+<\/button>/, `${name}: a busy button`);
+  }
+});
+
+// 0.3.0: the pieces the site's live page and trends page draw with (plan 7, Task 5): chart series 3 to 8, axes,
+// gridlines, bars, the tall chart and the empty chart; the offline badge; the segmented control; the video frame as the
+// detection boxes' container.
+const SERIES = { 1: 'brand', 2: 'accent', 3: 'series-3', 4: 'series-4', 5: 'series-5', 6: 'series-6', 7: 'series-7', 8: 'series-8' };
+
+test('chart series 1 to 8: each sets its colour once, for its marks and its legend key; lines, bars and keys take it', () => {
+  for (const [n, token] of Object.entries(SERIES))
+    assert.match(block(`.wb-chart svg [data-series="${n}"], .wb-chart__legend [data-series="${n}"]::before`), new RegExp(`^\\s*color:\\s*var\\(--wb-color-${token}\\);?\\s*$`), `series ${n}`);
+  assert.match(block('.wb-chart svg [data-series]'), /stroke:\s*currentColor/, 'a line is drawn in its series colour');
+  assert.match(block('.wb-chart__legend [data-series]::before'), /background:\s*currentColor/, 'a legend key is its series colour');
+  has(block('.wb-chart svg .wb-chart__bar[data-series]'), [/fill:\s*currentColor/, /stroke:\s*none/], 'a bar');
+  // A series colour is never text: only a mark in the drawing or a legend key's swatch takes one; the legend's words stay muted ink.
+  for (const { selector: sel, body } of rules(read('dist/components.css'))) {
+    if (!/--wb-color-series-/.test(body)) continue;
+    for (const part of sel.split(','))
+      assert.match(part.trim(), /^(\.wb-chart svg \[data-series="[3-8]"\]|\.wb-chart__legend \[data-series="[3-8]"\]::before)$/, `series colour on ${part.trim()}`);
+  }
+  assert.match(block('.wb-chart__legend'), /color:\s*var\(--wb-color-ink-3\)/);
+});
+
+test('chart axes and gridlines: 1px lines in the line colour, the grid dashed at half strength; axis labels small, muted, tabular', () => {
+  has(block('.wb-chart__axis'), [/color:\s*var\(--wb-color-ink-3\)/, /font-size:\s*var\(--wb-text-xs\)/, /font-variant-numeric:\s*tabular-nums/], '.wb-chart__axis');
+  assert.match(block('.wb-chart svg .wb-chart__axis text'), /fill:\s*currentColor/, 'an axis label in SVG takes the muted ink');
+  for (const sel of ['.wb-chart svg .wb-chart__axis :is(line, path)', '.wb-chart svg .wb-chart__grid :is(line, path)'])
+    has(block(sel), [/fill:\s*none/, /stroke:\s*var\(--wb-color-line\)/, /stroke-width:\s*1\s*;/, /vector-effect:\s*non-scaling-stroke/], sel);
+  has(block('.wb-chart svg .wb-chart__grid :is(line, path)'), [/stroke-opacity:\s*0?\.5\s*;/, /stroke-dasharray:\s*\d/], 'the grid');
+  assert.doesNotMatch(block('.wb-chart svg .wb-chart__axis :is(line, path)'), /stroke-dasharray|stroke-opacity/, 'the axis is solid');
+});
+
+test('the tall chart is 2:1, for the trends page; an empty chart is one sentence centred where the drawing would be', () => {
+  assert.match(block('.wb-chart svg'), /aspect-ratio:\s*5 \/ 1/);
+  assert.match(block('.wb-chart--tall svg, .wb-chart--tall .wb-chart__empty'), /^\s*aspect-ratio:\s*2 \/ 1;?\s*$/);
+  has(block('.wb-chart__empty'), [/display:\s*grid/, /place-items:\s*center/, /aspect-ratio:\s*5 \/ 1/, /margin:\s*0/, /color:\s*var\(--wb-color-ink-3\)/,
+    /font-size:\s*var\(--wb-text-sm\)/, /text-align:\s*center/], '.wb-chart__empty');
+});
+
+test('.wb-live--off: off the accent, on the panel ground in secondary ink, its dot muted ink and still; the page says "Offline"', () => {
+  has(block('.wb-live--off'), [/background:\s*var\(--wb-color-panel\)/, /color:\s*var\(--wb-color-ink-2\)/], '.wb-live--off');
+  assert.match(block('.wb-live--off::before'), /^\s*background:\s*var\(--wb-color-ink-3\);?\s*$/, 'the dot');
+  for (const r of rules(read('dist/components.css')).filter((r) => /wb-live--off/.test(r.selector) && !/:not\(\.wb-live--off\)/.test(r.selector))) {
+    assert.doesNotMatch(r.body, /--wb-color-(on-)?accent/, `${r.selector}: the accent means alive right now`);
+    assert.doesNotMatch(r.body, /\banimation/, `${r.selector}: nothing moves`);
+  }
+  // The dot is still: the one rule that animates a badge's dot leaves the offline badge out.
+  const dots = rules(read('dist/components.css')).filter((r) => /\.wb-live\b[^,]*::before/.test(r.selector) && /\banimation/.test(r.body)).map((r) => r.selector);
+  assert.deepEqual(dots, ['.wb-live:not(.wb-live--off)::before']);
+});
+
+test('.wb-seg: buttons in a group with a 1px line and 12px corners, each 44px, in ink; the chosen one on the panel wash; themed by tokens alone', () => {
+  has(block('.wb-seg'), [/display:\s*inline-flex/, /border:\s*1px solid var\(--wb-color-line\)/, /border-radius:\s*var\(--wb-radius\)/, /background:\s*var\(--wb-color-bg\)/], '.wb-seg');
+  assert.doesNotMatch(block('.wb-seg'), /overflow/, 'nothing clips a button or its focus ring');
+  has(block('.wb-seg__btn'), [/min-width:\s*2\.75rem/, /min-height:\s*2\.75rem/, /margin:\s*0/, /border:\s*0/, /background:\s*transparent/, /color:\s*var\(--wb-color-ink\)/,
+    /font:\s*inherit/, /font-weight:\s*700/, /cursor:\s*pointer/], '.wb-seg__btn');
+  assert.match(block('.wb-seg__btn + .wb-seg__btn'), /border-inline-start:\s*1px solid var\(--wb-color-line\)/);
+  // The end buttons follow the group's corners from inside its 1px line, so the chosen one's wash stays in the frame.
+  has(block('.wb-seg__btn:first-child'), [/border-start-start-radius:\s*calc\(var\(--wb-radius\) - 1px\)/, /border-end-start-radius:\s*calc\(var\(--wb-radius\) - 1px\)/], 'the first');
+  has(block('.wb-seg__btn:last-child'), [/border-start-end-radius:\s*calc\(var\(--wb-radius\) - 1px\)/, /border-end-end-radius:\s*calc\(var\(--wb-radius\) - 1px\)/], 'the last');
+  // The panel wash is the chosen one; on the white page it is faint (1.06:1), so it is underlined as the current nav link is.
+  has(block('.wb-seg__btn[aria-pressed="true"]'), [/background:\s*var\(--wb-color-panel\)/, /box-shadow:\s*inset 0 -2px 0 var\(--wb-color-action\)/], 'the chosen button');
+  assert.doesNotMatch(block('.wb-seg__btn[aria-pressed="true"]'), /(^|[;\s])color:/, 'the chosen button keeps the ink');
+  // The ring from base.css, drawn inside the button as in the nav, where the next button cannot cover it.
+  assert.match(block('.wb-seg__btn:focus-visible'), /^\s*outline-offset:\s*-2px;?\s*$/);
+  assert.ok(!rules(read('dist/components.css')).some((r) => /wb-seg/.test(r.selector) && /data-theme/.test(r.selector)), 'no dark rule: the tokens theme it');
+});
+
+test('.wb-video positions what it holds, so a detection box is placed in the frame', () => {
+  assert.match(block('.wb-video'), /position:\s*relative/);
+  assert.match(block('.wb-detect'), /position:\s*absolute/);
+});
+
+test('index.html shows the 0.3.0 pieces in both themes: both badges, the range control, eight series in a tall bar chart, an empty chart, two boxes on a video frame', () => {
+  const html = read('dist/index.html');
+  const swatches = { 3: '#E69F00', 4: '#56B4E9', 5: '#D55E00', 6: '#CC79A7', 7: '#009E73', 8: '#F0E442' };
+  for (const [n, hex] of Object.entries(swatches)) assert.ok(html.includes(`<code>--wb-color-series-${n}</code> <code>${hex}</code>`), `a swatch for series ${n}`);
+  assert.match(html, /<p class="docs-intro">[^<]*(<code>[^<]*<\/code>[^<]*)*never text[^<]*<\/p>/, 'the series are said to be never text');
+  for (const [name, part] of theme(html)) {
+    assert.match(part, /<li><strong>[^<]+<\/strong> <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live<\/span><\/li>\s*<li><strong>[^<]+<\/strong> <span class="wb-live wb-live--off">Offline<\/span><\/li>/,
+      `${name}: the live and the offline badge side by side`);
+    const seg = part.match(/<div class="wb-seg" role="group" aria-label="[^"]+">([\s\S]*?)<\/div>/)?.[1] ?? '';
+    const pressed = [...seg.matchAll(/<button class="wb-seg__btn" type="button" aria-pressed="(true|false)">[^<]+<\/button>/g)].map((m) => m[1]);
+    assert.ok(pressed.length >= 3, `${name}: a range control of three or more buttons`);
+    assert.equal(seg.match(/<button\b/g).length, pressed.length, `${name}: every button in it is a .wb-seg__btn with its state`);
+    assert.equal(pressed.filter((p) => p === 'true').length, 1, `${name}: one of them chosen`);
+    const bars = [...part.matchAll(/<figure class="wb-chart wb-chart--tall">([\s\S]*?)<\/figure>/g)].map((m) => m[1]).find((c) => /class="wb-chart__bar"/.test(c)) ?? '';
+    assert.ok(bars, `${name}: a tall bar chart`);
+    assert.deepEqual([...new Set([...bars.matchAll(/<rect class="wb-chart__bar" data-series="(\d)"/g)].map((m) => m[1]))].sort(), ['1', '2', '3', '4', '5', '6', '7', '8'], `${name}: eight series of bars`);
+    assert.deepEqual([...bars.matchAll(/<li data-series="(\d)">[^<]+<\/li>/g)].map((m) => m[1]), ['1', '2', '3', '4', '5', '6', '7', '8'], `${name}: a legend of the eight, in order`);
+    assert.match(bars, /<g class="wb-chart__grid">\s*(<line\b[^>]*\/>\s*){2,}<\/g>/, `${name}: gridlines`);
+    assert.match(bars, /<g class="wb-chart__axis">\s*<line\b[^>]*\/>(\s*<text\b[^>]*>[^<]+<\/text>){4,}\s*<\/g>/, `${name}: an axis with its labels`);
+    assert.match(part, /<figure class="wb-chart">\s*<figcaption>[^<]+<\/figcaption>\s*<p class="wb-chart__empty">[^<]+<\/p>\s*<\/figure>/, `${name}: an empty chart, its sentence instead of the drawing`);
+    const frame = part.match(/<div class="wb-video[^"]*">\s*<img\b[^>]*>\s*((?:<div class="wb-detect" style="[^"]*"><span class="wb-detect__label">[^<]+<small>[\d.]+<\/small><\/span><\/div>\s*)+)<\/div>/)?.[1] ?? '';
+    const boxes = [...frame.matchAll(/style="([^"]*)"/g)].map((m) => m[1]);
+    assert.equal(boxes.length, 2, `${name}: two detection boxes on a video frame`);
+    for (const box of boxes) assert.match(box, /^left: [\d.]+%; top: [\d.]+%; width: [\d.]+%; height: [\d.]+%$/, `${name}: a box's geometry, in percent of the frame`);
   }
 });

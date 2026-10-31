@@ -20,10 +20,18 @@
   border-radius: 50%;
   background: currentColor;
 }
-/* Spec §4.3: the live badge breathes (the live pages' one authored moment, with the detection boxes' entrance). */
+/* Spec §4.3: the live badge breathes (the live pages' one authored moment, with the detection boxes' entrance); the
+   offline badge does not. */
 @media (prefers-reduced-motion: no-preference) {
-  .wb-live::before { animation: wb-live-breathe 2.4s ease-in-out infinite; }
+  .wb-live:not(.wb-live--off)::before { animation: wb-live-breathe 2.4s ease-in-out infinite; }
 }
 @keyframes wb-live-breathe {
   50% { opacity: 0.45; transform: scale(0.75); }
 }
+/* Offline: the stream is off. Off the accent, which means alive right now: the panel ground in secondary ink, the dot
+   in muted ink and still. The page sets the word ("Offline"). */
+.wb-live--off {
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink-2);
+}
+.wb-live--off::before { background: var(--wb-color-ink-3); }

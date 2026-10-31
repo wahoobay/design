@@ -1,4 +1,6 @@
-/* Chart frame with legend. Series are marked data-series="1" (brand blue) and data-series="2" (the accent). */
+/* Chart frame with legend. A mark in the SVG and its legend item carry data-series="1" to "8": brand blue first, the
+   accent second, then the Wong colour-blind-safe set (spec §4.3), the same in both themes. Each series sets its colour
+   once, as `color`; its line, its bars and its legend key take it as currentColor. A series colour is never text. */
 .wb-chart {
   margin: 0;
   min-width: 0;
@@ -27,13 +29,64 @@
 }
 .wb-chart svg [data-series] {
   fill: none;
+  stroke: currentColor;
   stroke-width: 2;
   stroke-linejoin: round;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
-.wb-chart svg [data-series="1"] { stroke: var(--wb-color-brand); }
-.wb-chart svg [data-series="2"] { stroke: var(--wb-color-accent); }
+.wb-chart svg [data-series="1"], .wb-chart__legend [data-series="1"]::before { color: var(--wb-color-brand); }
+.wb-chart svg [data-series="2"], .wb-chart__legend [data-series="2"]::before { color: var(--wb-color-accent); }
+.wb-chart svg [data-series="3"], .wb-chart__legend [data-series="3"]::before { color: var(--wb-color-series-3); }
+.wb-chart svg [data-series="4"], .wb-chart__legend [data-series="4"]::before { color: var(--wb-color-series-4); }
+.wb-chart svg [data-series="5"], .wb-chart__legend [data-series="5"]::before { color: var(--wb-color-series-5); }
+.wb-chart svg [data-series="6"], .wb-chart__legend [data-series="6"]::before { color: var(--wb-color-series-6); }
+.wb-chart svg [data-series="7"], .wb-chart__legend [data-series="7"]::before { color: var(--wb-color-series-7); }
+.wb-chart svg [data-series="8"], .wb-chart__legend [data-series="8"]::before { color: var(--wb-color-series-8); }
+/* A bar (an SVG <rect class="wb-chart__bar" data-series="…">) is filled with its series colour, with no outline. */
+.wb-chart svg .wb-chart__bar[data-series] {
+  fill: currentColor;
+  stroke: none;
+}
+/* Axes and gridlines: a <g class="wb-chart__axis"> of lines and <text> labels, a <g class="wb-chart__grid"> of lines.
+   Lines are 1px of the line colour, the grid's dashed at half strength; labels are small, muted and tabular. Text in an
+   SVG scales with its viewBox, so draw the chart in CSS pixels at the size it is shown and the labels stay this size. */
+.wb-chart__axis {
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+.wb-chart svg .wb-chart__axis :is(line, path) {
+  fill: none;
+  stroke: var(--wb-color-line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.wb-chart svg .wb-chart__axis text { fill: currentColor; }
+.wb-chart svg .wb-chart__grid :is(line, path) {
+  fill: none;
+  stroke: var(--wb-color-line);
+  stroke-width: 1;
+  stroke-opacity: 0.5;
+  stroke-dasharray: 2 4;
+  vector-effect: non-scaling-stroke;
+}
+/* Tall: 2:1, for the trends page, where a chart stands alone in its column. */
+.wb-chart--tall svg,
+.wb-chart--tall .wb-chart__empty { aspect-ratio: 2 / 1; }
+/* No data: one sentence in place of the SVG, centred in the box the drawing would fill, so the frame keeps its size. */
+.wb-chart__empty {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 1;
+  margin: 0;
+  padding: var(--wb-space-3);
+  color: var(--wb-color-ink-3);
+  font-size: var(--wb-text-sm);
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
+}
 .wb-chart__legend {
   display: flex;
   flex-wrap: wrap;
@@ -52,7 +105,6 @@
   height: 0.1875rem;
   margin-right: 0.4em;
   border-radius: var(--wb-radius-pill);
+  background: currentColor;
   vertical-align: middle;
 }
-.wb-chart__legend [data-series="1"]::before { background: var(--wb-color-brand); }
-.wb-chart__legend [data-series="2"]::before { background: var(--wb-color-accent); }

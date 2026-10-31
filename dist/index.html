@@ -15,7 +15,8 @@
          800, so WCAG's 3:1 for large text applies (brand blue is 3.8:1 on white). The detector cannot resolve clamp() sizes
          and applies 4.5:1.
        data-impeccable-ignore="pulsing-dot" on every live badge: spec §4.3, the live badge breathes as part of the live pages'
-         one authored moment; it is shown only while a stream is live and stops under prefers-reduced-motion.
+         one authored moment; it is shown only while a stream is live and stops under prefers-reduced-motion. The offline
+         badge (wb-live--off) needs none: its dot is still, and the breathing rule leaves it out.
        data-impeccable-ignore="low-contrast" on text set on a photograph (the stage's title and lead, the doorways' and the
          feature's titles and text, and the links of the nav over the stage, only there): spec §4.3, Deep Field, sets that
          text in white over a scrim. The detector sees neither the photograph nor the scrim and measures white on the page
@@ -46,9 +47,9 @@
     .docs-seen li:first-child { border-top: 0; }
     .docs-seen li > :first-child { font-weight: 600; }
     .docs-seen .wb-num { color: var(--wb-color-ink-3); }
-    .docs-video { position: relative; max-width: 40rem; overflow: hidden; border: 1px solid var(--wb-color-line); border-radius: var(--wb-radius); }
-    .docs-video img { display: block; width: 100%; }
-    .docs-video .wb-live { position: absolute; top: var(--wb-space-3); left: var(--wb-space-3); }
+    .docs-badges { gap: var(--wb-space-3) var(--wb-space-6); }
+    .docs-badges li { display: inline-flex; align-items: center; gap: var(--wb-space-3); }
+    .docs-chart { max-width: 40rem; }
     .docs-form { display: grid; gap: var(--wb-space-5); max-width: 32rem; }
     .docs-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--wb-space-4); margin: var(--wb-space-4) 0 0; padding: 0; list-style: none; }
     .docs-swatch { display: grid; grid-template-columns: 2.75rem 1fr; column-gap: var(--wb-space-3); align-items: center; font-size: var(--wb-text-sm); }
@@ -92,7 +93,6 @@
     .docs-media { display: grid; gap: var(--wb-space-5); max-width: 40rem; }
     .docs-media figcaption { margin-top: var(--wb-space-2); }
     .docs-band { aspect-ratio: 21 / 9; }
-    .docs-still { position: relative; }
     .docs-still .wb-live { position: absolute; top: var(--wb-space-3); left: var(--wb-space-3); }
     .docs-band-words { display: grid; justify-items: start; gap: var(--wb-space-4); }
     .docs-doors { display: grid; gap: var(--wb-space-4); }
@@ -184,6 +184,17 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.55)</code><small>The band at the top of the stage, under the nav</small></li>
         </ul>
       </div>
+
+      <h3>Chart series</h3>
+      <p class="docs-intro">The series of a chart, in order: brand blue first, the accent second, then these six, the Wong colour-blind-safe set, the same in both themes. Series are the strokes and fills of chart marks, never text, so no contrast test applies to them.</p>
+      <ul class="docs-swatches" role="list">
+        <li class="docs-swatch"><span style="background: var(--wb-color-series-3)"></span><code>--wb-color-series-3</code> <code>#E69F00</code><small>Series 3, orange</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-series-4)"></span><code>--wb-color-series-4</code> <code>#56B4E9</code><small>Series 4, sky blue</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-series-5)"></span><code>--wb-color-series-5</code> <code>#D55E00</code><small>Series 5, vermillion</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-series-6)"></span><code>--wb-color-series-6</code> <code>#CC79A7</code><small>Series 6, reddish purple</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-series-7)"></span><code>--wb-color-series-7</code> <code>#009E73</code><small>Series 7, bluish green</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-series-8)"></span><code>--wb-color-series-8</code> <code>#F0E442</code><small>Series 8, yellow</small></li>
+      </ul>
 
       <h3>Type scale</h3>
       <p class="docs-intro">One family, Manrope, from 400 to 800. The four largest steps are fluid. The display size, for the headline on the home page's photograph, and the figure size, for the impact numbers, are tracked in by <code>--wb-track-display</code>, -0.04em.</p>
@@ -564,10 +575,13 @@
       <div class="docs-specimen">
         <div>
           <h3>Live badge</h3>
-          <p>Shown only while a stream is on. Its dot breathes, unless the reader asks for reduced motion.</p>
+          <p>Shown while a stream is on, in the accent. Its dot breathes, unless the reader asks for reduced motion. When the stream is off, <code>wb-live--off</code> takes the badge off the accent onto the panel ground, its dot muted and still, and the page says Offline.</p>
         </div>
         <div>
-          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span></p>
+          <ul class="docs-row docs-badges" role="list">
+            <li><strong>SeaHIVE reef camera</strong> <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span></li>
+            <li><strong>Pier camera</strong> <span class="wb-live wb-live--off">Offline</span></li>
+          </ul>
         </div>
       </div>
 
@@ -1338,7 +1352,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Chart</h3>
-          <p>The frame and legend. Brand blue is the first series and the accent the second: mark them <code>data-series="1"</code> and <code>data-series="2"</code>.</p>
+          <p>The frame and legend. Mark a line and its legend item with <code>data-series</code>, from 1 to 8: brand blue is the first series, the accent the second, then the six chart series colours.</p>
         </div>
         <div>
           <figure class="wb-chart">
@@ -1354,16 +1368,133 @@
 
       <div class="docs-specimen">
         <div>
-          <h3>Detection boxes</h3>
-          <p>Drawn over the live video in the accent: the species and the model's confidence.</p>
+          <h3>Segmented control</h3>
+          <p>One choice of a few, such as a chart's range: a <code>wb-seg</code> group, <code>role="group"</code> with a name, of <code>wb-seg__btn</code> buttons, each at least 44px square. The page marks the chosen one <code>aria-pressed="true"</code> and the rest <code>"false"</code>; the chosen one is on the panel wash, underlined in action blue as the current nav link is.</p>
         </div>
         <div>
-          <div class="docs-video">
+          <div class="wb-seg" role="group" aria-label="Chart range">
+            <button class="wb-seg__btn" type="button" aria-pressed="false">7 days</button>
+            <button class="wb-seg__btn" type="button" aria-pressed="true">30 days</button>
+            <button class="wb-seg__btn" type="button" aria-pressed="false">1 year</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Bars, axes and the eight series</h3>
+          <p>The tall frame, <code>wb-chart--tall</code>, is 2:1, for the trends page. A bar is a <code>&lt;rect class="wb-chart__bar"&gt;</code> filled with its series colour; a <code>wb-chart__grid</code> group holds the dashed gridlines and a <code>wb-chart__axis</code> group the 1px axis and its labels. Eight series is the most a chart has: fold the rest into the eighth, as Other. Text in an SVG scales with the drawing, so draw a chart in CSS pixels at the size it is shown; this one is drawn for 600px.</p>
+        </div>
+        <div class="docs-chart">
+          <figure class="wb-chart wb-chart--tall">
+            <figcaption>Species seen per day, 7 days</figcaption>
+            <svg viewBox="0 0 600 300" role="img" aria-label="Fish seen per day over the seven days to October 30, from 96 to 168 a day, sergeant majors the most every day">
+              <g class="wb-chart__grid">
+                <line x1="40" x2="600" y1="205" y2="205"/>
+                <line x1="40" x2="600" y1="140" y2="140"/>
+                <line x1="40" x2="600" y1="75" y2="75"/>
+                <line x1="40" x2="600" y1="10" y2="10"/>
+              </g>
+              <rect class="wb-chart__bar" data-series="1" x="58" y="220" width="44" height="50"/>
+              <rect class="wb-chart__bar" data-series="2" x="58" y="191.4" width="44" height="26.6"/>
+              <rect class="wb-chart__bar" data-series="3" x="58" y="168" width="44" height="21.4"/>
+              <rect class="wb-chart__bar" data-series="4" x="58" y="152.4" width="44" height="13.6"/>
+              <rect class="wb-chart__bar" data-series="5" x="58" y="139.4" width="44" height="11"/>
+              <rect class="wb-chart__bar" data-series="6" x="58" y="129" width="44" height="8.4"/>
+              <rect class="wb-chart__bar" data-series="7" x="58" y="121.2" width="44" height="5.8"/>
+              <rect class="wb-chart__bar" data-series="8" x="58" y="107.5" width="44" height="11.7"/>
+              <rect class="wb-chart__bar" data-series="1" x="138" y="225.2" width="44" height="44.8"/>
+              <rect class="wb-chart__bar" data-series="2" x="138" y="192.7" width="44" height="30.5"/>
+              <rect class="wb-chart__bar" data-series="3" x="138" y="173.2" width="44" height="17.5"/>
+              <rect class="wb-chart__bar" data-series="4" x="138" y="155" width="44" height="16.2"/>
+              <rect class="wb-chart__bar" data-series="5" x="138" y="143.3" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="6" x="138" y="134.2" width="44" height="7.1"/>
+              <rect class="wb-chart__bar" data-series="7" x="138" y="127.7" width="44" height="4.5"/>
+              <rect class="wb-chart__bar" data-series="8" x="138" y="115.3" width="44" height="10.4"/>
+              <rect class="wb-chart__bar" data-series="1" x="218" y="214.8" width="44" height="55.2"/>
+              <rect class="wb-chart__bar" data-series="2" x="218" y="188.8" width="44" height="24"/>
+              <rect class="wb-chart__bar" data-series="3" x="218" y="161.5" width="44" height="25.3"/>
+              <rect class="wb-chart__bar" data-series="4" x="218" y="148.5" width="44" height="11"/>
+              <rect class="wb-chart__bar" data-series="5" x="218" y="132.9" width="44" height="13.6"/>
+              <rect class="wb-chart__bar" data-series="6" x="218" y="121.2" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="7" x="218" y="112.1" width="44" height="7.1"/>
+              <rect class="wb-chart__bar" data-series="8" x="218" y="97.1" width="44" height="13"/>
+              <rect class="wb-chart__bar" data-series="1" x="298" y="233" width="44" height="37"/>
+              <rect class="wb-chart__bar" data-series="2" x="298" y="209.6" width="44" height="21.4"/>
+              <rect class="wb-chart__bar" data-series="3" x="298" y="191.4" width="44" height="16.2"/>
+              <rect class="wb-chart__bar" data-series="4" x="298" y="179.7" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="5" x="298" y="169.3" width="44" height="8.4"/>
+              <rect class="wb-chart__bar" data-series="6" x="298" y="161.5" width="44" height="5.8"/>
+              <rect class="wb-chart__bar" data-series="7" x="298" y="156.3" width="44" height="3.2"/>
+              <rect class="wb-chart__bar" data-series="8" x="298" y="145.2" width="44" height="9.1"/>
+              <rect class="wb-chart__bar" data-series="1" x="378" y="209.6" width="44" height="60.4"/>
+              <rect class="wb-chart__bar" data-series="2" x="378" y="174.5" width="44" height="33.1"/>
+              <rect class="wb-chart__bar" data-series="3" x="378" y="148.5" width="44" height="24"/>
+              <rect class="wb-chart__bar" data-series="4" x="378" y="129" width="44" height="17.5"/>
+              <rect class="wb-chart__bar" data-series="5" x="378" y="112.1" width="44" height="14.9"/>
+              <rect class="wb-chart__bar" data-series="6" x="378" y="99.1" width="44" height="11"/>
+              <rect class="wb-chart__bar" data-series="7" x="378" y="88.7" width="44" height="8.4"/>
+              <rect class="wb-chart__bar" data-series="8" x="378" y="72.4" width="44" height="14.3"/>
+              <rect class="wb-chart__bar" data-series="1" x="458" y="204.4" width="44" height="65.6"/>
+              <rect class="wb-chart__bar" data-series="2" x="458" y="165.4" width="44" height="37"/>
+              <rect class="wb-chart__bar" data-series="3" x="458" y="134.2" width="44" height="29.2"/>
+              <rect class="wb-chart__bar" data-series="4" x="458" y="113.4" width="44" height="18.8"/>
+              <rect class="wb-chart__bar" data-series="5" x="458" y="95.2" width="44" height="16.2"/>
+              <rect class="wb-chart__bar" data-series="6" x="458" y="80.9" width="44" height="12.3"/>
+              <rect class="wb-chart__bar" data-series="7" x="458" y="69.2" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="8" x="458" y="51.6" width="44" height="15.6"/>
+              <rect class="wb-chart__bar" data-series="1" x="538" y="212.2" width="44" height="57.8"/>
+              <rect class="wb-chart__bar" data-series="2" x="538" y="178.4" width="44" height="31.8"/>
+              <rect class="wb-chart__bar" data-series="3" x="538" y="153.7" width="44" height="22.7"/>
+              <rect class="wb-chart__bar" data-series="4" x="538" y="136.8" width="44" height="14.9"/>
+              <rect class="wb-chart__bar" data-series="5" x="538" y="122.5" width="44" height="12.3"/>
+              <rect class="wb-chart__bar" data-series="6" x="538" y="110.8" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="7" x="538" y="101.7" width="44" height="7.1"/>
+              <rect class="wb-chart__bar" data-series="8" x="538" y="86.7" width="44" height="13"/>
+              <g class="wb-chart__axis">
+                <line x1="40" x2="600" y1="270" y2="270"/>
+                <text x="32" y="274" text-anchor="end">0</text>
+                <text x="32" y="209" text-anchor="end">50</text>
+                <text x="32" y="144" text-anchor="end">100</text>
+                <text x="32" y="79" text-anchor="end">150</text>
+                <text x="32" y="14" text-anchor="end">200</text>
+                <text x="80" y="290" text-anchor="middle">Oct 24</text>
+                <text x="160" y="290" text-anchor="middle">Oct 25</text>
+                <text x="240" y="290" text-anchor="middle">Oct 26</text>
+                <text x="320" y="290" text-anchor="middle">Oct 27</text>
+                <text x="400" y="290" text-anchor="middle">Oct 28</text>
+                <text x="480" y="290" text-anchor="middle">Oct 29</text>
+                <text x="560" y="290" text-anchor="middle">Oct 30</text>
+              </g>
+            </svg>
+            <ul class="wb-chart__legend" role="list"><li data-series="1">Sergeant major</li><li data-series="2">Blue tang</li><li data-series="3">Grey snapper</li><li data-series="4">Stoplight parrotfish</li><li data-series="5">Bluehead wrasse</li><li data-series="6">French grunt</li><li data-series="7">Yellowtail snapper</li><li data-series="8">Other species</li></ul>
+          </figure>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Empty chart</h3>
+          <p>A chart with nothing to draw says so in one sentence, <code>wb-chart__empty</code>, in place of the SVG: centred where the drawing would be, so the frame keeps its size.</p>
+        </div>
+        <div>
+          <figure class="wb-chart">
+            <figcaption>Rainfall, 7 days</figcaption>
+            <p class="wb-chart__empty">No readings from the weather station in these seven days.</p>
+          </figure>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Detection boxes</h3>
+          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion.</p>
+        </div>
+        <div>
+          <div class="wb-video docs-video-frame">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
-            <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span>
-            <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
-            <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
-            <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+            <div class="wb-detect" style="left: 20%; top: 66%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
+            <div class="wb-detect" style="left: 70%; top: 58%; width: 14%; height: 12%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
           </div>
         </div>
       </div>
@@ -1371,7 +1502,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Video frame</h3>
-          <p>An embedded player in a 16:9 box with the panel's corners; the player fills it, borderless.</p>
+          <p>An embedded player in a 16:9 box with the panel's corners; the player fills it, borderless. The frame is positioned, so what is drawn over the video, detection boxes or a badge, is placed in it.</p>
         </div>
         <div>
           <div class="wb-video docs-video-frame">
@@ -1780,10 +1911,13 @@
       <div class="docs-specimen">
         <div>
           <h3>Live badge</h3>
-          <p>Shown only while a stream is on. Its dot breathes, unless the reader asks for reduced motion.</p>
+          <p>Shown while a stream is on, in the accent. Its dot breathes, unless the reader asks for reduced motion. When the stream is off, <code>wb-live--off</code> takes the badge off the accent onto the panel ground, its dot muted and still, and the page says Offline.</p>
         </div>
         <div>
-          <p class="docs-row"><strong>SeaHIVE reef camera</strong> <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span></p>
+          <ul class="docs-row docs-badges" role="list">
+            <li><strong>SeaHIVE reef camera</strong> <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span></li>
+            <li><strong>Pier camera</strong> <span class="wb-live wb-live--off">Offline</span></li>
+          </ul>
         </div>
       </div>
 
@@ -2554,7 +2688,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Chart</h3>
-          <p>The frame and legend. Brand blue is the first series and the accent the second: mark them <code>data-series="1"</code> and <code>data-series="2"</code>.</p>
+          <p>The frame and legend. Mark a line and its legend item with <code>data-series</code>, from 1 to 8: brand blue is the first series, the accent the second, then the six chart series colours.</p>
         </div>
         <div>
           <figure class="wb-chart">
@@ -2570,16 +2704,133 @@
 
       <div class="docs-specimen">
         <div>
-          <h3>Detection boxes</h3>
-          <p>Drawn over the live video in the accent: the species and the model's confidence.</p>
+          <h3>Segmented control</h3>
+          <p>One choice of a few, such as a chart's range: a <code>wb-seg</code> group, <code>role="group"</code> with a name, of <code>wb-seg__btn</code> buttons, each at least 44px square. The page marks the chosen one <code>aria-pressed="true"</code> and the rest <code>"false"</code>; the chosen one is on the panel wash, underlined in action blue as the current nav link is.</p>
         </div>
         <div>
-          <div class="docs-video">
+          <div class="wb-seg" role="group" aria-label="Chart range">
+            <button class="wb-seg__btn" type="button" aria-pressed="false">7 days</button>
+            <button class="wb-seg__btn" type="button" aria-pressed="true">30 days</button>
+            <button class="wb-seg__btn" type="button" aria-pressed="false">1 year</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Bars, axes and the eight series</h3>
+          <p>The tall frame, <code>wb-chart--tall</code>, is 2:1, for the trends page. A bar is a <code>&lt;rect class="wb-chart__bar"&gt;</code> filled with its series colour; a <code>wb-chart__grid</code> group holds the dashed gridlines and a <code>wb-chart__axis</code> group the 1px axis and its labels. Eight series is the most a chart has: fold the rest into the eighth, as Other. Text in an SVG scales with the drawing, so draw a chart in CSS pixels at the size it is shown; this one is drawn for 600px.</p>
+        </div>
+        <div class="docs-chart">
+          <figure class="wb-chart wb-chart--tall">
+            <figcaption>Species seen per day, 7 days</figcaption>
+            <svg viewBox="0 0 600 300" role="img" aria-label="Fish seen per day over the seven days to October 30, from 96 to 168 a day, sergeant majors the most every day">
+              <g class="wb-chart__grid">
+                <line x1="40" x2="600" y1="205" y2="205"/>
+                <line x1="40" x2="600" y1="140" y2="140"/>
+                <line x1="40" x2="600" y1="75" y2="75"/>
+                <line x1="40" x2="600" y1="10" y2="10"/>
+              </g>
+              <rect class="wb-chart__bar" data-series="1" x="58" y="220" width="44" height="50"/>
+              <rect class="wb-chart__bar" data-series="2" x="58" y="191.4" width="44" height="26.6"/>
+              <rect class="wb-chart__bar" data-series="3" x="58" y="168" width="44" height="21.4"/>
+              <rect class="wb-chart__bar" data-series="4" x="58" y="152.4" width="44" height="13.6"/>
+              <rect class="wb-chart__bar" data-series="5" x="58" y="139.4" width="44" height="11"/>
+              <rect class="wb-chart__bar" data-series="6" x="58" y="129" width="44" height="8.4"/>
+              <rect class="wb-chart__bar" data-series="7" x="58" y="121.2" width="44" height="5.8"/>
+              <rect class="wb-chart__bar" data-series="8" x="58" y="107.5" width="44" height="11.7"/>
+              <rect class="wb-chart__bar" data-series="1" x="138" y="225.2" width="44" height="44.8"/>
+              <rect class="wb-chart__bar" data-series="2" x="138" y="192.7" width="44" height="30.5"/>
+              <rect class="wb-chart__bar" data-series="3" x="138" y="173.2" width="44" height="17.5"/>
+              <rect class="wb-chart__bar" data-series="4" x="138" y="155" width="44" height="16.2"/>
+              <rect class="wb-chart__bar" data-series="5" x="138" y="143.3" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="6" x="138" y="134.2" width="44" height="7.1"/>
+              <rect class="wb-chart__bar" data-series="7" x="138" y="127.7" width="44" height="4.5"/>
+              <rect class="wb-chart__bar" data-series="8" x="138" y="115.3" width="44" height="10.4"/>
+              <rect class="wb-chart__bar" data-series="1" x="218" y="214.8" width="44" height="55.2"/>
+              <rect class="wb-chart__bar" data-series="2" x="218" y="188.8" width="44" height="24"/>
+              <rect class="wb-chart__bar" data-series="3" x="218" y="161.5" width="44" height="25.3"/>
+              <rect class="wb-chart__bar" data-series="4" x="218" y="148.5" width="44" height="11"/>
+              <rect class="wb-chart__bar" data-series="5" x="218" y="132.9" width="44" height="13.6"/>
+              <rect class="wb-chart__bar" data-series="6" x="218" y="121.2" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="7" x="218" y="112.1" width="44" height="7.1"/>
+              <rect class="wb-chart__bar" data-series="8" x="218" y="97.1" width="44" height="13"/>
+              <rect class="wb-chart__bar" data-series="1" x="298" y="233" width="44" height="37"/>
+              <rect class="wb-chart__bar" data-series="2" x="298" y="209.6" width="44" height="21.4"/>
+              <rect class="wb-chart__bar" data-series="3" x="298" y="191.4" width="44" height="16.2"/>
+              <rect class="wb-chart__bar" data-series="4" x="298" y="179.7" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="5" x="298" y="169.3" width="44" height="8.4"/>
+              <rect class="wb-chart__bar" data-series="6" x="298" y="161.5" width="44" height="5.8"/>
+              <rect class="wb-chart__bar" data-series="7" x="298" y="156.3" width="44" height="3.2"/>
+              <rect class="wb-chart__bar" data-series="8" x="298" y="145.2" width="44" height="9.1"/>
+              <rect class="wb-chart__bar" data-series="1" x="378" y="209.6" width="44" height="60.4"/>
+              <rect class="wb-chart__bar" data-series="2" x="378" y="174.5" width="44" height="33.1"/>
+              <rect class="wb-chart__bar" data-series="3" x="378" y="148.5" width="44" height="24"/>
+              <rect class="wb-chart__bar" data-series="4" x="378" y="129" width="44" height="17.5"/>
+              <rect class="wb-chart__bar" data-series="5" x="378" y="112.1" width="44" height="14.9"/>
+              <rect class="wb-chart__bar" data-series="6" x="378" y="99.1" width="44" height="11"/>
+              <rect class="wb-chart__bar" data-series="7" x="378" y="88.7" width="44" height="8.4"/>
+              <rect class="wb-chart__bar" data-series="8" x="378" y="72.4" width="44" height="14.3"/>
+              <rect class="wb-chart__bar" data-series="1" x="458" y="204.4" width="44" height="65.6"/>
+              <rect class="wb-chart__bar" data-series="2" x="458" y="165.4" width="44" height="37"/>
+              <rect class="wb-chart__bar" data-series="3" x="458" y="134.2" width="44" height="29.2"/>
+              <rect class="wb-chart__bar" data-series="4" x="458" y="113.4" width="44" height="18.8"/>
+              <rect class="wb-chart__bar" data-series="5" x="458" y="95.2" width="44" height="16.2"/>
+              <rect class="wb-chart__bar" data-series="6" x="458" y="80.9" width="44" height="12.3"/>
+              <rect class="wb-chart__bar" data-series="7" x="458" y="69.2" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="8" x="458" y="51.6" width="44" height="15.6"/>
+              <rect class="wb-chart__bar" data-series="1" x="538" y="212.2" width="44" height="57.8"/>
+              <rect class="wb-chart__bar" data-series="2" x="538" y="178.4" width="44" height="31.8"/>
+              <rect class="wb-chart__bar" data-series="3" x="538" y="153.7" width="44" height="22.7"/>
+              <rect class="wb-chart__bar" data-series="4" x="538" y="136.8" width="44" height="14.9"/>
+              <rect class="wb-chart__bar" data-series="5" x="538" y="122.5" width="44" height="12.3"/>
+              <rect class="wb-chart__bar" data-series="6" x="538" y="110.8" width="44" height="9.7"/>
+              <rect class="wb-chart__bar" data-series="7" x="538" y="101.7" width="44" height="7.1"/>
+              <rect class="wb-chart__bar" data-series="8" x="538" y="86.7" width="44" height="13"/>
+              <g class="wb-chart__axis">
+                <line x1="40" x2="600" y1="270" y2="270"/>
+                <text x="32" y="274" text-anchor="end">0</text>
+                <text x="32" y="209" text-anchor="end">50</text>
+                <text x="32" y="144" text-anchor="end">100</text>
+                <text x="32" y="79" text-anchor="end">150</text>
+                <text x="32" y="14" text-anchor="end">200</text>
+                <text x="80" y="290" text-anchor="middle">Oct 24</text>
+                <text x="160" y="290" text-anchor="middle">Oct 25</text>
+                <text x="240" y="290" text-anchor="middle">Oct 26</text>
+                <text x="320" y="290" text-anchor="middle">Oct 27</text>
+                <text x="400" y="290" text-anchor="middle">Oct 28</text>
+                <text x="480" y="290" text-anchor="middle">Oct 29</text>
+                <text x="560" y="290" text-anchor="middle">Oct 30</text>
+              </g>
+            </svg>
+            <ul class="wb-chart__legend" role="list"><li data-series="1">Sergeant major</li><li data-series="2">Blue tang</li><li data-series="3">Grey snapper</li><li data-series="4">Stoplight parrotfish</li><li data-series="5">Bluehead wrasse</li><li data-series="6">French grunt</li><li data-series="7">Yellowtail snapper</li><li data-series="8">Other species</li></ul>
+          </figure>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Empty chart</h3>
+          <p>A chart with nothing to draw says so in one sentence, <code>wb-chart__empty</code>, in place of the SVG: centred where the drawing would be, so the frame keeps its size.</p>
+        </div>
+        <div>
+          <figure class="wb-chart">
+            <figcaption>Rainfall, 7 days</figcaption>
+            <p class="wb-chart__empty">No readings from the weather station in these seven days.</p>
+          </figure>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Detection boxes</h3>
+          <p>Drawn over the live video in the accent: the species and the model's confidence. Put the boxes in the <code>wb-video</code> frame and place each with <code>left</code>, <code>top</code>, <code>width</code> and <code>height</code> in percent of the frame. A box and its label fade in together as it appears, over 150ms, unless the reader asks for reduced motion.</p>
+        </div>
+        <div>
+          <div class="wb-video docs-video-frame">
             <img src="./media/reef-camera.jpg" width="960" height="639" alt="Under water at the reef: the SeaHIVE camera on its post, small fish over the sand">
-            <span class="wb-live" data-impeccable-ignore="pulsing-dot">Live</span>
-            <div class="wb-detect" style="left: 20%; top: 64%; width: 12%; height: 9%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
-            <div class="wb-detect" style="left: 3%; top: 78%; width: 10%; height: 8%"><span class="wb-detect__label">Grey snapper<small>0.88</small></span></div>
-            <div class="wb-detect" style="left: 70%; top: 57%; width: 14%; height: 10%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
+            <div class="wb-detect" style="left: 20%; top: 66%; width: 12%; height: 10%"><span class="wb-detect__label">Sergeant major<small>0.96</small></span></div>
+            <div class="wb-detect" style="left: 70%; top: 58%; width: 14%; height: 12%"><span class="wb-detect__label">Blue tang<small>0.91</small></span></div>
           </div>
         </div>
       </div>
@@ -2587,7 +2838,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Video frame</h3>
-          <p>An embedded player in a 16:9 box with the panel's corners; the player fills it, borderless.</p>
+          <p>An embedded player in a 16:9 box with the panel's corners; the player fills it, borderless. The frame is positioned, so what is drawn over the video, detection boxes or a badge, is placed in it.</p>
         </div>
         <div>
           <div class="wb-video docs-video-frame">

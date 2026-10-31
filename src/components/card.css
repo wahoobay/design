@@ -46,8 +46,10 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   font-size: var(--wb-text-2xl);
   font-weight: 800;
 }
-/* Video frame: an embedded player in a 16:9 box with 12px corners; the player fills it, borderless. */
+/* Video frame: an embedded player in a 16:9 box with 12px corners; the player fills it, borderless. It is positioned, so
+   what is drawn over the video (detection boxes, a badge) is placed in the frame and clipped to it. */
 .wb-video {
+  position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: var(--wb-radius);

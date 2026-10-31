@@ -35,3 +35,15 @@ test('tokens: text on photographs and its scrim are the same in both themes', ()
     assert.match(block, /--wb-color-scrim-top: rgb\(11 27 43 \/ 0\.55\);/, `${theme}: scrim-top`);
   }
 });
+// 0.3.0: chart series 3 to 8 are the Wong colour-blind-safe set (spec §4.3), after brand blue (series 1) and the accent
+// (series 2). They are the strokes and fills of chart marks, never text, so they have no contrast pair.
+test('tokens: chart series 3 to 8 are the Wong set, the same in both themes, and never a text pair', () => {
+  const t = readFileSync('dist/tokens.css', 'utf8');
+  const [light, dark] = [t.match(/:root\s*\{([^}]*)\}/)[1], t.match(/\[data-theme="dark"\]\s*\{([^}]*)\}/)[1]];
+  const series = { 3: '#E69F00', 4: '#56B4E9', 5: '#D55E00', 6: '#CC79A7', 7: '#009E73', 8: '#F0E442' };
+  for (const [theme, block] of [['light', light], ['dark', dark]]) {
+    for (const [n, hex] of Object.entries(series)) assert.match(block, new RegExp(`--wb-color-series-${n}: ${hex};`), `${theme}: series ${n}`);
+    assert.equal(block.match(/--wb-color-series-\d+:/g)?.length, 6, `${theme}: six series tokens, none for 1 and 2`);
+  }
+  assert.ok(!pairs.flat().some((name) => name.startsWith('series')), 'no series token in a text pair');
+});
