@@ -1,0 +1,47 @@
+/* Pager: where you are in a long list, Previous and Next in action blue, and the page size. The count is words, in
+   .wb-pager__info. A control that cannot be used (the first page's Previous) is aria-disabled and fades, as a button does. */
+.wb-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--wb-space-3) var(--wb-space-4);
+  margin-top: var(--wb-space-4);
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+}
+.wb-pager__info {
+  flex: 1 1 12rem;
+  margin: 0;
+  color: var(--wb-color-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.wb-pager__prev,
+.wb-pager__next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: var(--wb-space-2) var(--wb-space-4);
+  border: 1.5px solid var(--wb-color-action);
+  border-radius: var(--wb-radius);
+  background: transparent;
+  color: var(--wb-color-action);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.wb-pager__prev:not(:disabled, [aria-disabled="true"]):hover,
+.wb-pager__next:not(:disabled, [aria-disabled="true"]):hover { background: var(--wb-color-tint); }
+.wb-pager__prev:is(:disabled, [aria-disabled="true"]),
+.wb-pager__next:is(:disabled, [aria-disabled="true"]) {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.wb-pager .wb-select {
+  width: auto;
+  min-width: 6rem;
+}

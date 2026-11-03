@@ -32,11 +32,13 @@ const CLASSES = [
   'wb-notice', 'wb-notice--error',
   'wb-live--off', 'wb-seg', 'wb-seg__btn', 'wb-detect--inside', 'wb-detect--right', 'wb-as-is',
   'wb-chart--tall', 'wb-chart__axis', 'wb-chart__grid', 'wb-chart__bar', 'wb-chart__empty',
+  'wb-toolbar', 'wb-table', 'wb-table-wrap', 'wb-pager', 'wb-pager__info', 'wb-pager__prev', 'wb-pager__next',
+  'wb-dialog', 'wb-dialog__title', 'wb-dialog__actions', 'wb-status',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
 const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-seg', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media',
-  'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-footer', 'wb-container', 'wb-as-is'];
+  'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-toolbar', 'wb-table-wrap', 'wb-pager', 'wb-dialog', 'wb-footer', 'wb-container', 'wb-as-is'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
 // 0.2.2: a camera's map marker, because a camera is alive right now.
@@ -442,9 +444,9 @@ test('door and feature: the title sits on the photograph over a scrim, 4:5 and 1
   for (const c of ['.wb-door__body', '.wb-feature__body']) assert.match(block(c), /linear-gradient/, c);
 });
 
-test('only the stage, the doorway and the feature draw a scrim', () => {
+test('only the stage, the doorway, the feature and the dialog backdrop draw a scrim', () => {
   const users = rules(read('dist/components.css')).filter((r) => /--wb-color-scrim/.test(r.body)).map((r) => r.selector).sort();
-  assert.deepEqual(users, ['.wb-door__body', '.wb-feature__body', '.wb-stage__scrim']);
+  assert.deepEqual(users, ['.wb-dialog::backdrop', '.wb-door__body', '.wb-feature__body', '.wb-stage__scrim']);
 });
 
 // A scrim's alpha down its box, read from the gradient's stops and the tokens (the same in both themes).
@@ -815,4 +817,15 @@ test('0.3.2: a neutral "other" series takes --wb-color-series-other, as series 1
 test('0.3.2: a chart\'s drawing is at least 140px (8.75rem) tall, so a narrow panel keeps a readable plot; the tall chart is unchanged', () => {
   assert.match(block('.wb-chart svg'), /min-height:\s*8\.75rem\s*;/);
   assert.match(block('.wb-chart--tall svg, .wb-chart--tall .wb-chart__empty'), /^\s*aspect-ratio:\s*2 \/ 1;?\s*$/);
+});
+
+test('0.4.0 admin pieces: stacking asks the wrapper, the dialog backdrop is the scrim, status chips are never the accent', () => {
+  const css = read('dist/components.css');
+  assert.match(css, /\.wb-table-wrap \{\s*container-type: inline-size;/);
+  assert.match(css, /@container \(max-width: 36rem\) \{\s*\.wb-table\[data-stack\] thead/);
+  assert.match(css, /\.wb-dialog::backdrop \{ background: var\(--wb-color-scrim\); \}/);
+  for (const status of ['pending', 'verified', 'rejected']) assert.match(css, new RegExp(`\\.wb-status\\[data-status="${status}"\\]`));
+  const statusCss = css.slice(css.indexOf('.wb-status {'), css.indexOf('/* Stat tile')).replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.doesNotMatch(statusCss, /accent/);
+  for (const f of ['table', 'pager', 'dialog', 'toolbar']) assert.doesNotMatch(read(`src/components/${f}.css`), /accent/, f);
 });

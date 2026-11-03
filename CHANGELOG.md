@@ -2,6 +2,19 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.4.0 — 2026-11-02
+
+The pieces for the wahoobay.net sighting-review admin.
+
+### Added
+
+- `.wb-toolbar`: a wrapping row of labelled `.wb-field`s (and buttons) above a table.
+- `.wb-table`: a `<table>` at 1rem with a panel header row and a 1px line between rows. It sits in `.wb-table-wrap`, which is the query container (a `<table>` cannot be one) and scrolls a wide table sideways. `data-stack` on the table turns each row into a card below 36rem with `@container`, each cell labelled by its `data-label`; the header row stays for screen readers.
+- `.wb-pager`: a `<nav>` with `.wb-pager__info`, `.wb-pager__prev` and `.wb-pager__next` (action blue, 44px, `aria-disabled` fades them) and a `.wb-select` for the page size.
+- `.wb-dialog`: the native `<dialog>` (opened with `showModal()`), its `::backdrop` the scrim token, with `.wb-dialog__title` and `.wb-dialog__actions`.
+- `.wb-status`, a `.wb-chip` variant at 1rem: `data-status="pending"` (dashed ink-3 edge on the panel), `"verified"` (action blue on the tint) and `"rejected"` (2px ink edge, as an invalid control is marked). There is no danger colour in the tokens, so rejection is told by weight and words; the accent is never used.
+- The docs show each piece in both themes; the page runs a few lines of script to open the dialog.
+
 ## 0.3.2 — 2026-10-31
 
 The fix wave from the wahoobay.net step-2b finish review.

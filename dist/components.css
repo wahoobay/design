@@ -398,6 +398,26 @@ a[href^="tel:"] { white-space: nowrap; }
   font-weight: 500;
   white-space: nowrap;
 }
+/* Status: a chip variant for where a record stands (a sighting in review). Never the accent, which means "alive right
+   now". It is said in words and told apart by its edge as well as its tint: pending is a dashed ink-3 edge on the panel,
+   verified action blue on the tint, rejected a 2px ink edge (the error mark; there is no danger colour). */
+.wb-status {
+  border: 1px solid var(--wb-color-line);
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+}
+.wb-status[data-status="pending"] { border: 1px dashed var(--wb-color-ink-3); }
+.wb-status[data-status="verified"] {
+  border-color: var(--wb-color-action);
+  background: var(--wb-color-tint);
+  color: var(--wb-color-action);
+}
+.wb-status[data-status="rejected"] {
+  border: 2px solid var(--wb-color-ink);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+}
 
 /* Stat tile: a label and a large number in brand blue (large text, so 3:1 applies). The accent tile counts something alive now. */
 .wb-tile {
@@ -1103,6 +1123,166 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   border-width: 2px;
   border-color: currentColor;
   color: var(--wb-color-ink);
+}
+
+/* Toolbar: the row of filters and actions above a table. Fields (a search input, a select) share the row and wrap onto
+   their own lines on a phone; each field keeps its own label, so no control is named by a placeholder alone. */
+.wb-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--wb-space-3) var(--wb-space-4);
+  margin-bottom: var(--wb-space-4);
+}
+.wb-toolbar > .wb-field { flex: 1 1 14rem; }
+.wb-toolbar > .wb-btn { flex: none; }
+
+/* Table: rows of records, text at 1rem, a 1px line between rows. A <table> cannot be a query container, so the table sits
+   in .wb-table-wrap, which is, and data-stack asks that wrapper's width, not the viewport's: below 36rem every row
+   becomes a card and each cell carries its column name from data-label. The header row stays in the document for screen
+   readers (hidden as .wb-sr-only hides). Without data-stack the wrapper scrolls the table sideways instead. */
+.wb-table-wrap {
+  container-type: inline-size;
+  overflow-x: auto;
+}
+.wb-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+  line-height: 1.4;
+}
+.wb-table caption {
+  padding-bottom: var(--wb-space-3);
+  color: var(--wb-color-ink-2);
+  font-weight: 700;
+  text-align: start;
+}
+.wb-table th,
+.wb-table td {
+  padding: var(--wb-space-3) var(--wb-space-4);
+  border-bottom: 1px solid var(--wb-color-line);
+  text-align: start;
+  vertical-align: top;
+}
+.wb-table thead th {
+  border-bottom: 2px solid var(--wb-color-line);
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink-2);
+  font-weight: 700;
+}
+.wb-table tbody th { font-weight: 700; }
+.wb-table tbody tr:hover { background: var(--wb-color-panel); }
+@container (max-width: 36rem) {
+  .wb-table[data-stack] thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .wb-table[data-stack] :is(tbody, tr, th, td) { display: block; }
+  .wb-table[data-stack] tr {
+    margin-bottom: var(--wb-space-3);
+    border: 1px solid var(--wb-color-line);
+    border-radius: var(--wb-radius);
+    background: var(--wb-color-bg);
+  }
+  .wb-table[data-stack] tbody tr:hover { background: var(--wb-color-bg); }
+  .wb-table[data-stack] :is(th, td) {
+    display: grid;
+    grid-template-columns: minmax(5rem, 35%) minmax(0, 1fr);
+    gap: var(--wb-space-3);
+    border-bottom: 1px solid var(--wb-color-line);
+    overflow-wrap: anywhere;
+  }
+  .wb-table[data-stack] .wb-status { justify-self: start; }
+  .wb-table[data-stack] :is(th, td):last-child { border-bottom: 0; }
+  .wb-table[data-stack] :is(th, td)[data-label]::before {
+    content: attr(data-label);
+    color: var(--wb-color-ink-2);
+    font-weight: 700;
+  }
+  .wb-table[data-stack] :is(th, td):not([data-label]) { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Pager: where you are in a long list, Previous and Next in action blue, and the page size. The count is words, in
+   .wb-pager__info. A control that cannot be used (the first page's Previous) is aria-disabled and fades, as a button does. */
+.wb-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--wb-space-3) var(--wb-space-4);
+  margin-top: var(--wb-space-4);
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+}
+.wb-pager__info {
+  flex: 1 1 12rem;
+  margin: 0;
+  color: var(--wb-color-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.wb-pager__prev,
+.wb-pager__next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: var(--wb-space-2) var(--wb-space-4);
+  border: 1.5px solid var(--wb-color-action);
+  border-radius: var(--wb-radius);
+  background: transparent;
+  color: var(--wb-color-action);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.wb-pager__prev:not(:disabled, [aria-disabled="true"]):hover,
+.wb-pager__next:not(:disabled, [aria-disabled="true"]):hover { background: var(--wb-color-tint); }
+.wb-pager__prev:is(:disabled, [aria-disabled="true"]),
+.wb-pager__next:is(:disabled, [aria-disabled="true"]) {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.wb-pager .wb-select {
+  width: auto;
+  min-width: 6rem;
+}
+
+/* Dialog: the native <dialog>, opened with showModal(). The scrim token dims the page behind it, as it dims a photograph
+   under words; the box is the page's ground with a 1px line. Inside, .wb-dialog__title and .wb-dialog__actions. */
+.wb-dialog {
+  width: min(32rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  padding: var(--wb-space-5);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+  overflow: auto;
+}
+.wb-dialog::backdrop { background: var(--wb-color-scrim); }
+.wb-dialog__title {
+  margin: 0 0 var(--wb-space-3);
+  font-size: var(--wb-text-xl);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.wb-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--wb-space-3);
+  margin-top: var(--wb-space-5);
 }
 
 /* Footer: full-bleed on the panel ground; content lines up with .wb-container. */

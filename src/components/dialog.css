@@ -1,0 +1,27 @@
+/* Dialog: the native <dialog>, opened with showModal(). The scrim token dims the page behind it, as it dims a photograph
+   under words; the box is the page's ground with a 1px line. Inside, .wb-dialog__title and .wb-dialog__actions. */
+.wb-dialog {
+  width: min(32rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  padding: var(--wb-space-5);
+  border: 1px solid var(--wb-color-line);
+  border-radius: var(--wb-radius);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+  overflow: auto;
+}
+.wb-dialog::backdrop { background: var(--wb-color-scrim); }
+.wb-dialog__title {
+  margin: 0 0 var(--wb-space-3);
+  font-size: var(--wb-text-xl);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.wb-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--wb-space-3);
+  margin-top: var(--wb-space-5);
+}

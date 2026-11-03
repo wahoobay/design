@@ -19,3 +19,23 @@
   font-weight: 500;
   white-space: nowrap;
 }
+/* Status: a chip variant for where a record stands (a sighting in review). Never the accent, which means "alive right
+   now". It is said in words and told apart by its edge as well as its tint: pending is a dashed ink-3 edge on the panel,
+   verified action blue on the tint, rejected a 2px ink edge (the error mark; there is no danger colour). */
+.wb-status {
+  border: 1px solid var(--wb-color-line);
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+}
+.wb-status[data-status="pending"] { border: 1px dashed var(--wb-color-ink-3); }
+.wb-status[data-status="verified"] {
+  border-color: var(--wb-color-action);
+  background: var(--wb-color-tint);
+  color: var(--wb-color-action);
+}
+.wb-status[data-status="rejected"] {
+  border: 2px solid var(--wb-color-ink);
+  background: var(--wb-color-bg);
+  color: var(--wb-color-ink);
+}

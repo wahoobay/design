@@ -1,0 +1,71 @@
+/* Table: rows of records, text at 1rem, a 1px line between rows. A <table> cannot be a query container, so the table sits
+   in .wb-table-wrap, which is, and data-stack asks that wrapper's width, not the viewport's: below 36rem every row
+   becomes a card and each cell carries its column name from data-label. The header row stays in the document for screen
+   readers (hidden as .wb-sr-only hides). Without data-stack the wrapper scrolls the table sideways instead. */
+.wb-table-wrap {
+  container-type: inline-size;
+  overflow-x: auto;
+}
+.wb-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--wb-color-ink);
+  font-size: var(--wb-text-base);
+  line-height: 1.4;
+}
+.wb-table caption {
+  padding-bottom: var(--wb-space-3);
+  color: var(--wb-color-ink-2);
+  font-weight: 700;
+  text-align: start;
+}
+.wb-table th,
+.wb-table td {
+  padding: var(--wb-space-3) var(--wb-space-4);
+  border-bottom: 1px solid var(--wb-color-line);
+  text-align: start;
+  vertical-align: top;
+}
+.wb-table thead th {
+  border-bottom: 2px solid var(--wb-color-line);
+  background: var(--wb-color-panel);
+  color: var(--wb-color-ink-2);
+  font-weight: 700;
+}
+.wb-table tbody th { font-weight: 700; }
+.wb-table tbody tr:hover { background: var(--wb-color-panel); }
+@container (max-width: 36rem) {
+  .wb-table[data-stack] thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .wb-table[data-stack] :is(tbody, tr, th, td) { display: block; }
+  .wb-table[data-stack] tr {
+    margin-bottom: var(--wb-space-3);
+    border: 1px solid var(--wb-color-line);
+    border-radius: var(--wb-radius);
+    background: var(--wb-color-bg);
+  }
+  .wb-table[data-stack] tbody tr:hover { background: var(--wb-color-bg); }
+  .wb-table[data-stack] :is(th, td) {
+    display: grid;
+    grid-template-columns: minmax(5rem, 35%) minmax(0, 1fr);
+    gap: var(--wb-space-3);
+    border-bottom: 1px solid var(--wb-color-line);
+    overflow-wrap: anywhere;
+  }
+  .wb-table[data-stack] .wb-status { justify-self: start; }
+  .wb-table[data-stack] :is(th, td):last-child { border-bottom: 0; }
+  .wb-table[data-stack] :is(th, td)[data-label]::before {
+    content: attr(data-label);
+    color: var(--wb-color-ink-2);
+    font-weight: 700;
+  }
+  .wb-table[data-stack] :is(th, td):not([data-label]) { grid-template-columns: minmax(0, 1fr); }
+}

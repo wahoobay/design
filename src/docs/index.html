@@ -834,6 +834,96 @@
         </div>
       </div>
 
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Toolbar, table, pager</h3>
+          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code>. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
+        </div>
+        <div>
+          <div class="wb-toolbar">
+            <div class="wb-field">
+              <label class="wb-label" for="review-search-l">Search sightings</label>
+              <input class="wb-input" id="review-search-l" type="search" placeholder="Species or camera">
+            </div>
+            <div class="wb-field">
+              <label class="wb-label" for="review-status-l">Status</label>
+              <select class="wb-select" id="review-status-l"><option>All</option><option>Pending</option><option>Verified</option><option>Rejected</option></select>
+            </div>
+          </div>
+          <div class="wb-table-wrap">
+          <table class="wb-table" data-stack>
+            <caption class="wb-sr-only">Sightings waiting for review</caption>
+            <thead>
+              <tr><th scope="col">Species</th><th scope="col">Camera</th><th scope="col">Time</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" data-label="Species">Sergeant major</th>
+                <td data-label="Camera">Reef camera</td>
+                <td data-label="Time">12:40</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="pending">Pending</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Blue tang</th>
+                <td data-label="Camera">Pier camera</td>
+                <td data-label="Time">12:31</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="verified">Verified</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Parrotfish</th>
+                <td data-label="Camera">Reef camera</td>
+                <td data-label="Time">11:58</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="verified">Verified</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Atlantic spadefish (Chaetodipterus faber), juvenile in grass</th>
+                <td data-label="Camera">Reef camera</td>
+                <td data-label="Time">11:20</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="rejected">Rejected</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Nassau grouper</th>
+                <td data-label="Camera">Pier camera</td>
+                <td data-label="Time">10:47</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="pending">Pending</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <nav class="wb-pager" aria-label="Sightings pages">
+            <p class="wb-pager__info">1 to 5 of 42</p>
+            <button class="wb-pager__prev" type="button" aria-disabled="true">Previous</button>
+            <button class="wb-pager__next" type="button">Next</button>
+            <label class="wb-sr-only" for="review-size-l">Rows per page</label>
+            <select class="wb-select" id="review-size-l"><option>5</option><option>25</option><option>100</option></select>
+          </nav>
+          <p class="docs-note">Fixture: the fourth species name is 60 characters, there to show that a long cell wraps and is never cut off.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Dialog and status</h3>
+          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified or rejected is a <code>wb-chip</code> variant: ink, action blue and a heavy ink edge, never the accent.</p>
+        </div>
+        <div>
+          <ul class="docs-row" role="list">
+            <li><span class="wb-chip wb-status" data-status="pending">Pending</span></li>
+            <li><span class="wb-chip wb-status" data-status="verified">Verified</span></li>
+            <li><span class="wb-chip wb-status" data-status="rejected">Rejected</span></li>
+          </ul>
+          <p><button class="wb-btn wb-btn--action" type="button" data-dialog-open="review-dialog-l">Reject sighting</button></p>
+          <dialog class="wb-dialog" id="review-dialog-l" aria-labelledby="review-dialog-l-title">
+            <h4 class="wb-dialog__title" id="review-dialog-l-title">Reject this sighting?</h4>
+            <p>The sergeant major at 12:40 leaves the review list. You can bring it back from the Rejected filter.</p>
+            <div class="wb-dialog__actions">
+              <button class="wb-btn wb-btn--ghost" type="button" data-dialog-close>Cancel</button>
+              <button class="wb-btn wb-btn--action" type="button" data-dialog-close>Reject</button>
+            </div>
+          </dialog>
+        </div>
+      </div>
+
       <div class="docs-specimen">
         <div>
           <h3>Notices</h3>
@@ -1459,6 +1549,96 @@
         </div>
       </div>
 
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Toolbar, table, pager</h3>
+          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code>. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
+        </div>
+        <div>
+          <div class="wb-toolbar">
+            <div class="wb-field">
+              <label class="wb-label" for="review-search-d">Search sightings</label>
+              <input class="wb-input" id="review-search-d" type="search" placeholder="Species or camera">
+            </div>
+            <div class="wb-field">
+              <label class="wb-label" for="review-status-d">Status</label>
+              <select class="wb-select" id="review-status-d"><option>All</option><option>Pending</option><option>Verified</option><option>Rejected</option></select>
+            </div>
+          </div>
+          <div class="wb-table-wrap">
+          <table class="wb-table" data-stack>
+            <caption class="wb-sr-only">Sightings waiting for review</caption>
+            <thead>
+              <tr><th scope="col">Species</th><th scope="col">Camera</th><th scope="col">Time</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" data-label="Species">Sergeant major</th>
+                <td data-label="Camera">Reef camera</td>
+                <td data-label="Time">12:40</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="pending">Pending</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Blue tang</th>
+                <td data-label="Camera">Pier camera</td>
+                <td data-label="Time">12:31</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="verified">Verified</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Parrotfish</th>
+                <td data-label="Camera">Reef camera</td>
+                <td data-label="Time">11:58</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="verified">Verified</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Atlantic spadefish (Chaetodipterus faber), juvenile in grass</th>
+                <td data-label="Camera">Reef camera</td>
+                <td data-label="Time">11:20</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="rejected">Rejected</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Species">Nassau grouper</th>
+                <td data-label="Camera">Pier camera</td>
+                <td data-label="Time">10:47</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="pending">Pending</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <nav class="wb-pager" aria-label="Sightings pages">
+            <p class="wb-pager__info">1 to 5 of 42</p>
+            <button class="wb-pager__prev" type="button" aria-disabled="true">Previous</button>
+            <button class="wb-pager__next" type="button">Next</button>
+            <label class="wb-sr-only" for="review-size-d">Rows per page</label>
+            <select class="wb-select" id="review-size-d"><option>5</option><option>25</option><option>100</option></select>
+          </nav>
+          <p class="docs-note">Fixture: the fourth species name is 60 characters, there to show that a long cell wraps and is never cut off.</p>
+        </div>
+      </div>
+
+      <div class="docs-specimen">
+        <div>
+          <h3>Dialog and status</h3>
+          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified or rejected is a <code>wb-chip</code> variant: ink, action blue and a heavy ink edge, never the accent.</p>
+        </div>
+        <div>
+          <ul class="docs-row" role="list">
+            <li><span class="wb-chip wb-status" data-status="pending">Pending</span></li>
+            <li><span class="wb-chip wb-status" data-status="verified">Verified</span></li>
+            <li><span class="wb-chip wb-status" data-status="rejected">Rejected</span></li>
+          </ul>
+          <p><button class="wb-btn wb-btn--action" type="button" data-dialog-open="review-dialog-d">Reject sighting</button></p>
+          <dialog class="wb-dialog" id="review-dialog-d" aria-labelledby="review-dialog-d-title">
+            <h4 class="wb-dialog__title" id="review-dialog-d-title">Reject this sighting?</h4>
+            <p>The sergeant major at 12:40 leaves the review list. You can bring it back from the Rejected filter.</p>
+            <div class="wb-dialog__actions">
+              <button class="wb-btn wb-btn--ghost" type="button" data-dialog-close>Cancel</button>
+              <button class="wb-btn wb-btn--action" type="button" data-dialog-close>Reject</button>
+            </div>
+          </dialog>
+        </div>
+      </div>
+
       <div class="docs-specimen">
         <div>
           <h3>Notices</h3>
@@ -1481,5 +1661,12 @@
     </footer>
     </section>
   </main>
+  <script>
+    document.addEventListener('click', (e) => {
+      const open = e.target.closest('[data-dialog-open]');
+      if (open) document.getElementById(open.dataset.dialogOpen).showModal();
+      else if (e.target.closest('[data-dialog-close]')) e.target.closest('dialog').close();
+    });
+  </script>
 </body>
 </html>
