@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { whiteOnScrim } from '../scripts/contrast.mjs';
+import { whiteOnScrim, contrast } from '../scripts/contrast.mjs';
 
 const read = (path) => readFileSync(path, 'utf8');
 
@@ -821,11 +821,43 @@ test('0.3.2: a chart\'s drawing is at least 140px (8.75rem) tall, so a narrow pa
 
 test('0.4.0 admin pieces: stacking asks the wrapper, the dialog backdrop is the scrim, status chips are never the accent', () => {
   const css = read('dist/components.css');
-  assert.match(css, /\.wb-table-wrap \{\s*container-type: inline-size;/);
+  assert.match(css, /\.wb-table-wrap \{\s*position: relative;\s*container-type: inline-size;/);
   assert.match(css, /@container \(max-width: 36rem\) \{\s*\.wb-table\[data-stack\] thead/);
   assert.match(css, /\.wb-dialog::backdrop \{ background: var\(--wb-color-scrim\); \}/);
   for (const status of ['pending', 'verified', 'rejected']) assert.match(css, new RegExp(`\\.wb-status\\[data-status="${status}"\\]`));
   const statusCss = css.slice(css.indexOf('.wb-status {'), css.indexOf('/* Stat tile')).replace(/\/\*[\s\S]*?\*\//g, '');
   assert.doesNotMatch(statusCss, /accent/);
   for (const f of ['table', 'pager', 'dialog', 'toolbar']) assert.doesNotMatch(read(`src/components/${f}.css`), /accent/, f);
+});
+
+test('0.4.1: status never wraps, shown/hidden never use the accent, long-text cells, wrapper position, stacked children, grave button, toolbar alignment', () => {
+  const css = read('dist/components.css');
+  const strip = (x) => x.replace(/\/\*[\s\S]*?\*\//g, '');
+  const statusBlock = css.match(/\.wb-status \{[^}]*\}/)[0];
+  assert.match(statusBlock, /white-space:\s*nowrap/);
+  assert.match(statusBlock, /overflow-wrap:\s*normal/);
+  assert.match(statusBlock, /flex-wrap:\s*nowrap/);
+  assert.match(css, /\.wb-status\[data-status="shown"\]/);
+  assert.match(css, /\.wb-status\[data-status="verified"\],\s*\.wb-status\[data-status="shown"\] \{/);
+  const statusCss = strip(css.slice(css.indexOf('.wb-status {'), css.indexOf('/* Stat tile')));
+  assert.doesNotMatch(statusCss, /accent/);
+  assert.match(css, /\.wb-table__long \{ overflow-wrap: anywhere; \}/);
+  assert.match(css, /\.wb-table-wrap \{\s*position: relative;/);
+  assert.match(css, /@container \(max-width: 36rem\) \{[\s\S]*\.wb-table\[data-stack\] :is\(th, td\)\[data-label\] > \* \{ grid-column: 2; \}/);
+  const grave = strip(css).match(/\.wb-btn--grave[^{]*\{[^}]*\}/g).join('\n');
+  assert.match(grave, /background:\s*var\(--wb-color-ink\)/);
+  assert.match(grave, /color:\s*var\(--wb-color-bg\)/);
+  assert.match(grave, /:hover/);
+  assert.match(grave, /:active/);
+  const colours = [...grave.matchAll(/--wb-color-([a-z0-9-]+)/g)].map((m) => m[1]);
+  for (const c of colours) assert.ok(['ink', 'ink-2', 'bg'].includes(c), c);
+  assert.doesNotMatch(grave, /#[0-9a-f]{3,6}\b|rgba?\(|accent|action/i);
+  assert.match(css, /\.wb-toolbar \{[^}]*align-items:\s*flex-start/);
+  assert.doesNotMatch(css.match(/\.wb-toolbar \{[^}]*\}/)[0], /flex-end/);
+});
+
+test('0.4.1: the grave button reads at 4.5:1 in light and dark, at rest and on hover/active', () => {
+  const mix = (a, b, pct) => '#' + [1, 3, 5].map((i) => Math.round(parseInt(a.slice(i, i + 2), 16) * pct + parseInt(b.slice(i, i + 2), 16) * (1 - pct)).toString(16).padStart(2, '0')).join('');
+  const light = { ink: '#0F2233', ink2: '#35495A', bg: '#FFFFFF' }, dark = { ink: '#EAF2F8', ink2: '#C3D2DF', bg: '#0B1B2B' };
+  for (const c of [light, dark]) for (const pct of [1, 0.85, 0.7]) assert.ok(contrast(mix(c.ink, c.ink2, pct), c.bg) >= 4.5, `${pct}`);
 });

@@ -3,9 +3,11 @@
 .wb-toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: var(--wb-space-3) var(--wb-space-4);
   margin-bottom: var(--wb-space-4);
 }
 .wb-toolbar > .wb-field { flex: 1 1 14rem; }
 .wb-toolbar > .wb-btn { flex: none; }
+/* A button beside a field lines up with the input, not the label: it is pushed down by the label's line and the field gap. */
+.wb-toolbar > .wb-btn { margin-top: calc(var(--wb-text-sm) * 1.5 + var(--wb-space-2)); }

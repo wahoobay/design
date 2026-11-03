@@ -249,6 +249,14 @@ a[href^="tel:"] { white-space: nowrap; }
   color: var(--wb-color-on-accent);
 }
 .wb-btn--accent:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+/* Grave: for a confirm that cannot be taken back. A fill in ink and no new colour (there is no danger colour); the dark theme
+   swaps ink and ground, so it inverts like the page. */
+.wb-btn--grave {
+  background: var(--wb-color-ink);
+  color: var(--wb-color-bg);
+}
+.wb-btn--grave:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-ink) 85%, var(--wb-color-ink-2)); }
+.wb-btn--grave:not(:disabled, [aria-disabled="true"]):active { background: color-mix(in srgb, var(--wb-color-ink) 70%, var(--wb-color-ink-2)); }
 /* A button that cannot be pressed (a form that is sending or closed) fades and does not answer the pointer. Its text
    is below 4.5:1 on purpose: WCAG 1.4.3 exempts an inactive control, and the words beside it say why it is off. */
 .wb-btn:disabled,
@@ -398,7 +406,8 @@ a[href^="tel:"] { white-space: nowrap; }
   font-weight: 500;
   white-space: nowrap;
 }
-/* Status: a chip variant for where a record stands (a sighting in review). Never the accent, which means "alive right
+/* Status: a chip variant (it never wraps, so a cell cannot squeeze "Pending" to "Pe/ndi/ng"; shown looks like verified, hidden
+   is the plain status) for where a record stands (a sighting in review). Never the accent, which means "alive right
    now". It is said in words and told apart by its edge as well as its tint: pending is a dashed ink-3 edge on the panel,
    verified action blue on the tint, rejected a 2px ink edge (the error mark; there is no danger colour). */
 .wb-status {
@@ -406,9 +415,13 @@ a[href^="tel:"] { white-space: nowrap; }
   background: var(--wb-color-panel);
   color: var(--wb-color-ink);
   font-size: var(--wb-text-base);
+  white-space: nowrap;
+  overflow-wrap: normal;
+  flex-wrap: nowrap;
 }
 .wb-status[data-status="pending"] { border: 1px dashed var(--wb-color-ink-3); }
-.wb-status[data-status="verified"] {
+.wb-status[data-status="verified"],
+.wb-status[data-status="shown"] {
   border-color: var(--wb-color-action);
   background: var(--wb-color-tint);
   color: var(--wb-color-action);
@@ -1130,18 +1143,21 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
 .wb-toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: var(--wb-space-3) var(--wb-space-4);
   margin-bottom: var(--wb-space-4);
 }
 .wb-toolbar > .wb-field { flex: 1 1 14rem; }
 .wb-toolbar > .wb-btn { flex: none; }
+/* A button beside a field lines up with the input, not the label: it is pushed down by the label's line and the field gap. */
+.wb-toolbar > .wb-btn { margin-top: calc(var(--wb-text-sm) * 1.5 + var(--wb-space-2)); }
 
 /* Table: rows of records, text at 1rem, a 1px line between rows. A <table> cannot be a query container, so the table sits
    in .wb-table-wrap, which is, and data-stack asks that wrapper's width, not the viewport's: below 36rem every row
    becomes a card and each cell carries its column name from data-label. The header row stays in the document for screen
    readers (hidden as .wb-sr-only hides). Without data-stack the wrapper scrolls the table sideways instead. */
 .wb-table-wrap {
+  position: relative;
   container-type: inline-size;
   overflow-x: auto;
 }
@@ -1165,6 +1181,8 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
   text-align: start;
   vertical-align: top;
 }
+/* Free text (an email, a note) may break anywhere; opt in per cell, since "anywhere" on every cell collapses narrow ones. */
+.wb-table__long { overflow-wrap: anywhere; }
 .wb-table thead th {
   border-bottom: 2px solid var(--wb-color-line);
   background: var(--wb-color-panel);
@@ -1206,6 +1224,8 @@ a.wb-card:hover { border-color: var(--wb-color-action); }
     color: var(--wb-color-ink-2);
     font-weight: 700;
   }
+  /* A cell with several children (a link and sub-lines) keeps them all in the value column; the label stays in column 1. */
+  .wb-table[data-stack] :is(th, td)[data-label] > * { grid-column: 2; }
   .wb-table[data-stack] :is(th, td):not([data-label]) { grid-template-columns: minmax(0, 1fr); }
 }
 

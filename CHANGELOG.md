@@ -2,6 +2,24 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.4.1 — 2026-11-02
+
+Four fixes from the finish review of the wahoobay.net admin screens.
+
+### Added
+
+- `.wb-status[data-status="shown"]` (looks like verified) and `"hidden"` (the plain status, no tint). The accent is never used.
+- `.wb-table__long`: opt-in `overflow-wrap: anywhere` for cells of free text (emails, notes).
+- `.wb-btn--grave`: an ink fill for confirms that cannot be undone, hover and active mixed toward `ink-2`. No new colour; it inverts in the dark theme with the ink tokens.
+
+### Fixed
+
+- `.wb-status` never wraps (`white-space: nowrap`, no `overflow-wrap`, no `flex-wrap`), so a status in a narrow cell no longer breaks into "Pe/ndi/ng".
+- `.wb-table-wrap` is `position: relative`, so screen-reader-only text inside cells stays in the wrapper and no longer widens the document.
+- Stacked tables: every child of a labelled cell goes in the value column (`grid-column: 2`), so a link with sub-lines keeps its label in column 1.
+- `.wb-toolbar` aligns to `flex-start`, so labels and inputs line up when one field has help text; a button in the toolbar gets a top margin matching the label height.
+- Docs: the dialog specimen says a rejected sighting goes to the recycle bin.
+
 ## 0.4.0 — 2026-11-02
 
 The pieces for the wahoobay.net sighting-review admin.

@@ -3,6 +3,7 @@
    becomes a card and each cell carries its column name from data-label. The header row stays in the document for screen
    readers (hidden as .wb-sr-only hides). Without data-stack the wrapper scrolls the table sideways instead. */
 .wb-table-wrap {
+  position: relative;
   container-type: inline-size;
   overflow-x: auto;
 }
@@ -26,6 +27,8 @@
   text-align: start;
   vertical-align: top;
 }
+/* Free text (an email, a note) may break anywhere; opt in per cell, since "anywhere" on every cell collapses narrow ones. */
+.wb-table__long { overflow-wrap: anywhere; }
 .wb-table thead th {
   border-bottom: 2px solid var(--wb-color-line);
   background: var(--wb-color-panel);
@@ -67,5 +70,7 @@
     color: var(--wb-color-ink-2);
     font-weight: 700;
   }
+  /* A cell with several children (a link and sub-lines) keeps them all in the value column; the label stays in column 1. */
+  .wb-table[data-stack] :is(th, td)[data-label] > * { grid-column: 2; }
   .wb-table[data-stack] :is(th, td):not([data-label]) { grid-template-columns: minmax(0, 1fr); }
 }

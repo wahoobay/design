@@ -38,6 +38,7 @@
     .docs-specimen > div:first-child p { margin-top: var(--wb-space-2); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
     .docs-wide > div:first-child p { max-width: var(--wb-measure); }
     .docs-note { max-width: var(--wb-measure); margin-top: var(--wb-space-3); color: var(--wb-color-ink-3); font-size: var(--wb-text-sm); }
+    .docs-sub { display: block; }
     .docs-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--wb-space-3); margin: 0; padding: 0; list-style: none; }
     .docs-focus { outline: 2px solid var(--wb-color-focus); outline-offset: 2px; }
     .docs-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--wb-space-3); }
@@ -1551,7 +1552,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Toolbar, table, pager</h3>
-          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code>. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
+          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code> (children of a labelled cell stay in the value column). <code>wb-table__long</code> on a cell lets free text such as an email break anywhere. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
         </div>
         <div>
           <div class="wb-toolbar">
@@ -1562,7 +1563,9 @@
             <div class="wb-field">
               <label class="wb-label" for="review-status-l">Status</label>
               <select class="wb-select" id="review-status-l"><option>All</option><option>Pending</option><option>Verified</option><option>Rejected</option></select>
+              <p class="wb-help" id="review-status-l-help">Pending is the default.</p>
             </div>
+            <button class="wb-btn wb-btn--action" type="button">Apply</button>
           </div>
           <div class="wb-table-wrap">
           <table class="wb-table" data-stack>
@@ -1604,6 +1607,21 @@
             </tbody>
           </table>
           </div>
+          <div class="wb-table-wrap">
+          <table class="wb-table" data-stack>
+            <caption class="wb-sr-only">Reviewers</caption>
+            <thead>
+              <tr><th scope="col">Reviewer</th><th scope="col">Email</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" data-label="Reviewer"><a href="#">Roy Wickham</a><span class="wb-caption docs-sub">Volunteer, since October</span></th>
+                <td class="wb-table__long" data-label="Email">roy.wickham.volunteer-reviewer@wahoobay.example.org</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="shown">Shown</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
           <nav class="wb-pager" aria-label="Sightings pages">
             <p class="wb-pager__info">1 to 5 of 42</p>
             <button class="wb-pager__prev" type="button" aria-disabled="true">Previous</button>
@@ -1618,21 +1636,23 @@
       <div class="docs-specimen">
         <div>
           <h3>Dialog and status</h3>
-          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified or rejected is a <code>wb-chip</code> variant: ink, action blue and a heavy ink edge, never the accent.</p>
+          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified, rejected, shown or hidden is a <code>wb-chip</code> variant that never wraps: ink, action blue (verified and shown), a plain chip (hidden) and a heavy ink edge, never the accent. <code>wb-btn--grave</code> is the confirm for something that cannot be taken back: an ink fill, no new colour.</p>
         </div>
         <div>
           <ul class="docs-row" role="list">
             <li><span class="wb-chip wb-status" data-status="pending">Pending</span></li>
             <li><span class="wb-chip wb-status" data-status="verified">Verified</span></li>
             <li><span class="wb-chip wb-status" data-status="rejected">Rejected</span></li>
+            <li><span class="wb-chip wb-status" data-status="shown">Shown</span></li>
+            <li><span class="wb-chip wb-status" data-status="hidden">Hidden</span></li>
           </ul>
           <p><button class="wb-btn wb-btn--action" type="button" data-dialog-open="review-dialog-l">Reject sighting</button></p>
           <dialog class="wb-dialog" id="review-dialog-l" aria-labelledby="review-dialog-l-title">
             <h4 class="wb-dialog__title" id="review-dialog-l-title">Reject this sighting?</h4>
-            <p>The sergeant major at 12:40 leaves the review list. You can bring it back from the Rejected filter.</p>
+            <p>The sergeant major at 12:40 leaves the review list. It goes to the recycle bin, where you can restore it.</p>
             <div class="wb-dialog__actions">
               <button class="wb-btn wb-btn--ghost" type="button" data-dialog-close>Cancel</button>
-              <button class="wb-btn wb-btn--action" type="button" data-dialog-close>Reject</button>
+              <button class="wb-btn wb-btn--grave" type="button" data-dialog-close>Reject</button>
             </div>
           </dialog>
         </div>
@@ -2980,7 +3000,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Toolbar, table, pager</h3>
-          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code>. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
+          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code> (children of a labelled cell stay in the value column). <code>wb-table__long</code> on a cell lets free text such as an email break anywhere. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
         </div>
         <div>
           <div class="wb-toolbar">
@@ -2991,7 +3011,9 @@
             <div class="wb-field">
               <label class="wb-label" for="review-status-d">Status</label>
               <select class="wb-select" id="review-status-d"><option>All</option><option>Pending</option><option>Verified</option><option>Rejected</option></select>
+              <p class="wb-help" id="review-status-d-help">Pending is the default.</p>
             </div>
+            <button class="wb-btn wb-btn--action" type="button">Apply</button>
           </div>
           <div class="wb-table-wrap">
           <table class="wb-table" data-stack>
@@ -3033,6 +3055,21 @@
             </tbody>
           </table>
           </div>
+          <div class="wb-table-wrap">
+          <table class="wb-table" data-stack>
+            <caption class="wb-sr-only">Reviewers</caption>
+            <thead>
+              <tr><th scope="col">Reviewer</th><th scope="col">Email</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" data-label="Reviewer"><a href="#">Roy Wickham</a><span class="wb-caption docs-sub">Volunteer, since October</span></th>
+                <td class="wb-table__long" data-label="Email">roy.wickham.volunteer-reviewer@wahoobay.example.org</td>
+                <td data-label="Status"><span class="wb-chip wb-status" data-status="shown">Shown</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
           <nav class="wb-pager" aria-label="Sightings pages">
             <p class="wb-pager__info">1 to 5 of 42</p>
             <button class="wb-pager__prev" type="button" aria-disabled="true">Previous</button>
@@ -3047,21 +3084,23 @@
       <div class="docs-specimen">
         <div>
           <h3>Dialog and status</h3>
-          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified or rejected is a <code>wb-chip</code> variant: ink, action blue and a heavy ink edge, never the accent.</p>
+          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified, rejected, shown or hidden is a <code>wb-chip</code> variant that never wraps: ink, action blue (verified and shown), a plain chip (hidden) and a heavy ink edge, never the accent. <code>wb-btn--grave</code> is the confirm for something that cannot be taken back: an ink fill, no new colour.</p>
         </div>
         <div>
           <ul class="docs-row" role="list">
             <li><span class="wb-chip wb-status" data-status="pending">Pending</span></li>
             <li><span class="wb-chip wb-status" data-status="verified">Verified</span></li>
             <li><span class="wb-chip wb-status" data-status="rejected">Rejected</span></li>
+            <li><span class="wb-chip wb-status" data-status="shown">Shown</span></li>
+            <li><span class="wb-chip wb-status" data-status="hidden">Hidden</span></li>
           </ul>
           <p><button class="wb-btn wb-btn--action" type="button" data-dialog-open="review-dialog-d">Reject sighting</button></p>
           <dialog class="wb-dialog" id="review-dialog-d" aria-labelledby="review-dialog-d-title">
             <h4 class="wb-dialog__title" id="review-dialog-d-title">Reject this sighting?</h4>
-            <p>The sergeant major at 12:40 leaves the review list. You can bring it back from the Rejected filter.</p>
+            <p>The sergeant major at 12:40 leaves the review list. It goes to the recycle bin, where you can restore it.</p>
             <div class="wb-dialog__actions">
               <button class="wb-btn wb-btn--ghost" type="button" data-dialog-close>Cancel</button>
-              <button class="wb-btn wb-btn--action" type="button" data-dialog-close>Reject</button>
+              <button class="wb-btn wb-btn--grave" type="button" data-dialog-close>Reject</button>
             </div>
           </dialog>
         </div>

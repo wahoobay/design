@@ -30,6 +30,14 @@
   color: var(--wb-color-on-accent);
 }
 .wb-btn--accent:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-accent) 85%, var(--wb-color-ink)); }
+/* Grave: for a confirm that cannot be taken back. A fill in ink and no new colour (there is no danger colour); the dark theme
+   swaps ink and ground, so it inverts like the page. */
+.wb-btn--grave {
+  background: var(--wb-color-ink);
+  color: var(--wb-color-bg);
+}
+.wb-btn--grave:not(:disabled, [aria-disabled="true"]):hover { background: color-mix(in srgb, var(--wb-color-ink) 85%, var(--wb-color-ink-2)); }
+.wb-btn--grave:not(:disabled, [aria-disabled="true"]):active { background: color-mix(in srgb, var(--wb-color-ink) 70%, var(--wb-color-ink-2)); }
 /* A button that cannot be pressed (a form that is sending or closed) fades and does not answer the pointer. Its text
    is below 4.5:1 on purpose: WCAG 1.4.3 exempts an inactive control, and the words beside it say why it is off. */
 .wb-btn:disabled,
