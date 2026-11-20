@@ -59,3 +59,9 @@ Releases are tagged from `main` after CI passes.
 ## The mockups
 
 `docs/mockups/` holds the two mockups from the 2026-10-29 visual-direction decision. They are the record of that decision, not a style guide: the tokens and components are the source of truth.
+
+## License
+
+Free for noncommercial use under the PolyForm Noncommercial License 1.0.0. Commercial use, including offering this software as a paid service to third parties, requires a separate license. Contact: zimmerman3301@gmail.com
+
+The full terms are in [LICENSE.md](LICENSE.md). The Manrope font, the Wahoo Bay logo and the photographs are other people's work and are not covered; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
