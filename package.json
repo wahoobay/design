@@ -3,7 +3,7 @@
   "version": "0.4.1",
   "description": "Wahoo Bay design system: tokens, components, logo",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wahoobay/design.git"
