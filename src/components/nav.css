@@ -14,14 +14,16 @@
   flex: none;
   color: var(--wb-color-brand);
 }
+/* 40.8px tall on light, 36px on dark: 20% larger from 0.5.1 (Dan, 2026-11-24; it was 34px and 30px, spec §4.3). Both
+   stay under the nav links' 44px, so the bar keeps its height. */
 .wb-nav__logo :is(svg, img) {
   display: block;
   width: auto;
-  height: 2.125rem;
+  height: 2.55rem;
 }
-/* Spec §4.3: 30px tall and white on the dark ground, never recoloured otherwise. */
+/* Spec §4.3: white on the dark ground, never recoloured otherwise. */
 [data-theme="dark"] .wb-nav__logo { color: var(--wb-color-ink); }
-[data-theme="dark"] .wb-nav__logo :is(svg, img) { height: 1.875rem; }
+[data-theme="dark"] .wb-nav__logo :is(svg, img) { height: 2.25rem; }
 .wb-nav__links {
   display: flex;
   align-self: stretch;

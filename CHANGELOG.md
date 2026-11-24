@@ -2,6 +2,12 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.5.1 — 2026-11-24
+
+### Changed
+
+- The logo in the navigation is 20% larger (Dan): 40.8px tall on light (was 34px), 36px on dark (was 30px). Both stay under the nav links' 44px, so the bar keeps its height.
+
 ## 0.5.0 — 2026-11-24
 
 The Jump In brand, from the wahoobay.org home page direction chosen on 2026-11-24 ("Jump In", design canvas). It replaces the Clear Water colours and Manrope decided on 2026-10-29; the 2026-10-29 mockups in `docs/mockups/` stay as the record of that earlier decision. Pending Katie's review.
