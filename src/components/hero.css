@@ -5,8 +5,8 @@
    (tests/tokens.test.mjs). Put .wb-container on .wb-hero__body to line it up with the page.
 
    Markup: .wb-hero__water (aria-hidden) holds .wb-hero__rays (six empty spans), .wb-hero__bubbles (ten) and
-   .wb-hero__school (three .wb-hero__fish, each holding a .wb-detect and its label); each one is placed by its own rule
-   here, so the page writes no geometry. With reduced motion nothing moves: the rays stand still, the bubbles stay
+   .wb-hero__school (up to six .wb-hero__fish, a shape modifier on any of them, each holding a .wb-detect and its
+   label); each one is placed by its own rule here, so the page writes no geometry. With reduced motion nothing moves: the rays stand still, the bubbles stay
    below the edge and the fish are not drawn. The page's pause button (.wb-hero__pause) sets data-motion="paused" on
    the root, which holds the hero and the ticker where they are (WCAG 2.2.2). */
 .wb-hero {
@@ -66,8 +66,12 @@
 .wb-hero__bubbles > span:nth-child(9) { left: 83%; }
 .wb-hero__bubbles > span:nth-child(10) { left: 94%; }
 
-/* Fish: a silhouette (a mask of the drawing, in --wb-color-fish) inside its detection box (detect.css). They swim below
-   the navigation's rows, the second against the others. Still water draws none: a box frozen on a drawing says nothing. */
+/* Swimmers: a silhouette (a mask of the drawing, in --wb-color-fish) inside its detection box (detect.css). A fish by
+   default; --shark (a nurse shark, long and low, its dorsal fins far back), --turtle (a sea turtle from the side, its
+   front flipper swept back) and --ray (a spotted eagle ray from above, its spots holes the water shows through). Six
+   lanes, each with its height, its size (a shape brings its own) and its time; odd lanes swim right, even lanes left,
+   and lanes 4 to 6 are slow, for the big animals. They swim below the navigation's rows. Still water draws none: a box
+   frozen on a drawing says nothing. */
 .wb-hero__school {
   display: none;
   position: absolute;
@@ -88,10 +92,19 @@
   mask-repeat: no-repeat;
   mask-position: center;
 }
+.wb-hero__fish:nth-child(even)::before { scale: -1 1; }
 .wb-hero__fish:nth-child(1) { top: 30%; width: 9.375rem; }
 .wb-hero__fish:nth-child(2) { top: 54%; width: 6.875rem; }
-.wb-hero__fish:nth-child(2)::before { transform: scaleX(-1); }
 .wb-hero__fish:nth-child(3) { top: 42%; width: 5rem; }
+.wb-hero__fish:nth-child(4) { top: 35%; width: 6rem; }
+.wb-hero__fish:nth-child(5) { top: 64%; width: 7rem; }
+.wb-hero__fish:nth-child(6) { top: 47%; width: 6rem; }
+.wb-hero__fish--shark::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath fill-rule='evenodd' d='M197 34Q195 24 171 23L133 20 115 18 101 3 92 19 75 21 63 9 55 23 36 27 4 13 15 30 9 39 36 35 55 38 61 47 69 40 101 42 113 57 125 44 177 45Q193 43 197 34ZM182.2 30a2.2 2.2 0 1 1-4.4 0 2.2 2.2 0 1 1 4.4 0Z'/%3E%3C/svg%3E"); }
+.wb-hero__fish--turtle::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Cpath fill-rule='evenodd' d='M22 44Q24 12 62 10 94 10 99 33Q106 29 113 31 120 34 117 40 112 46 100 44L87 46Q71 62 46 77 56 60 66 48L37 48Q27 58 12 62 18 52 26 46 16 46 9 44 16 41 22 44ZM112.8 36a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 1 1 3.6 0Z'/%3E%3C/svg%3E"); }
+.wb-hero__fish--ray::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 90'%3E%3Cpath fill-rule='evenodd' d='M115 45Q113 38 104 37Q90 22 70 3 63 26 52 41L4 44 1 45 4 46 52 49Q63 64 70 87 90 68 104 53Q113 52 115 45ZM83 22a3 3 0 1 1-6 0 3 3 0 1 1 6 0ZM91.4 31a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 1 1 4.8 0ZM76.2 32a2.2 2.2 0 1 1-4.4 0 2.2 2.2 0 1 1 4.4 0ZM83 68a3 3 0 1 1-6 0 3 3 0 1 1 6 0ZM91.4 59a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 1 1 4.8 0ZM76.2 58a2.2 2.2 0 1 1-4.4 0 2.2 2.2 0 1 1 4.4 0ZM64 45a2 2 0 1 1-4 0 2 2 0 1 1 4 0Z'/%3E%3C/svg%3E"); }
+.wb-hero__school > .wb-hero__fish--shark { width: 15rem; aspect-ratio: 3.4; }
+.wb-hero__school > .wb-hero__fish--turtle { width: 7.5rem; aspect-ratio: 1.5; }
+.wb-hero__school > .wb-hero__fish--ray { width: 8.5rem; aspect-ratio: 1.55; }
 
 /* The words: the tag, the headline, then the lead beside the actions (under them on a narrow screen). */
 .wb-hero__body {
@@ -200,13 +213,16 @@
   .wb-hero__bubbles > span:nth-child(10) { animation-delay: -15.3s; }
   .wb-hero__school { display: block; }
   .wb-hero__fish { animation: wb-hero-swim 26s linear infinite, wb-hero-bob 4s ease-in-out infinite; }
+  .wb-hero__fish:nth-child(even) { animation-name: wb-hero-swim-left, wb-hero-bob; }
   .wb-hero__fish:nth-child(1) { animation-delay: -4s, 0s; }
-  .wb-hero__fish:nth-child(2) {
-    animation-name: wb-hero-swim-left, wb-hero-bob;
-    animation-duration: 34s, 4s;
-    animation-delay: -18s, -1s;
-  }
+  .wb-hero__fish:nth-child(2) { animation-duration: 34s, 4s; animation-delay: -18s, -1s; }
   .wb-hero__fish:nth-child(3) { animation-duration: 40s, 4s; animation-delay: -27s, -2s; }
+  .wb-hero__fish:nth-child(4) { animation-duration: 46s, 5s; animation-delay: -9s, -3s; }
+  .wb-hero__fish:nth-child(5) { animation-duration: 58s, 6s; animation-delay: -40s, -1.5s; }
+  .wb-hero__fish:nth-child(6) { animation-duration: 52s, 5s; animation-delay: -24s, -2.5s; }
+  /* A ray's wings beat; a turtle rocks as it paddles. */
+  .wb-hero__fish--ray::before { animation: wb-hero-flap 2.8s ease-in-out infinite; }
+  .wb-hero__fish--turtle::before { animation: wb-hero-paddle 5s ease-in-out infinite; }
 }
 @keyframes wb-hero-sway {
   0%, 100% { transform: rotate(-4deg); opacity: 0.6; }
@@ -217,15 +233,23 @@
   15% { opacity: 0.7; }
   to { transform: translateY(-47.5rem); opacity: 0; }
 }
-/* A fish crosses on `translate` and bobs on `transform`, so the two run together. */
+/* A swimmer crosses on `translate` and bobs on `transform`, so the two run together. It starts and ends out of sight,
+   past the edge by its own width and 8rem more, room for a label longer than it. */
 @keyframes wb-hero-swim {
-  from { translate: -30vw 0; }
-  to { translate: 120vw 0; }
+  from { translate: calc(-100% - 8rem) 0; }
+  to { translate: calc(100vw + 8rem) 0; }
 }
 @keyframes wb-hero-swim-left {
-  from { translate: 120vw 0; }
-  to { translate: -30vw 0; }
+  from { translate: calc(100vw + 8rem) 0; }
+  to { translate: calc(-100% - 8rem) 0; }
 }
 @keyframes wb-hero-bob {
   50% { transform: translateY(-0.875rem); }
+}
+@keyframes wb-hero-flap {
+  50% { transform: scaleY(0.78); }
+}
+@keyframes wb-hero-paddle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(4deg); }
 }

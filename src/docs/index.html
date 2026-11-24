@@ -584,7 +584,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Hero</h3>
-          <p>The home page opens on deep water, <code>wb-hero</code>: the four water tokens from the surface down, six light rays swaying from the top, ten bubbles rising and three fish crossing in their detection boxes. The component places and times every one of them from empty elements, so the page writes no geometry. The headline is at the hero size, tracked in, and the text is white in both themes. With reduced motion nothing moves: the rays stand still, the bubbles stay below the edge and the fish are not drawn. The page shows the pause button, <code>wb-hero__pause</code>, a round icon button named for screen readers, once its script can answer it (it swaps the icon to <code>play</code> and the name to “Play motion” while paused); it sets <code>data-motion="paused"</code> on the root, which holds the hero and the ticker where they are.</p>
+          <p>The home page opens on deep water, <code>wb-hero</code>: the four water tokens from the surface down, six light rays swaying from the top, ten bubbles rising and six swimmers crossing in their detection boxes: fish by default, and a nurse shark (<code>wb-hero__fish--shark</code>), a sea turtle (<code>--turtle</code>, which rocks as it paddles) and a spotted eagle ray (<code>--ray</code>, its wings beating, its spots holes the water shows through), drawn as plainly as the fish. The component places and times every one of them from empty elements, in six lanes (odd ones swim right, even ones left, the last three slow, for the big animals), so the page writes no geometry. Label them with the species list's names. The headline is at the hero size, tracked in, and the text is white in both themes. With reduced motion nothing moves: the rays stand still, the bubbles stay below the edge and the fish are not drawn. The page shows the pause button, <code>wb-hero__pause</code>, a round icon button named for screen readers, once its script can answer it (it swaps the icon to <code>play</code> and the name to “Play motion” while paused); it sets <code>data-motion="paused"</code> on the root, which holds the hero and the ticker where they are.</p>
         </div>
         <div class="wb-hero">
           <div class="wb-hero__water" aria-hidden="true">
@@ -592,8 +592,11 @@
             <div class="wb-hero__bubbles"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
             <div class="wb-hero__school">
               <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Sergeant Major</span></div></div>
-              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Blue Tang</span></div></div>
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Blue Tang Surgeonfish</span></div></div>
               <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Bar Jack</span></div></div>
+              <div class="wb-hero__fish wb-hero__fish--ray"><div class="wb-detect"><span class="wb-detect__label">Spotted Eagle Ray</span></div></div>
+              <div class="wb-hero__fish wb-hero__fish--shark"><div class="wb-detect"><span class="wb-detect__label">Nurse Shark</span></div></div>
+              <div class="wb-hero__fish wb-hero__fish--turtle"><div class="wb-detect"><span class="wb-detect__label">Green Sea Turtle</span></div></div>
             </div>
           </div>
           <div class="wb-container wb-hero__body">
@@ -1363,7 +1366,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Hero</h3>
-          <p>The home page opens on deep water, <code>wb-hero</code>: the four water tokens from the surface down, six light rays swaying from the top, ten bubbles rising and three fish crossing in their detection boxes. The component places and times every one of them from empty elements, so the page writes no geometry. The headline is at the hero size, tracked in, and the text is white in both themes. With reduced motion nothing moves: the rays stand still, the bubbles stay below the edge and the fish are not drawn. The page shows the pause button, <code>wb-hero__pause</code>, a round icon button named for screen readers, once its script can answer it (it swaps the icon to <code>play</code> and the name to “Play motion” while paused); it sets <code>data-motion="paused"</code> on the root, which holds the hero and the ticker where they are.</p>
+          <p>The home page opens on deep water, <code>wb-hero</code>: the four water tokens from the surface down, six light rays swaying from the top, ten bubbles rising and six swimmers crossing in their detection boxes: fish by default, and a nurse shark (<code>wb-hero__fish--shark</code>), a sea turtle (<code>--turtle</code>, which rocks as it paddles) and a spotted eagle ray (<code>--ray</code>, its wings beating, its spots holes the water shows through), drawn as plainly as the fish. The component places and times every one of them from empty elements, in six lanes (odd ones swim right, even ones left, the last three slow, for the big animals), so the page writes no geometry. Label them with the species list's names. The headline is at the hero size, tracked in, and the text is white in both themes. With reduced motion nothing moves: the rays stand still, the bubbles stay below the edge and the fish are not drawn. The page shows the pause button, <code>wb-hero__pause</code>, a round icon button named for screen readers, once its script can answer it (it swaps the icon to <code>play</code> and the name to “Play motion” while paused); it sets <code>data-motion="paused"</code> on the root, which holds the hero and the ticker where they are.</p>
         </div>
         <div class="wb-hero">
           <div class="wb-hero__water" aria-hidden="true">
@@ -1371,8 +1374,11 @@
             <div class="wb-hero__bubbles"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
             <div class="wb-hero__school">
               <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Sergeant Major</span></div></div>
-              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Blue Tang</span></div></div>
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Blue Tang Surgeonfish</span></div></div>
               <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Bar Jack</span></div></div>
+              <div class="wb-hero__fish wb-hero__fish--ray"><div class="wb-detect"><span class="wb-detect__label">Spotted Eagle Ray</span></div></div>
+              <div class="wb-hero__fish wb-hero__fish--shark"><div class="wb-detect"><span class="wb-detect__label">Nurse Shark</span></div></div>
+              <div class="wb-hero__fish wb-hero__fish--turtle"><div class="wb-detect"><span class="wb-detect__label">Green Sea Turtle</span></div></div>
             </div>
           </div>
           <div class="wb-container wb-hero__body">

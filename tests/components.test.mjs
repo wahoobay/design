@@ -37,6 +37,7 @@ const CLASSES = [
   // 0.5.0: the Jump In hero and the action ticker.
   'wb-hero', 'wb-hero__water', 'wb-hero__rays', 'wb-hero__bubbles', 'wb-hero__school', 'wb-hero__fish', 'wb-hero__body', 'wb-hero__tag',
   'wb-hero__title', 'wb-hero__foot', 'wb-hero__lead', 'wb-hero__actions', 'wb-hero__pause',
+  'wb-hero__fish--shark', 'wb-hero__fish--turtle', 'wb-hero__fish--ray',
   'wb-ticker', 'wb-ticker__track', 'wb-ticker__group', 'wb-ticker__word',
 ];
 
@@ -186,7 +187,8 @@ test('the live badge breathes and a detection box fades in, only without reduced
   // page's motion (PRODUCT.md, the Jump In brand); every one of them only without reduced motion (tested below).
   assert.deepEqual(animated, ['.wb-btn--busy::after wb-spin .8s linear infinite', '.wb-btn--busy::after none', '.wb-live:not(.wb-live--off)::before wb-live-breathe 2.4s ease-in-out infinite',
     '.wb-hero__rays > span wb-hero-sway 9s ease-in-out infinite', '.wb-hero__bubbles > span wb-hero-rise 9s linear infinite',
-    '.wb-hero__fish wb-hero-swim 26s linear infinite, wb-hero-bob 4s ease-in-out infinite', '.wb-hero__fish:nth-child(2) wb-hero-swim-left, wb-hero-bob',
+    '.wb-hero__fish wb-hero-swim 26s linear infinite, wb-hero-bob 4s ease-in-out infinite', '.wb-hero__fish:nth-child(even) wb-hero-swim-left, wb-hero-bob',
+    '.wb-hero__fish--ray::before wb-hero-flap 2.8s ease-in-out infinite', '.wb-hero__fish--turtle::before wb-hero-paddle 5s ease-in-out infinite',
     '.wb-ticker__track wb-ticker 45s linear infinite',
     '.wb-detect wb-detect-in 150ms ease-out']);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.wb-btn--busy::after\s*\{\s*animation:\s*none;?\s*\}/, 'reduced motion stops the ring');
@@ -913,18 +915,30 @@ test('0.5.0 hero: deep water from the four water tokens, white text, the headlin
   assert.doesNotMatch(read('src/components/hero.css').replace(/\/\*[\s\S]*?\*\//g, ''), /--wb-color-(on-)?accent|--wb-color-scrim/, 'the hero owns no accent and no scrim: its boxes are .wb-detect');
 });
 
-test('0.5.0 hero: six rays, ten bubbles and three fish, each placed by its own rule; a fish is a silhouette in its detection box', () => {
+// The lanes: six, each with its height in the water, its time and its way across (odd lanes swim right, even left).
+// 2026-11-24 (Dan): more, and more varied, animals: a shark, a turtle and a ray, drawn as plainly as the fish.
+test('0.5.0 hero: six rays, ten bubbles and six lanes of swimmers, each placed by its own rule; a swimmer is a silhouette in its detection box', () => {
   for (let n = 1; n <= 6; n += 1) has(block(`.wb-hero__rays > span:nth-child(${n})`), [/left:\s*\d+%/, /width:\s*[\d.]+rem/], `ray ${n}`);
   for (let n = 1; n <= 10; n += 1) assert.match(block(`.wb-hero__bubbles > span:nth-child(${n})`), /left:\s*\d+%/, `bubble ${n}`);
-  for (let n = 1; n <= 3; n += 1) has(block(`.wb-hero__fish:nth-child(${n})`), [/top:\s*\d+%/, /width:\s*[\d.]+rem/], `fish ${n}`);
+  for (let n = 1; n <= 6; n += 1) has(block(`.wb-hero__fish:nth-child(${n})`), [/top:\s*\d+%/, /width:\s*[\d.]+rem/], `lane ${n}`);
   has(block('.wb-hero__rays > span'), [/position:\s*absolute/, /background:\s*linear-gradient\(180deg, var\(--wb-color-ray\), var\(--wb-color-ray-0\)\)/,
     /mask-image:\s*linear-gradient\(90deg, transparent, var\(--wb-color-on-photo\), transparent\)/, /transform-origin:\s*top center/], 'a ray');
   has(block('.wb-hero__bubbles > span'), [/position:\s*absolute/, /border:\s*1px solid var\(--wb-color-bubble\)/, /border-radius:\s*50%/, /opacity:\s*0\s*;/], 'a bubble, unseen until it rises');
   has(block('.wb-hero__fish'), [/position:\s*absolute/, /aspect-ratio:\s*2\s*;/], 'a fish');
   has(block('.wb-hero__fish::before'), [/content:\s*""/, /position:\s*absolute/, /inset:\s*0/, /background:\s*var\(--wb-color-fish\)/,
     /mask-image:\s*url\("data:image\/svg\+xml,[^"]+"\)/, /mask-size:\s*contain/, /mask-repeat:\s*no-repeat/], 'the silhouette');
-  // The second fish swims the other way: its silhouette faces left.
-  assert.match(block('.wb-hero__fish:nth-child(2)::before'), /transform:\s*scaleX\(-1\)/);
+  // The even lanes swim the other way: the silhouette faces left, mirrored with `scale`, so a shape's own motion
+  // (the ray's wings, the turtle's paddling) can use `transform` on it.
+  assert.match(block('.wb-hero__fish:nth-child(even)::before'), /^\s*scale:\s*-1 1;?\s*$/);
+  // The shapes: each its own drawing and proportions, and a size of its own whatever its lane (a shark is never small).
+  for (const [shape, ratio] of [['shark', '3.4'], ['turtle', '1.5'], ['ray', '1.55']]) {
+    assert.match(block(`.wb-hero__fish--${shape}::before`), /^\s*mask-image:\s*url\("data:image\/svg\+xml,[^"]+"\);?\s*$/, `${shape}: its drawing`);
+    has(block(`.wb-hero__school > .wb-hero__fish--${shape}`), [/width:\s*[\d.]+rem/, new RegExp(`aspect-ratio:\\s*${ratio.replace('.', '\\.')}\\s*;`)], `${shape}: its size`);
+  }
+  // The spotted eagle ray's spots are holes in its drawing: the water shows through them.
+  assert.ok((block('.wb-hero__fish--ray::before').match(/a\d/g) ?? []).length >= 6, 'six spots or more (one arc command each, its second arc a repeat)');
+  const css = read('dist/components.css');
+  assert.ok(css.indexOf('.wb-hero__school > .wb-hero__fish--shark') > css.indexOf('.wb-hero__fish:nth-child(6)'), 'a shape\'s size comes after the lanes, so it wins');
   // A fish's box is the design's detection box (detect.css owns it), a little larger than the silhouette, its label above.
   assert.match(block('.wb-hero__fish > .wb-detect'), /inset:\s*-0\.625rem -0\.875rem/);
   assert.doesNotMatch(read('src/components/hero.css').replace(/\/\*[\s\S]*?\*\//g, ''), /\.wb-detect/, 'detect.css styles the box, after the chart, in its own file');
@@ -933,8 +947,13 @@ test('0.5.0 hero: six rays, ten bubbles and three fish, each placed by its own r
 test('0.5.0 hero: everything that moves moves only without reduced motion; with it, the fish are not drawn and the water is still', () => {
   const { outside, inside } = motionBlocks('src/components/hero.css');
   assert.doesNotMatch(outside, /\banimation(?!-play-state)[a-z-]*\s*:/, 'no animation outside the no-preference blocks (holding one, animation-play-state, may be anywhere)');
-  for (const name of ['wb-hero-sway', 'wb-hero-rise', 'wb-hero-swim', 'wb-hero-swim-left', 'wb-hero-bob']) assert.match(outside, new RegExp(`@keyframes ${name}\\s*\\{`), name);
-  assert.match(outside, /@keyframes wb-hero-swim\s*\{\s*from\s*\{\s*translate:\s*-30vw 0;?\s*\}\s*to\s*\{\s*translate:\s*120vw 0;?\s*\}\s*\}/, 'a fish crosses the whole width');
+  for (const name of ['wb-hero-sway', 'wb-hero-rise', 'wb-hero-swim', 'wb-hero-swim-left', 'wb-hero-bob', 'wb-hero-flap', 'wb-hero-paddle']) assert.match(outside, new RegExp(`@keyframes ${name}\\s*\\{`), name);
+  for (let n = 2; n <= 6; n += 1) assert.match(inside, new RegExp(`\\.wb-hero__fish:nth-child\\(${n}\\)\\s*\\{[^}]*animation-delay:`), `lane ${n} sets off at its own time`);
+  // A swimmer starts and ends out of sight: past the edge by its own width and 8rem more, room for a label longer than it.
+  assert.match(outside, /@keyframes wb-hero-swim\s*\{\s*from\s*\{\s*translate:\s*calc\(-100% - 8rem\) 0;?\s*\}\s*to\s*\{\s*translate:\s*calc\(100vw \+ 8rem\) 0;?\s*\}\s*\}/, 'across the whole width');
+  assert.match(outside, /@keyframes wb-hero-swim-left\s*\{\s*from\s*\{\s*translate:\s*calc\(100vw \+ 8rem\) 0;?\s*\}\s*to\s*\{\s*translate:\s*calc\(-100% - 8rem\) 0;?\s*\}\s*\}/, 'and back');
+  assert.match(outside, /@keyframes wb-hero-flap\s*\{[^}]*transform:\s*scaleY\(/, 'the ray\'s wings');
+  assert.match(outside, /@keyframes wb-hero-paddle\s*\{[^}]*transform:\s*rotate\(/, 'the turtle rocks as it paddles');
   // Still water draws no fish (a box frozen on a drawn fish says nothing), and the bubbles stay below the edge, unseen.
   assert.match(block('.wb-hero__school'), /display:\s*none/);
   assert.match(inside, /\.wb-hero__school\s*\{\s*display:\s*block;?\s*\}/, 'the fish swim only with motion');
@@ -980,8 +999,8 @@ test('0.5.0 ticker: the action words between two 1px lines, in the display face,
   assert.doesNotMatch(outside + inside, /:last-child::after/, 'in the loop every word has its dot, the last one too');
 });
 
-// As the fish-ID catalogue writes them (the site reads them from it).
-const HERO_FISH = ['Sergeant Major', 'Blue Tang', 'Bar Jack'];
+// As the site's species list (its explorer) names them, which the site reads them from; each with its shape.
+const HERO_FISH = [['Sergeant Major', ''], ['Blue Tang Surgeonfish', ''], ['Bar Jack', ''], ['Spotted Eagle Ray', 'ray'], ['Nurse Shark', 'shark'], ['Green Sea Turtle', 'turtle']];
 const TICKER_WORDS = ['Visit', 'Swim', 'Snorkel', 'Jump in', 'Explore', 'Learn', 'Watch', 'Discover', 'Participate', 'Volunteer', 'Contribute', 'Protect'];
 
 test('index.html shows the hero and the ticker in both themes, as the home page draws them', () => {
@@ -991,8 +1010,8 @@ test('index.html shows the hero and the ticker in both themes, as the home page 
     const water = hero.match(/<div class="wb-hero__water" aria-hidden="true">([\s\S]*?)<\/div>\s*<div class="wb-container wb-hero__body">/)?.[1] ?? '';
     assert.equal(water.match(/<div class="wb-hero__rays">((?:<span><\/span>)+)<\/div>/)?.[1].match(/<span>/g).length, 6, `${name}: six rays`);
     assert.equal(water.match(/<div class="wb-hero__bubbles">((?:<span><\/span>)+)<\/div>/)?.[1].match(/<span>/g).length, 10, `${name}: ten bubbles`);
-    const fish = [...water.matchAll(/<div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">([^<]+)<\/span><\/div><\/div>/g)].map((m) => m[1]);
-    assert.deepEqual(fish, HERO_FISH, `${name}: three fish in their boxes, named from the species catalogue`);
+    const fish = [...water.matchAll(/<div class="wb-hero__fish(?: wb-hero__fish--([a-z]+))?"><div class="wb-detect"><span class="wb-detect__label">([^<]+)<\/span><\/div><\/div>/g)].map((m) => [m[2], m[1] ?? '']);
+    assert.deepEqual(fish, HERO_FISH, `${name}: six swimmers in their boxes, three fish, a ray, a shark and a turtle, named from the species list`);
     assert.match(hero, /<p class="wb-hero__tag"[^>]*>[^<]+<\/p>\s*<h4 class="wb-hero__title"[^>]*>The reef<br>is live\.<\/h4>/, `${name}: the tag, then the headline`);
     assert.match(hero, /<div class="wb-hero__foot">\s*<p class="wb-hero__lead"[^>]*>[^<]+<\/p>\s*<div class="wb-hero__actions">\s*<a class="wb-btn wb-btn--action" href="#">[^<]+<\/a>\s*<a class="wb-btn wb-btn--ghost" href="#">[^<]+<\/a>\s*<\/div>\s*<\/div>/,
       `${name}: the lead beside the two actions`);
