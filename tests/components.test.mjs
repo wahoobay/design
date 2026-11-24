@@ -165,10 +165,11 @@ test('nav links draw the focus ring inside the link, where the scrolling row can
   assert.match(rule.body, /outline-offset:\s*-2px/);
 });
 
-test('the logo is 34px tall on light and 30px on dark (spec §4.3)', () => {
+// 0.5.1 (Dan, 2026-11-24): the logo 20% larger, in both themes: 34px to 40.8px on light, 30px to 36px on dark.
+test('the logo is 40.8px tall on light and 36px on dark (spec §4.3, 20% larger from 0.5.1)', () => {
   const css = rules(read('dist/components.css'));
-  assert.match(css.find((r) => r.selector === '.wb-nav__logo :is(svg, img)').body, /height:\s*2\.125rem/);
-  assert.match(css.find((r) => r.selector === '[data-theme="dark"] .wb-nav__logo :is(svg, img)').body, /height:\s*1\.875rem/);
+  assert.match(css.find((r) => r.selector === '.wb-nav__logo :is(svg, img)').body, /height:\s*2\.55rem/);
+  assert.match(css.find((r) => r.selector === '[data-theme="dark"] .wb-nav__logo :is(svg, img)').body, /height:\s*2\.25rem/);
 });
 
 test('the live badge breathes and a detection box fades in, only without reduced motion; the busy ring turns; the hero and the ticker move; nothing else animates (spec §4.3)', () => {
