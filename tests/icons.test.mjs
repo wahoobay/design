@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 
 const read = (path) => readFileSync(path, 'utf8');
-const ICONS = ['arrow-left', 'arrow-right', 'external'];
+// 0.5.0: pause and play, for the hero's motion button.
+const ICONS = ['arrow-left', 'arrow-right', 'external', 'pause', 'play'];
 
 test('the icon set: one stroke weight, currentColor, and each file is already correct inlined', () => {
   for (const name of ICONS) {

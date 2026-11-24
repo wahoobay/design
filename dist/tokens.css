@@ -26,6 +26,14 @@
   --wb-color-series-7: #009E73;
   --wb-color-series-8: #F0E442;
   --wb-color-series-other: #5B6F80;
+  --wb-color-water-1: #0F6E86;
+  --wb-color-water-2: #0A4A62;
+  --wb-color-water-3: #062C40;
+  --wb-color-water-4: #03141F;
+  --wb-color-ray: rgb(190 255 248 / 0.12);
+  --wb-color-ray-0: rgb(190 255 248 / 0);
+  --wb-color-bubble: rgb(220 255 250 / 0.6);
+  --wb-color-fish: rgb(4 24 34 / 0.85);
   --wb-font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --wb-font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", system-ui, sans-serif;
   --wb-text-xs: 0.75rem;
@@ -80,4 +88,12 @@
   --wb-color-series-7: #009E73;
   --wb-color-series-8: #F0E442;
   --wb-color-series-other: #93A9BC;
+  --wb-color-water-1: #0F6E86;
+  --wb-color-water-2: #0A4A62;
+  --wb-color-water-3: #062C40;
+  --wb-color-water-4: #03141F;
+  --wb-color-ray: rgb(190 255 248 / 0.12);
+  --wb-color-ray-0: rgb(190 255 248 / 0);
+  --wb-color-bubble: rgb(220 255 250 / 0.6);
+  --wb-color-fish: rgb(4 24 34 / 0.85);
 }

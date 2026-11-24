@@ -34,11 +34,15 @@ const CLASSES = [
   'wb-chart--tall', 'wb-chart__axis', 'wb-chart__grid', 'wb-chart__bar', 'wb-chart__empty',
   'wb-toolbar', 'wb-table', 'wb-table-wrap', 'wb-pager', 'wb-pager__info', 'wb-pager__prev', 'wb-pager__next',
   'wb-dialog', 'wb-dialog__title', 'wb-dialog__actions', 'wb-status',
+  // 0.5.0: the Jump In hero and the action ticker.
+  'wb-hero', 'wb-hero__water', 'wb-hero__rays', 'wb-hero__bubbles', 'wb-hero__school', 'wb-hero__fish', 'wb-hero__body', 'wb-hero__tag',
+  'wb-hero__title', 'wb-hero__foot', 'wb-hero__lead', 'wb-hero__actions', 'wb-hero__pause',
+  'wb-ticker', 'wb-ticker__track', 'wb-ticker__group', 'wb-ticker__word',
 ];
 
 // The component files in build order; each one's first class must appear in this order.
 const ORDER = ['wb-prose', 'wb-nav', 'wb-icon', 'wb-btn', 'wb-seg', 'wb-live', 'wb-chip', 'wb-tile', 'wb-panel', 'wb-card', 'wb-media',
-  'wb-stage', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-toolbar', 'wb-table-wrap', 'wb-pager', 'wb-dialog', 'wb-footer', 'wb-container', 'wb-as-is'];
+  'wb-stage', 'wb-hero', 'wb-ticker', 'wb-band', 'wb-figures', 'wb-door', 'wb-feature', 'wb-chart', 'wb-detect', 'wb-field', 'wb-toolbar', 'wb-table-wrap', 'wb-pager', 'wb-dialog', 'wb-footer', 'wb-container', 'wb-as-is'];
 
 // The only components allowed to use the Seagrass accent ("alive right now").
 // 0.2.2: a camera's map marker, because a camera is alive right now.
@@ -166,7 +170,7 @@ test('the logo is 34px tall on light and 30px on dark (spec §4.3)', () => {
   assert.match(css.find((r) => r.selector === '[data-theme="dark"] .wb-nav__logo :is(svg, img)').body, /height:\s*1\.875rem/);
 });
 
-test('the live badge breathes and a detection box fades in, only without reduced motion; the busy ring turns; nothing else animates (spec §4.3)', () => {
+test('the live badge breathes and a detection box fades in, only without reduced motion; the busy ring turns; the hero and the ticker move; nothing else animates (spec §4.3)', () => {
   const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
   assert.match(css, /@keyframes wb-live-breathe\s*\{/);
   // 0.3.0: the offline badge is not in the breathing rule at all (the detector reads the selector, not the cascade).
@@ -178,7 +182,12 @@ test('the live badge breathes and a detection box fades in, only without reduced
   assert.match(css, /@keyframes wb-detect-in\s*\{\s*from\s*\{\s*opacity:\s*0;?\s*\}\s*\}/, 'the fade animates opacity only');
   assert.match(css, /@media \(prefers-reduced-motion: no-preference\)\s*\{\s*\.wb-detect\s*\{\s*animation:\s*wb-detect-in 150ms ease-out;?\s*\}\s*\}/, 'the fade, only without reduced motion');
   const animated = rules(css).filter((r) => /\banimation(-name)?:/.test(r.body)).map((r) => `${r.selector} ${r.body.match(/animation(?:-name)?:\s*([^;]+)/)[1].trim()}`);
+  // 0.5.0: the hero's water moves (rays sway, bubbles rise, fish swim with their boxes) and the ticker scrolls, the home
+  // page's motion (PRODUCT.md, the Jump In brand); every one of them only without reduced motion (tested below).
   assert.deepEqual(animated, ['.wb-btn--busy::after wb-spin .8s linear infinite', '.wb-btn--busy::after none', '.wb-live:not(.wb-live--off)::before wb-live-breathe 2.4s ease-in-out infinite',
+    '.wb-hero__rays > span wb-hero-sway 9s ease-in-out infinite', '.wb-hero__bubbles > span wb-hero-rise 9s linear infinite',
+    '.wb-hero__fish wb-hero-swim 26s linear infinite, wb-hero-bob 4s ease-in-out infinite', '.wb-hero__fish:nth-child(2) wb-hero-swim-left, wb-hero-bob',
+    '.wb-ticker__track wb-ticker 45s linear infinite',
     '.wb-detect wb-detect-in 150ms ease-out']);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.wb-btn--busy::after\s*\{\s*animation:\s*none;?\s*\}/, 'reduced motion stops the ring');
   assert.doesNotMatch(css, /\btransition(-[a-z]+)?:/, 'nothing moves by transition either');
@@ -198,6 +207,9 @@ const WAIVERS = [
   'wb-door__title low-contrast', 'wb-door__text low-contrast',
   'wb-feature__title low-contrast', 'wb-feature__text low-contrast',
   'wb-nav__link low-contrast',
+  // 0.5.0: the ticker's endless scroll is the home page's motion (PRODUCT.md, the Jump In brand); the detector calls any
+  // infinite horizontal loop a marquee. It holds under the pointer and with the pause button, and not at all with reduced motion.
+  'wb-ticker__track marquee',
 ];
 
 test('detector waivers appear only where the spec overrides the detector: brand-blue large numbers, live badges, text on photographs', () => {
@@ -860,4 +872,130 @@ test('0.4.1: the grave button reads at 4.5:1 in light and dark, at rest and on h
   const mix = (a, b, pct) => '#' + [1, 3, 5].map((i) => Math.round(parseInt(a.slice(i, i + 2), 16) * pct + parseInt(b.slice(i, i + 2), 16) * (1 - pct)).toString(16).padStart(2, '0')).join('');
   const light = { ink: '#0F2233', ink2: '#35495A', bg: '#FFFFFF' }, dark = { ink: '#EAF6F5', ink2: '#CBE3E2', bg: '#020B12' };
   for (const c of [light, dark]) for (const pct of [1, 0.85, 0.7]) assert.ok(contrast(mix(c.ink, c.ink2, pct), c.bg) >= 4.5, `${pct}`);
+});
+
+// 0.5.0: the Jump In hero and the action ticker (the wahoobay.org home page, the 2026-11-24 design canvas, board D).
+// A file's text with every @media (prefers-reduced-motion: no-preference) { … } block taken out, and those blocks.
+const motionBlocks = (file) => {
+  const css = read(file).replace(/\/\*[\s\S]*?\*\//g, '');
+  const inside = [];
+  let outside = '';
+  let at = 0;
+  for (const m of css.matchAll(/@media \(prefers-reduced-motion: no-preference\)\s*\{/g)) {
+    if (m.index < at) continue;
+    let depth = 1;
+    let i = m.index + m[0].length;
+    for (; depth > 0 && i < css.length; i += 1) depth += css[i] === '{' ? 1 : css[i] === '}' ? -1 : 0;
+    outside += css.slice(at, m.index);
+    inside.push(css.slice(m.index + m[0].length, i - 1));
+    at = i;
+  }
+  return { outside: outside + css.slice(at), inside: inside.join('\n') };
+};
+
+test('0.5.0 hero: deep water from the four water tokens, white text, the headline at the hero size, tracked in, at .86', () => {
+  has(block('.wb-hero'), [/position:\s*relative/, /display:\s*flex/, /align-items:\s*flex-end/, /min-height:\s*clamp\(30rem,\s*100vh,\s*55rem\)/, /overflow:\s*hidden/,
+    /background:\s*linear-gradient\(180deg, var\(--wb-color-water-1\) 0%, var\(--wb-color-water-2\) 22%, var\(--wb-color-water-3\) 55%, var\(--wb-color-water-4\) 100%\)/,
+    /(^|[;\s])color:\s*var\(--wb-color-on-photo\)/], '.wb-hero');
+  has(block('.wb-hero__title'), [/font-family:\s*var\(--wb-font-display\)/, /font-size:\s*var\(--wb-text-hero\)/, /letter-spacing:\s*var\(--wb-track-hero\)/,
+    /line-height:\s*0?\.86\s*;/, /font-weight:\s*800/, /margin:\s*0/], '.wb-hero__title');
+  has(block('.wb-hero__water'), [/position:\s*absolute/, /inset:\s*0/, /overflow:\s*hidden/, /pointer-events:\s*none/], 'the water, behind the words');
+  has(block('.wb-hero__body'), [/position:\s*relative/, /display:\s*flex/, /flex-direction:\s*column/], 'the words, over the water');
+  has(block('.wb-hero__tag'), [/align-self:\s*flex-start/, /border-radius:\s*var\(--wb-radius-pill\)/, /text-transform:\s*uppercase/], 'the tag');
+  has(block('.wb-hero__lead'), [/max-width:\s*34rem/, /font-size:\s*var\(--wb-text-xl\)/], 'the lead');
+  has(block('.wb-hero__foot'), [/display:\s*flex/, /flex-wrap:\s*wrap/, /justify-content:\s*space-between/], 'the lead and the actions');
+  has(block('.wb-hero__actions'), [/display:\s*flex/, /flex-wrap:\s*wrap/, /gap:\s*var\(--wb-space-3\)/], 'the actions');
+  // As on the stage: a ghost button and the focus ring are drawn in the text colour, which reads on all of the water.
+  assert.match(block('.wb-hero .wb-btn--ghost'), /color:\s*var\(--wb-color-on-photo\)/);
+  assert.match(block('.wb-hero .wb-btn--ghost:hover'), /border-color:\s*var\(--wb-color-on-photo\)/);
+  assert.match(block('.wb-hero :focus-visible'), /outline-color:\s*var\(--wb-color-on-photo\)/);
+  assert.doesNotMatch(read('src/components/hero.css').replace(/\/\*[\s\S]*?\*\//g, ''), /--wb-color-(on-)?accent|--wb-color-scrim/, 'the hero owns no accent and no scrim: its boxes are .wb-detect');
+});
+
+test('0.5.0 hero: six rays, ten bubbles and three fish, each placed by its own rule; a fish is a silhouette in its detection box', () => {
+  for (let n = 1; n <= 6; n += 1) has(block(`.wb-hero__rays > span:nth-child(${n})`), [/left:\s*\d+%/, /width:\s*[\d.]+rem/], `ray ${n}`);
+  for (let n = 1; n <= 10; n += 1) assert.match(block(`.wb-hero__bubbles > span:nth-child(${n})`), /left:\s*\d+%/, `bubble ${n}`);
+  for (let n = 1; n <= 3; n += 1) has(block(`.wb-hero__fish:nth-child(${n})`), [/top:\s*\d+%/, /width:\s*[\d.]+rem/], `fish ${n}`);
+  has(block('.wb-hero__rays > span'), [/position:\s*absolute/, /background:\s*linear-gradient\(180deg, var\(--wb-color-ray\), var\(--wb-color-ray-0\)\)/,
+    /mask-image:\s*linear-gradient\(90deg, transparent, var\(--wb-color-on-photo\), transparent\)/, /transform-origin:\s*top center/], 'a ray');
+  has(block('.wb-hero__bubbles > span'), [/position:\s*absolute/, /border:\s*1px solid var\(--wb-color-bubble\)/, /border-radius:\s*50%/, /opacity:\s*0\s*;/], 'a bubble, unseen until it rises');
+  has(block('.wb-hero__fish'), [/position:\s*absolute/, /aspect-ratio:\s*2\s*;/], 'a fish');
+  has(block('.wb-hero__fish::before'), [/content:\s*""/, /position:\s*absolute/, /inset:\s*0/, /background:\s*var\(--wb-color-fish\)/,
+    /mask-image:\s*url\("data:image\/svg\+xml,[^"]+"\)/, /mask-size:\s*contain/, /mask-repeat:\s*no-repeat/], 'the silhouette');
+  // The second fish swims the other way: its silhouette faces left.
+  assert.match(block('.wb-hero__fish:nth-child(2)::before'), /transform:\s*scaleX\(-1\)/);
+  // A fish's box is the design's detection box (detect.css owns it), a little larger than the silhouette, its label above.
+  assert.match(block('.wb-hero__fish > .wb-detect'), /inset:\s*-0\.625rem -0\.875rem/);
+  assert.doesNotMatch(read('src/components/hero.css').replace(/\/\*[\s\S]*?\*\//g, ''), /\.wb-detect/, 'detect.css styles the box, after the chart, in its own file');
+});
+
+test('0.5.0 hero: everything that moves moves only without reduced motion; with it, the fish are not drawn and the water is still', () => {
+  const { outside, inside } = motionBlocks('src/components/hero.css');
+  assert.doesNotMatch(outside, /\banimation(?!-play-state)[a-z-]*\s*:/, 'no animation outside the no-preference blocks (holding one, animation-play-state, may be anywhere)');
+  for (const name of ['wb-hero-sway', 'wb-hero-rise', 'wb-hero-swim', 'wb-hero-swim-left', 'wb-hero-bob']) assert.match(outside, new RegExp(`@keyframes ${name}\\s*\\{`), name);
+  assert.match(outside, /@keyframes wb-hero-swim\s*\{\s*from\s*\{\s*translate:\s*-30vw 0;?\s*\}\s*to\s*\{\s*translate:\s*120vw 0;?\s*\}\s*\}/, 'a fish crosses the whole width');
+  // Still water draws no fish (a box frozen on a drawn fish says nothing), and the bubbles stay below the edge, unseen.
+  assert.match(block('.wb-hero__school'), /display:\s*none/);
+  assert.match(inside, /\.wb-hero__school\s*\{\s*display:\s*block;?\s*\}/, 'the fish swim only with motion');
+  for (let n = 2; n <= 6; n += 1) assert.match(inside, new RegExp(`\\.wb-hero__rays > span:nth-child\\(${n}\\)\\s*\\{[^}]*animation-duration:[^}]*animation-delay:`), `ray ${n} keeps its own time`);
+  for (let n = 2; n <= 10; n += 1) assert.match(inside, new RegExp(`\\.wb-hero__bubbles > span:nth-child\\(${n}\\)\\s*\\{[^}]*animation-delay:`), `bubble ${n} rises at its own time`);
+});
+
+// WCAG 2.2.2 (level A): motion that starts by itself and lasts more than five seconds can be paused. The page's button
+// sets data-motion="paused" on the root; with reduced motion nothing moves, so there is no button.
+test('0.5.0 hero: a pause button for the motion, shown once the page can use it, and none with reduced motion', () => {
+  const css = read('dist/components.css').replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.match(css, /\[data-motion="paused"\] :is\(\.wb-hero, \.wb-ticker\) \*\s*\{\s*animation-play-state:\s*paused;?\s*\}/);
+  // A media control, not a third call to action: a 44px round button in the corner, its icon the only thing drawn and its
+  // name ("Pause motion", "Play motion") screen-reader text.
+  has(block('.wb-hero__pause'), [/position:\s*absolute/, /right:\s*var\(--wb-space-4\)/, /bottom:\s*var\(--wb-space-4\)/, /display:\s*grid/, /place-items:\s*center/,
+    /width:\s*2\.75rem/, /height:\s*2\.75rem/, /padding:\s*0/, /border:\s*1\.5px solid color-mix\(in srgb, var\(--wb-color-on-photo\) 60%, transparent\)/,
+    /border-radius:\s*50%/, /color:\s*var\(--wb-color-on-photo\)/, /font-size:\s*1\.25rem/, /cursor:\s*pointer/], 'the pause button, in the corner');
+  assert.match(block('.wb-hero__pause:hover'), /border-color:\s*var\(--wb-color-on-photo\)/);
+  assert.match(block('.wb-hero__pause[hidden]'), /display:\s*none/, 'hidden until the page\'s script shows it (.wb-btn is inline-flex)');
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.wb-hero__pause\s*\{\s*display:\s*none;?\s*\}\s*\}/);
+});
+
+test('0.5.0 ticker: the action words between two 1px lines, in the display face, every third in the action colour', () => {
+  has(block('.wb-ticker'), [/overflow:\s*hidden/, /border-top:\s*1px solid var\(--wb-color-line\)/, /border-bottom:\s*1px solid var\(--wb-color-line\)/,
+    /padding-top:\s*var\(--wb-space-5\)/, /padding-bottom:\s*var\(--wb-space-5\)/], '.wb-ticker');
+  has(block('.wb-ticker__group'), [/display:\s*flex/, /flex-wrap:\s*wrap/, /margin:\s*0/, /padding:\s*0/, /list-style:\s*none/], 'a group of words');
+  has(block('.wb-ticker__word'), [/font-family:\s*var\(--wb-font-display\)/, /font-size:\s*var\(--wb-text-2xl\)/, /font-weight:\s*700/, /white-space:\s*nowrap/,
+    /color:\s*var\(--wb-color-ink-3\)/], 'a word');
+  assert.match(block('.wb-ticker__word:nth-child(3n + 1)'), /^\s*color:\s*var\(--wb-color-action\);?\s*$/, 'every third word, from the first');
+  has(block('.wb-ticker__word::after'), [/content:\s*""/, /border-radius:\s*50%/, /background:\s*var\(--wb-color-line\)/], 'the dot between words');
+  // Still, the words wrap in one group and the copy is not drawn; moving, the track holds both groups in a row and
+  // scrolls by one group's width, so the loop has no seam. The pointer over it holds it.
+  assert.match(block('.wb-ticker__group + .wb-ticker__group'), /display:\s*none/);
+  const { outside, inside } = motionBlocks('src/components/ticker.css');
+  assert.doesNotMatch(outside, /\banimation(?!-play-state)[a-z-]*\s*:/, 'no animation outside the no-preference block (holding one, animation-play-state, may be anywhere)');
+  assert.match(outside, /@keyframes wb-ticker\s*\{\s*to\s*\{\s*transform:\s*translateX\(-50%\);?\s*\}\s*\}/);
+  assert.match(inside, /\.wb-ticker__track\s*\{[^}]*width:\s*max-content[^}]*animation:\s*wb-ticker 45s linear infinite/);
+  assert.match(inside, /\.wb-ticker__group\s*\{[^}]*flex-wrap:\s*nowrap/);
+  assert.match(inside, /\.wb-ticker__group \+ \.wb-ticker__group\s*\{\s*display:\s*flex;?\s*\}/);
+  assert.match(inside, /\.wb-ticker:hover \.wb-ticker__track\s*\{\s*animation-play-state:\s*paused;?\s*\}/);
+});
+
+const HERO_FISH = ['Sergeant major', 'Blue tang', 'Bar jack'];
+const TICKER_WORDS = ['Visit', 'Swim', 'Snorkel', 'Jump in', 'Explore', 'Learn', 'Watch', 'Discover', 'Participate', 'Volunteer', 'Contribute', 'Protect'];
+
+test('index.html shows the hero and the ticker in both themes, as the home page draws them', () => {
+  for (const [name, part] of theme(read('dist/index.html'))) {
+    const hero = part.match(/<div class="wb-hero">([\s\S]*?)<\/button>\s*<\/div>/)?.[1] ?? '';
+    assert.ok(hero, `${name}: a hero`);
+    const water = hero.match(/<div class="wb-hero__water" aria-hidden="true">([\s\S]*?)<\/div>\s*<div class="wb-container wb-hero__body">/)?.[1] ?? '';
+    assert.equal(water.match(/<div class="wb-hero__rays">((?:<span><\/span>)+)<\/div>/)?.[1].match(/<span>/g).length, 6, `${name}: six rays`);
+    assert.equal(water.match(/<div class="wb-hero__bubbles">((?:<span><\/span>)+)<\/div>/)?.[1].match(/<span>/g).length, 10, `${name}: ten bubbles`);
+    const fish = [...water.matchAll(/<div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">([^<]+)<\/span><\/div><\/div>/g)].map((m) => m[1]);
+    assert.deepEqual(fish, HERO_FISH, `${name}: three fish in their boxes, named from the species catalogue`);
+    assert.match(hero, /<p class="wb-hero__tag"[^>]*>[^<]+<\/p>\s*<h4 class="wb-hero__title"[^>]*>The reef<br>is live\.<\/h4>/, `${name}: the tag, then the headline`);
+    assert.match(hero, /<div class="wb-hero__foot">\s*<p class="wb-hero__lead"[^>]*>[^<]+<\/p>\s*<div class="wb-hero__actions">\s*<a class="wb-btn wb-btn--action" href="#">[^<]+<\/a>\s*<a class="wb-btn wb-btn--ghost" href="#">[^<]+<\/a>\s*<\/div>\s*<\/div>/,
+      `${name}: the lead beside the two actions`);
+    assert.match(hero, /<button class="wb-hero__pause" type="button"><svg class="wb-icon"[^>]*>[\s\S]*?<\/svg><span class="wb-sr-only">Pause motion<\/span>$/, `${name}: the pause button, named for screen readers`);
+    const ticker = part.match(/<div class="wb-ticker" role="region" aria-label="[^"]+">\s*<div class="wb-ticker__track" data-impeccable-ignore="marquee">([\s\S]*?)<\/div>\s*<\/div>/)?.[1] ?? '';
+    const groups = [...ticker.matchAll(/<ul class="wb-ticker__group" role="list"( aria-hidden="true")?>([\s\S]*?)<\/ul>/g)];
+    assert.equal(groups.length, 2, `${name}: the words and their copy`);
+    assert.deepEqual(groups.map((g) => Boolean(g[1])), [false, true], `${name}: the copy is hidden from screen readers`);
+    for (const [, , words] of groups) assert.deepEqual([...words.matchAll(/<li class="wb-ticker__word">([^<]+)<\/li>/g)].map((m) => m[1]), TICKER_WORDS, `${name}: the twelve words`);
+  }
 });

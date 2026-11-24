@@ -76,3 +76,36 @@ test('tokens: --wb-color-series-other is the muted ink of each theme and never a
   for (const theme of ['light', 'dark']) assert.equal(tokens.color[theme]['series-other'], tokens.color[theme]['ink-3'], `${theme}: the value of ink-3`);
   assert.ok(!pairs.flat().some((name) => name.includes('series-other')), 'not in a text pair');
 });
+
+// 0.5.0: the hero's water (the home page's opening, the Jump In design canvas, board D). Four stops of deep water from the
+// surface down, the light rays and bubbles drawn on it and the fish silhouettes, the same in both themes, as text on a
+// photograph is. The hero's text is white (--wb-color-on-photo): 4.5:1 or better on every stop, and on the surface stop
+// under a ray at its brightest, where the navigation lies over the hero.
+const rgba = (value) => {
+  const m = value.match(/^rgb\((\d+) (\d+) (\d+) \/ ([\d.]+)\)$/);
+  assert.ok(m, value);
+  return { rgb: m.slice(1, 4).map(Number), alpha: Number(m[4]) };
+};
+const over = ({ rgb, alpha }, hex) => '#' + rgb.map((c, i) => Math.round(alpha * c + (1 - alpha) * parseInt(hex.slice(1 + 2 * i, 3 + 2 * i), 16)).toString(16).padStart(2, '0')).join('');
+const WATER = { 'water-1': '#0F6E86', 'water-2': '#0A4A62', 'water-3': '#062C40', 'water-4': '#03141F' };
+
+test('tokens: the hero\'s water, rays, bubbles and fish are the same in both themes', () => {
+  const t = readFileSync('dist/tokens.css', 'utf8');
+  const [light, dark] = [t.match(/:root\s*\{([^}]*)\}/)[1], t.match(/\[data-theme="dark"\]\s*\{([^}]*)\}/)[1]];
+  for (const [theme, block] of [['light', light], ['dark', dark]]) {
+    for (const [name, hex] of Object.entries(WATER)) assert.match(block, new RegExp(`--wb-color-${name}: ${hex};`), `${theme}: ${name}`);
+    for (const name of ['ray', 'ray-0', 'bubble', 'fish']) assert.match(block, new RegExp(`--wb-color-${name}: rgb\\(\\d+ \\d+ \\d+ / [\\d.]+\\);`), `${theme}: ${name}`);
+  }
+  const { light: l, dark: d } = JSON.parse(readFileSync('tokens/tokens.json', 'utf8')).color;
+  for (const name of [...Object.keys(WATER), 'ray', 'ray-0', 'bubble', 'fish']) assert.equal(l[name], d[name], name);
+  assert.equal(rgba(l['ray-0']).alpha, 0, 'a ray fades to nothing');
+  assert.deepEqual(rgba(l['ray-0']).rgb, rgba(l.ray).rgb, 'in its own colour');
+});
+
+test('tokens: white reads 4.5:1 or better on every stop of the water, and on the surface under a ray at its brightest', () => {
+  const { light } = JSON.parse(readFileSync('tokens/tokens.json', 'utf8')).color;
+  for (const name of Object.keys(WATER)) assert.ok(contrast('#FFFFFF', light[name]) >= 4.5, `${name}: ${contrast('#FFFFFF', light[name]).toFixed(2)}:1`);
+  const lit = over(rgba(light.ray), light['water-1']);
+  assert.ok(contrast('#FFFFFF', lit) >= 4.5, `under a ray: ${contrast('#FFFFFF', lit).toFixed(2)}:1`);
+  assert.ok(!pairs.flat().some((name) => /^(water|ray|bubble|fish)/.test(name)), 'decoration, not a text pair');
+});

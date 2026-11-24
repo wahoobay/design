@@ -56,3 +56,5 @@
 @keyframes wb-detect-in {
   from { opacity: 0; }
 }
+/* A box around a fish in the home page's hero (hero.css): drawn round the silhouette, a little larger, its label above. */
+.wb-hero__fish > .wb-detect { inset: -0.625rem -0.875rem; }

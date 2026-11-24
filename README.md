@@ -10,7 +10,7 @@ Everything consumers use is in `dist/` (committed, because consumers install fro
 - `fonts.css` - the `@font-face` rules.
 - `components.css` - component styles built on the tokens.
 - `logo/` - `wahoobay-logo.svg` and `wahoobay-mark.svg`, drawn in `currentColor`.
-- `icons/` - the icon set (`arrow-left.svg`, `arrow-right.svg`, `external.svg`): 24px grid, one 2px stroke in `currentColor`. Each file carries `class="wb-icon" aria-hidden="true" focusable="false"`, so inline it as it is, next to the words that name the control.
+- `icons/` - the icon set (`arrow-left.svg`, `arrow-right.svg`, `external.svg`, `pause.svg`, `play.svg`): 24px grid, one 2px stroke in `currentColor`. Each file carries `class="wb-icon" aria-hidden="true" focusable="false"`, so inline it as it is, next to the words that name the control.
 - `index.html` - the documentation page, showing the tokens and components.
 - `media/` - the photos the documentation page uses.
 

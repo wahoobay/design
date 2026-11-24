@@ -16,6 +16,15 @@ The Jump In brand, from the wahoobay.org home page direction chosen on 2026-11-2
 ### Added
 
 - `--wb-text-hero`, `clamp(4.5rem, 12vw, 12.25rem)`, and `--wb-track-hero`, `-0.055em`: the one headline at the top of the home page.
+- `.wb-hero`: the home page's opening on deep water (`--wb-color-water-1` to `-4`, `#0F6E86` to `#03141F`, the same in both themes), with six light rays swaying (`--wb-color-ray`, `-ray-0`), ten bubbles rising (`--wb-color-bubble`) and three fish (`--wb-color-fish`) swimming across in their `.wb-detect` boxes. The component places and times them all, so the page writes empty elements and no geometry. The headline (`.wb-hero__title`) is at the hero size, tracked in, at line height 0.86; the tag, lead, actions and a ghost button on the water are white. White text is 4.5:1 or better on every water stop and under a ray at its brightest.
+- `.wb-ticker`: the action words under the hero, between two 1px lines, in the display face, every third in the action colour. Two copies of one list scroll as one seamless loop; the pointer over it holds it.
+- Motion: everything in the hero and the ticker moves only without reduced motion. With it, the rays stand still, the bubbles stay below the edge, the fish are not drawn and the ticker's words wrap in one list. `.wb-hero__pause` is the page's pause button, a 44px round icon button in the hero's corner named in screen-reader text (shown once its script can answer it, not drawn with reduced motion); `data-motion="paused"` on the root holds the hero and the ticker (WCAG 2.2.2).
+- Icons: `pause` and `play`, for that button.
+- Detector: the ticker's track carries `data-impeccable-ignore="marquee"`, pinned in the tests: the scroll is the home page's motion under the Jump In brand.
+
+### Fixed
+
+- Docs: the `--wb-color-scrim-top` swatches said `0.55`; the token has been `0.7` since 0.3.2.
 
 ## 0.4.1 — 2026-11-02
 

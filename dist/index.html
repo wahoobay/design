@@ -20,7 +20,10 @@
        data-impeccable-ignore="low-contrast" on text set on a photograph (the stage's title and lead, the doorways' and the
          feature's titles and text, and the links of the nav over the stage, only there): spec §4.3, Deep Field, sets that
          text in white over a scrim. The detector sees neither the photograph nor the scrim and measures white on the page
-         ground; the finish review checks the contrast by eye on the real photographs. -->
+         ground; the finish review checks the contrast by eye on the real photographs.
+       data-impeccable-ignore="marquee" on the ticker's track: PRODUCT.md, the Jump In brand (2026-11-24), puts motion on the
+         home page, and the ticker's endless scroll is part of it. It holds under the pointer and with the hero's pause button,
+         its words are a list a screen reader reads once (the copy is aria-hidden), and with reduced motion it does not move. -->
   <style>
     /* Documentation layout only; the components come from components.css. */
     .docs-head { padding-top: var(--wb-space-8); padding-bottom: var(--wb-space-6); background: linear-gradient(180deg, var(--wb-color-tint) 0%, var(--wb-color-bg) 100%); }
@@ -158,7 +161,7 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.55)</code><small>The band at the top of the stage, under the nav</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.7)</code><small>The band at the top of the stage, under the nav</small></li>
       </ul>
 
       <h3>Colour, dark</h3>
@@ -182,7 +185,7 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.55)</code><small>The band at the top of the stage, under the nav</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-scrim-top)"></span><code>--wb-color-scrim-top</code> <code>rgb(11 27 43 / 0.7)</code><small>The band at the top of the stage, under the nav</small></li>
         </ul>
       </div>
 
@@ -196,6 +199,19 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-series-7)"></span><code>--wb-color-series-7</code> <code>#009E73</code><small>Series 7, bluish green</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-series-8)"></span><code>--wb-color-series-8</code> <code>#F0E442</code><small>Series 8, yellow</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-series-other)"></span><code>--wb-color-series-other</code> <code>#5B6F80</code> (light) <code>#93A9BC</code> (dark)<small>Other, the muted ink: the neutral series for everything folded together</small></li>
+      </ul>
+
+      <h3>Water</h3>
+      <p class="docs-intro">The hero's deep water, from the surface down, and what is drawn on it, the same in both themes. White text reads 4.5:1 or better on every stop, and on the surface under a ray at its brightest. The rays, bubbles and fish are decoration, never text.</p>
+      <ul class="docs-swatches" role="list">
+        <li class="docs-swatch"><span style="background: var(--wb-color-water-1)"></span><code>--wb-color-water-1</code> <code>#0F6E86</code><small>The surface, at the top of the hero</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-water-2)"></span><code>--wb-color-water-2</code> <code>#0A4A62</code><small>The water at 22%</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-water-3)"></span><code>--wb-color-water-3</code> <code>#062C40</code><small>The water at 55%</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-water-4)"></span><code>--wb-color-water-4</code> <code>#03141F</code><small>The deep, at the foot of the hero</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ray)"></span><code>--wb-color-ray</code> <code>rgb(190 255 248 / 0.12)</code><small>A light ray at its top</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ray-0)"></span><code>--wb-color-ray-0</code> <code>rgb(190 255 248 / 0)</code><small>Where a ray fades out</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-bubble)"></span><code>--wb-color-bubble</code> <code>rgb(220 255 250 / 0.6)</code><small>A bubble's ring</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-fish)"></span><code>--wb-color-fish</code> <code>rgb(4 24 34 / 0.85)</code><small>A fish's silhouette</small></li>
       </ul>
 
       <h3>Type scale</h3>
@@ -509,6 +525,8 @@
             <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg><code>arrow-left</code></li>
             <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><code>arrow-right</code></li>
             <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><code>external</code></li>
+            <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5v14"/><path d="M15 5v14"/></svg><code>pause</code></li>
+            <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5v15L19 12Z"/></svg><code>play</code></li>
           </ul>
           <div class="docs-page">
             <a class="wb-back" href="#"><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg> Educational resources</a>
@@ -1279,6 +1297,49 @@
 
       <div class="docs-specimen docs-wide">
         <div>
+          <h3>Hero</h3>
+          <p>The home page opens on deep water, <code>wb-hero</code>: the four water tokens from the surface down, six light rays swaying from the top, ten bubbles rising and three fish crossing in their detection boxes. The component places and times every one of them from empty elements, so the page writes no geometry. The headline is at the hero size, tracked in, and the text is white in both themes. With reduced motion nothing moves: the rays stand still, the bubbles stay below the edge and the fish are not drawn. The page shows the pause button, <code>wb-hero__pause</code>, a round icon button named for screen readers, once its script can answer it (it swaps the icon to <code>play</code> and the name to “Play motion” while paused); it sets <code>data-motion="paused"</code> on the root, which holds the hero and the ticker where they are.</p>
+        </div>
+        <div class="wb-hero">
+          <div class="wb-hero__water" aria-hidden="true">
+            <div class="wb-hero__rays"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="wb-hero__bubbles"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="wb-hero__school">
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Sergeant major</span></div></div>
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Blue tang</span></div></div>
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Bar jack</span></div></div>
+            </div>
+          </div>
+          <div class="wb-container wb-hero__body">
+            <p class="wb-hero__tag">Live from the reef · Pompano Beach, FL</p>
+            <h4 class="wb-hero__title">The reef<br>is live.</h4>
+            <div class="wb-hero__foot">
+              <p class="wb-hero__lead">Swim and snorkel the Wahoo Bay reef in Pompano Beach, or watch it live from anywhere.</p>
+              <div class="wb-hero__actions">
+                <a class="wb-btn wb-btn--action" href="#">Plan your visit</a>
+                <a class="wb-btn wb-btn--ghost" href="#">Watch live</a>
+              </div>
+            </div>
+          </div>
+          <button class="wb-hero__pause" type="button"><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5v14"/><path d="M15 5v14"/></svg><span class="wb-sr-only">Pause motion</span></button>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Ticker</h3>
+          <p>Under the hero, the things to do, <code>wb-ticker</code>: two copies of one list in a track, the second hidden from screen readers, scrolling by one copy's width so the loop has no seam; the pointer over it holds it. Every third word, from the first, is in the action colour. With reduced motion the words wrap, centred, in one list, and the copy is not drawn.</p>
+        </div>
+        <div class="wb-ticker" role="region" aria-label="Things to do at Wahoo Bay, light">
+          <div class="wb-ticker__track" data-impeccable-ignore="marquee">
+            <ul class="wb-ticker__group" role="list"><li class="wb-ticker__word">Visit</li><li class="wb-ticker__word">Swim</li><li class="wb-ticker__word">Snorkel</li><li class="wb-ticker__word">Jump in</li><li class="wb-ticker__word">Explore</li><li class="wb-ticker__word">Learn</li><li class="wb-ticker__word">Watch</li><li class="wb-ticker__word">Discover</li><li class="wb-ticker__word">Participate</li><li class="wb-ticker__word">Volunteer</li><li class="wb-ticker__word">Contribute</li><li class="wb-ticker__word">Protect</li></ul>
+            <ul class="wb-ticker__group" role="list" aria-hidden="true"><li class="wb-ticker__word">Visit</li><li class="wb-ticker__word">Swim</li><li class="wb-ticker__word">Snorkel</li><li class="wb-ticker__word">Jump in</li><li class="wb-ticker__word">Explore</li><li class="wb-ticker__word">Learn</li><li class="wb-ticker__word">Watch</li><li class="wb-ticker__word">Discover</li><li class="wb-ticker__word">Participate</li><li class="wb-ticker__word">Volunteer</li><li class="wb-ticker__word">Contribute</li><li class="wb-ticker__word">Protect</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
           <h3>Band</h3>
           <p>A full-bleed section on its own ground, <code>wb-band</code>. With <code>data-theme="dark"</code> it is the home page's live band, the one dark surface outside the camera pages: the dark tokens apply inside it, so it needs no modifier. Inside, <code>wb-container wb-band__inner</code> sets the still and the words side by side from 48rem.</p>
         </div>
@@ -1957,6 +2018,8 @@
             <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg><code>arrow-left</code></li>
             <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><code>arrow-right</code></li>
             <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><code>external</code></li>
+            <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5v14"/><path d="M15 5v14"/></svg><code>pause</code></li>
+            <li><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5v15L19 12Z"/></svg><code>play</code></li>
           </ul>
           <div class="docs-page">
             <a class="wb-back" href="#"><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg> Educational resources</a>
@@ -2721,6 +2784,49 @@
               <a class="wb-btn wb-btn--action" href="#">Explore Wahoo Bay</a>
               <a class="wb-btn wb-btn--ghost" href="#">Underwater camera</a>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Hero</h3>
+          <p>The home page opens on deep water, <code>wb-hero</code>: the four water tokens from the surface down, six light rays swaying from the top, ten bubbles rising and three fish crossing in their detection boxes. The component places and times every one of them from empty elements, so the page writes no geometry. The headline is at the hero size, tracked in, and the text is white in both themes. With reduced motion nothing moves: the rays stand still, the bubbles stay below the edge and the fish are not drawn. The page shows the pause button, <code>wb-hero__pause</code>, a round icon button named for screen readers, once its script can answer it (it swaps the icon to <code>play</code> and the name to “Play motion” while paused); it sets <code>data-motion="paused"</code> on the root, which holds the hero and the ticker where they are.</p>
+        </div>
+        <div class="wb-hero">
+          <div class="wb-hero__water" aria-hidden="true">
+            <div class="wb-hero__rays"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="wb-hero__bubbles"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="wb-hero__school">
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Sergeant major</span></div></div>
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Blue tang</span></div></div>
+              <div class="wb-hero__fish"><div class="wb-detect"><span class="wb-detect__label">Bar jack</span></div></div>
+            </div>
+          </div>
+          <div class="wb-container wb-hero__body">
+            <p class="wb-hero__tag">Live from the reef · Pompano Beach, FL</p>
+            <h4 class="wb-hero__title">The reef<br>is live.</h4>
+            <div class="wb-hero__foot">
+              <p class="wb-hero__lead">Swim and snorkel the Wahoo Bay reef in Pompano Beach, or watch it live from anywhere.</p>
+              <div class="wb-hero__actions">
+                <a class="wb-btn wb-btn--action" href="#">Plan your visit</a>
+                <a class="wb-btn wb-btn--ghost" href="#">Watch live</a>
+              </div>
+            </div>
+          </div>
+          <button class="wb-hero__pause" type="button"><svg class="wb-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5v14"/><path d="M15 5v14"/></svg><span class="wb-sr-only">Pause motion</span></button>
+        </div>
+      </div>
+
+      <div class="docs-specimen docs-wide">
+        <div>
+          <h3>Ticker</h3>
+          <p>Under the hero, the things to do, <code>wb-ticker</code>: two copies of one list in a track, the second hidden from screen readers, scrolling by one copy's width so the loop has no seam; the pointer over it holds it. Every third word, from the first, is in the action colour. With reduced motion the words wrap, centred, in one list, and the copy is not drawn.</p>
+        </div>
+        <div class="wb-ticker" role="region" aria-label="Things to do at Wahoo Bay, dark">
+          <div class="wb-ticker__track" data-impeccable-ignore="marquee">
+            <ul class="wb-ticker__group" role="list"><li class="wb-ticker__word">Visit</li><li class="wb-ticker__word">Swim</li><li class="wb-ticker__word">Snorkel</li><li class="wb-ticker__word">Jump in</li><li class="wb-ticker__word">Explore</li><li class="wb-ticker__word">Learn</li><li class="wb-ticker__word">Watch</li><li class="wb-ticker__word">Discover</li><li class="wb-ticker__word">Participate</li><li class="wb-ticker__word">Volunteer</li><li class="wb-ticker__word">Contribute</li><li class="wb-ticker__word">Protect</li></ul>
+            <ul class="wb-ticker__group" role="list" aria-hidden="true"><li class="wb-ticker__word">Visit</li><li class="wb-ticker__word">Swim</li><li class="wb-ticker__word">Snorkel</li><li class="wb-ticker__word">Jump in</li><li class="wb-ticker__word">Explore</li><li class="wb-ticker__word">Learn</li><li class="wb-ticker__word">Watch</li><li class="wb-ticker__word">Discover</li><li class="wb-ticker__word">Participate</li><li class="wb-ticker__word">Volunteer</li><li class="wb-ticker__word">Contribute</li><li class="wb-ticker__word">Protect</li></ul>
           </div>
         </div>
       </div>
