@@ -2,7 +2,8 @@
    every third word, from the first, is in the action colour. Markup: .wb-ticker__track holds two identical lists
    (.wb-ticker__group), the second aria-hidden. With motion the track sets both in one row and scrolls by one list's
    width, so the loop has no seam; the pointer over it holds it, and the hero's pause button stops it with the hero.
-   With reduced motion the words wrap, centred, in one list, and the copy is not drawn. */
+   With reduced motion the words wrap, centred, in one list, with no dots (a dot would end a row), and the copy is not
+   drawn. */
 .wb-ticker {
   overflow: hidden;
   padding-top: var(--wb-space-5);
@@ -40,7 +41,9 @@
   border-radius: 50%;
   background: var(--wb-color-line);
 }
-.wb-ticker__word:last-child::after { content: none; }
+@media (prefers-reduced-motion: reduce) {
+  .wb-ticker__word::after { content: none; }
+}
 @media (prefers-reduced-motion: no-preference) {
   .wb-ticker__track {
     display: flex;
@@ -52,7 +55,6 @@
     padding-inline-end: var(--wb-space-7);
   }
   .wb-ticker__group + .wb-ticker__group { display: flex; }
-  .wb-ticker__word:last-child::after { content: ""; }
   .wb-ticker:hover .wb-ticker__track { animation-play-state: paused; }
 }
 @keyframes wb-ticker {

@@ -901,7 +901,8 @@ test('0.5.0 hero: deep water from the four water tokens, white text, the headlin
     /line-height:\s*0?\.86\s*;/, /font-weight:\s*800/, /margin:\s*0/], '.wb-hero__title');
   has(block('.wb-hero__water'), [/position:\s*absolute/, /inset:\s*0/, /overflow:\s*hidden/, /pointer-events:\s*none/], 'the water, behind the words');
   has(block('.wb-hero__body'), [/position:\s*relative/, /display:\s*flex/, /flex-direction:\s*column/], 'the words, over the water');
-  has(block('.wb-hero__tag'), [/align-self:\s*flex-start/, /border-radius:\s*var\(--wb-radius-pill\)/, /text-transform:\s*uppercase/], 'the tag');
+  // A tag that wraps on a phone wraps evenly, not with "FL" alone on its second line.
+  has(block('.wb-hero__tag'), [/align-self:\s*flex-start/, /border-radius:\s*var\(--wb-radius-pill\)/, /text-transform:\s*uppercase/, /text-wrap:\s*balance/], 'the tag');
   has(block('.wb-hero__lead'), [/max-width:\s*34rem/, /font-size:\s*var\(--wb-text-xl\)/], 'the lead');
   has(block('.wb-hero__foot'), [/display:\s*flex/, /flex-wrap:\s*wrap/, /justify-content:\s*space-between/], 'the lead and the actions');
   has(block('.wb-hero__actions'), [/display:\s*flex/, /flex-wrap:\s*wrap/, /gap:\s*var\(--wb-space-3\)/], 'the actions');
@@ -974,9 +975,13 @@ test('0.5.0 ticker: the action words between two 1px lines, in the display face,
   assert.match(inside, /\.wb-ticker__group\s*\{[^}]*flex-wrap:\s*nowrap/);
   assert.match(inside, /\.wb-ticker__group \+ \.wb-ticker__group\s*\{\s*display:\s*flex;?\s*\}/);
   assert.match(inside, /\.wb-ticker:hover \.wb-ticker__track\s*\{\s*animation-play-state:\s*paused;?\s*\}/);
+  // Still, the words wrap onto rows, where a dot would end a row: there are none, and the gap alone parts the words.
+  assert.match(outside, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.wb-ticker__word::after\s*\{\s*content:\s*none;?\s*\}\s*\}/);
+  assert.doesNotMatch(outside + inside, /:last-child::after/, 'in the loop every word has its dot, the last one too');
 });
 
-const HERO_FISH = ['Sergeant major', 'Blue tang', 'Bar jack'];
+// As the fish-ID catalogue writes them (the site reads them from it).
+const HERO_FISH = ['Sergeant Major', 'Blue Tang', 'Bar Jack'];
 const TICKER_WORDS = ['Visit', 'Swim', 'Snorkel', 'Jump in', 'Explore', 'Learn', 'Watch', 'Discover', 'Participate', 'Volunteer', 'Contribute', 'Protect'];
 
 test('index.html shows the hero and the ticker in both themes, as the home page draws them', () => {
