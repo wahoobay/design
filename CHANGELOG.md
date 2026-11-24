@@ -2,6 +2,30 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.5.0 — 2026-11-24
+
+The Jump In brand, from the wahoobay.org home page direction chosen on 2026-11-24 ("Jump In", design canvas). It replaces the Clear Water colours and Manrope decided on 2026-10-29; the 2026-10-29 mockups in `docs/mockups/` stay as the record of that earlier decision. Pending Katie's review.
+
+### Changed
+
+- Dark theme is the deep water of the home page: ground `#020B12`, panel `#061C27`, line `#12323F`, tint `#0A3442`, ink `#EAF6F5`, ink-2 `#CBE3E2` (ink-3 unchanged). Action and focus are aqua `#7DF2DC` on `#03141F` text.
+- The accent is amber `#FFC56B` (text on it `#1A1206`) in both themes: the detection boxes, the live badge and the other accent owners. Light accent text is `#8A5300` on an `#FFF3DC` tint; dark accent text is the amber itself on `#2A2312`.
+- Light action and focus are deep aqua `#0A6E66` (6.1:1 on white), replacing action blue. Brand blue `#0088D6` stays the logo and the first chart series.
+- Type: Inter (variable, 100–900) is `--wb-font-sans`; Bricolage Grotesque (variable, 200–800) is the new `--wb-font-display`, used by `h1`, `h2`, `.wb-stage__title` and `.wb-figure__value`. Manrope is gone. `fonts.css` self-hosts both families, Latin and Latin Extended.
+
+### Added
+
+- `--wb-text-hero`, `clamp(4.5rem, 12vw, 12.25rem)`, and `--wb-track-hero`, `-0.055em`: the one headline at the top of the home page.
+- `.wb-hero`: the home page's opening on deep water (`--wb-color-water-1` to `-4`, `#0F6E86` to `#03141F`, the same in both themes), with six light rays swaying (`--wb-color-ray`, `-ray-0`), ten bubbles rising (`--wb-color-bubble`) and up to six swimmers (`--wb-color-fish`) crossing in their `.wb-detect` boxes: fish by default, and `.wb-hero__fish--shark` (a nurse shark), `--turtle` (a sea turtle, rocking as it paddles) and `--ray` (a spotted eagle ray, its wings beating, its spots holes in the drawing), drawn as plainly as the fish. Six lanes: odd ones swim right, even ones left, lanes 4 to 6 slow, for the big animals; a shape brings its own size. The component places and times them all, so the page writes empty elements and no geometry. The headline (`.wb-hero__title`) is at the hero size, tracked in, at line height 0.86; the tag, lead, actions and a ghost button on the water are white. White text is 4.5:1 or better on every water stop and under a ray at its brightest.
+- `.wb-ticker`: the action words under the hero, between two 1px lines, in the display face, every third in the action colour. Two copies of one list scroll as one seamless loop; the pointer over it holds it.
+- Motion: everything in the hero and the ticker moves only without reduced motion. With it, the rays stand still, the bubbles stay below the edge, the fish are not drawn and the ticker's words wrap in one list. `.wb-hero__pause` is the page's pause button, a 44px round icon button in the hero's corner named in screen-reader text (shown once its script can answer it, not drawn with reduced motion); `data-motion="paused"` on the root holds the hero and the ticker (WCAG 2.2.2).
+- Icons: `pause` and `play`, for that button.
+- Detector: the ticker's track carries `data-impeccable-ignore="marquee"`, pinned in the tests: the scroll is the home page's motion under the Jump In brand.
+
+### Fixed
+
+- Docs: the `--wb-color-scrim-top` swatches said `0.55`; the token has been `0.7` since 0.3.2.
+
 ## 0.4.1 — 2026-11-02
 
 Four fixes from the finish review of the wahoobay.net admin screens.

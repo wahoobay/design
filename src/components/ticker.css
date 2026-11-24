@@ -1,0 +1,62 @@
+/* Ticker: the action words under the home page's hero (0.5.0, Jump In), between two 1px lines, in the display face;
+   every third word, from the first, is in the action colour. Markup: .wb-ticker__track holds two identical lists
+   (.wb-ticker__group), the second aria-hidden. With motion the track sets both in one row and scrolls by one list's
+   width, so the loop has no seam; the pointer over it holds it, and the hero's pause button stops it with the hero.
+   With reduced motion the words wrap, centred, in one list, with no dots (a dot would end a row), and the copy is not
+   drawn. */
+.wb-ticker {
+  overflow: hidden;
+  padding-top: var(--wb-space-5);
+  padding-bottom: var(--wb-space-5);
+  border-top: 1px solid var(--wb-color-line);
+  border-bottom: 1px solid var(--wb-color-line);
+}
+.wb-ticker__group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--wb-space-3) var(--wb-space-7);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wb-ticker__group + .wb-ticker__group { display: none; }
+.wb-ticker__word {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wb-space-7);
+  color: var(--wb-color-ink-3);
+  font-family: var(--wb-font-display);
+  font-size: var(--wb-text-2xl);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+.wb-ticker__word:nth-child(3n + 1) { color: var(--wb-color-action); }
+.wb-ticker__word::after {
+  content: "";
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--wb-color-line);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-ticker__word::after { content: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wb-ticker__track {
+    display: flex;
+    width: max-content;
+    animation: wb-ticker 45s linear infinite;
+  }
+  .wb-ticker__group {
+    flex-wrap: nowrap;
+    padding-inline-end: var(--wb-space-7);
+  }
+  .wb-ticker__group + .wb-ticker__group { display: flex; }
+  .wb-ticker:hover .wb-ticker__track { animation-play-state: paused; }
+}
+@keyframes wb-ticker {
+  to { transform: translateX(-50%); }
+}

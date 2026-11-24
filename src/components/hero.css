@@ -1,0 +1,255 @@
+/* Hero: the home page's opening in the Jump In brand (0.5.0; the 2026-11-24 design canvas, board D). Deep water from the
+   surface down, the four water tokens, with light rays swaying from the top, bubbles rising and fish swimming across in
+   their detection boxes; the headline at the hero size over it. The water and its text are the same in both themes:
+   the text is white (--wb-color-on-photo), 4.5:1 or better on every stop of the water and under a ray at its brightest
+   (tests/tokens.test.mjs). Put .wb-container on .wb-hero__body to line it up with the page.
+
+   Markup: .wb-hero__water (aria-hidden) holds .wb-hero__rays (six empty spans), .wb-hero__bubbles (ten) and
+   .wb-hero__school (up to six .wb-hero__fish, a shape modifier on any of them, each holding a .wb-detect and its
+   label); each one is placed by its own rule here, so the page writes no geometry. With reduced motion nothing moves: the rays stand still, the bubbles stay
+   below the edge and the fish are not drawn. The page's pause button (.wb-hero__pause) sets data-motion="paused" on
+   the root, which holds the hero and the ticker where they are (WCAG 2.2.2). */
+.wb-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(30rem, 100vh, 55rem);
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--wb-color-water-1) 0%, var(--wb-color-water-2) 22%, var(--wb-color-water-3) 55%, var(--wb-color-water-4) 100%);
+  color: var(--wb-color-on-photo);
+}
+.wb-hero__water {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Light rays: a soft-edged shaft from above the top, fading down, swinging from its top. */
+.wb-hero__rays > span {
+  position: absolute;
+  top: -3.75rem;
+  width: 5.625rem;
+  height: 47.5rem;
+  background: linear-gradient(180deg, var(--wb-color-ray), var(--wb-color-ray-0));
+  mask-image: linear-gradient(90deg, transparent, var(--wb-color-on-photo), transparent);
+  transform-origin: top center;
+}
+.wb-hero__rays > span:nth-child(1) { left: 8%; width: 5.625rem; }
+.wb-hero__rays > span:nth-child(2) { left: 22%; width: 2.5rem; }
+.wb-hero__rays > span:nth-child(3) { left: 38%; width: 7.5rem; }
+.wb-hero__rays > span:nth-child(4) { left: 55%; width: 3.75rem; }
+.wb-hero__rays > span:nth-child(5) { left: 70%; width: 8.75rem; }
+.wb-hero__rays > span:nth-child(6) { left: 86%; width: 3.125rem; }
+
+/* Bubbles: a ring below the bottom edge, unseen until it rises; four sizes in turn. */
+.wb-hero__bubbles > span {
+  position: absolute;
+  bottom: -1.25rem;
+  width: 0.25rem;
+  aspect-ratio: 1;
+  border: 1px solid var(--wb-color-bubble);
+  border-radius: 50%;
+  opacity: 0;
+}
+.wb-hero__bubbles > span:nth-child(4n + 2) { width: 0.4375rem; }
+.wb-hero__bubbles > span:nth-child(4n + 3) { width: 0.625rem; }
+.wb-hero__bubbles > span:nth-child(4n + 4) { width: 0.8125rem; }
+.wb-hero__bubbles > span:nth-child(1) { left: 3%; }
+.wb-hero__bubbles > span:nth-child(2) { left: 9%; }
+.wb-hero__bubbles > span:nth-child(3) { left: 17%; }
+.wb-hero__bubbles > span:nth-child(4) { left: 28%; }
+.wb-hero__bubbles > span:nth-child(5) { left: 41%; }
+.wb-hero__bubbles > span:nth-child(6) { left: 52%; }
+.wb-hero__bubbles > span:nth-child(7) { left: 63%; }
+.wb-hero__bubbles > span:nth-child(8) { left: 74%; }
+.wb-hero__bubbles > span:nth-child(9) { left: 83%; }
+.wb-hero__bubbles > span:nth-child(10) { left: 94%; }
+
+/* Swimmers: a silhouette (a mask of the drawing, in --wb-color-fish) inside its detection box (detect.css). A fish by
+   default; --shark (a nurse shark, long and low, its dorsal fins far back), --turtle (a sea turtle from the side, its
+   front flipper swept back) and --ray (a spotted eagle ray from above, its spots holes the water shows through). Six
+   lanes, each with its height, its size (a shape brings its own) and its time; odd lanes swim right, even lanes left,
+   and lanes 4 to 6 are slow, for the big animals. They swim below the navigation's rows. Still water draws none: a box
+   frozen on a drawing says nothing. */
+.wb-hero__school {
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+.wb-hero__fish {
+  position: absolute;
+  left: 0;
+  aspect-ratio: 2;
+}
+.wb-hero__fish::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--wb-color-fish);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60'%3E%3Cpath fill-rule='evenodd' d='M112 30C90 6 50 4 24 26L2 10l6 20-6 20 22-16c26 22 66 20 88-4ZM97 27a3 3 0 1 1-6 0 3 3 0 1 1 6 0Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+.wb-hero__fish:nth-child(even)::before { scale: -1 1; }
+.wb-hero__fish:nth-child(1) { top: 30%; width: 9.375rem; }
+.wb-hero__fish:nth-child(2) { top: 54%; width: 6.875rem; }
+.wb-hero__fish:nth-child(3) { top: 42%; width: 5rem; }
+.wb-hero__fish:nth-child(4) { top: 35%; width: 6rem; }
+.wb-hero__fish:nth-child(5) { top: 64%; width: 7rem; }
+.wb-hero__fish:nth-child(6) { top: 47%; width: 6rem; }
+.wb-hero__fish--shark::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath fill-rule='evenodd' d='M197 34Q195 24 171 23L133 20 115 18 101 3 92 19 75 21 63 9 55 23 36 27 4 13 15 30 9 39 36 35 55 38 61 47 69 40 101 42 113 57 125 44 177 45Q193 43 197 34ZM182.2 30a2.2 2.2 0 1 1-4.4 0 2.2 2.2 0 1 1 4.4 0Z'/%3E%3C/svg%3E"); }
+.wb-hero__fish--turtle::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Cpath fill-rule='evenodd' d='M22 44Q24 12 62 10 94 10 99 33Q106 29 113 31 120 34 117 40 112 46 100 44L87 46Q71 62 46 77 56 60 66 48L37 48Q27 58 12 62 18 52 26 46 16 46 9 44 16 41 22 44ZM112.8 36a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 1 1 3.6 0Z'/%3E%3C/svg%3E"); }
+.wb-hero__fish--ray::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 90'%3E%3Cpath fill-rule='evenodd' d='M115 45Q113 38 104 37Q90 22 70 3 63 26 52 41L4 44 1 45 4 46 52 49Q63 64 70 87 90 68 104 53Q113 52 115 45ZM83 22a3 3 0 1 1-6 0 3 3 0 1 1 6 0ZM91.4 31a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 1 1 4.8 0ZM76.2 32a2.2 2.2 0 1 1-4.4 0 2.2 2.2 0 1 1 4.4 0ZM83 68a3 3 0 1 1-6 0 3 3 0 1 1 6 0ZM91.4 59a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 1 1 4.8 0ZM76.2 58a2.2 2.2 0 1 1-4.4 0 2.2 2.2 0 1 1 4.4 0ZM64 45a2 2 0 1 1-4 0 2 2 0 1 1 4 0Z'/%3E%3C/svg%3E"); }
+.wb-hero__school > .wb-hero__fish--shark { width: 15rem; aspect-ratio: 3.4; }
+.wb-hero__school > .wb-hero__fish--turtle { width: 7.5rem; aspect-ratio: 1.5; }
+.wb-hero__school > .wb-hero__fish--ray { width: 8.5rem; aspect-ratio: 1.55; }
+
+/* The words: the tag, the headline, then the lead beside the actions (under them on a narrow screen). */
+.wb-hero__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wb-space-5);
+  width: 100%;
+  padding-top: var(--wb-space-6);
+  padding-bottom: var(--wb-space-8);
+}
+.wb-hero__tag {
+  align-self: flex-start;
+  margin: 0;
+  padding: var(--wb-space-2) var(--wb-space-4);
+  border-radius: var(--wb-radius-pill);
+  background: color-mix(in srgb, var(--wb-color-water-4) 55%, transparent);
+  font-size: var(--wb-text-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.wb-hero__title {
+  font-family: var(--wb-font-display);
+  margin: 0;
+  font-size: var(--wb-text-hero);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: var(--wb-track-hero);
+}
+.wb-hero__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--wb-space-5) var(--wb-space-6);
+}
+.wb-hero__lead {
+  max-width: 34rem;
+  margin: 0;
+  font-size: var(--wb-text-xl);
+  line-height: 1.5;
+}
+.wb-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wb-space-3);
+}
+/* As on the stage: a ghost button is outlined in the text colour, and the focus ring is the text colour. */
+.wb-hero .wb-btn--ghost {
+  border-color: color-mix(in srgb, var(--wb-color-on-photo) 60%, transparent);
+  color: var(--wb-color-on-photo);
+}
+.wb-hero .wb-btn--ghost:hover { border-color: var(--wb-color-on-photo); }
+.wb-hero :focus-visible { outline-color: var(--wb-color-on-photo); }
+
+/* The pause button: a media control, not a third call to action. A 44px round button in the hero's bottom corner, clear
+   of the words (the body's foot is 4rem), drawn as its icon (pause or play, from the icon set) with its name in
+   screen-reader text. The page shows it once its script can answer it; with reduced motion nothing moves, so it is not
+   drawn. */
+.wb-hero__pause {
+  position: absolute;
+  right: var(--wb-space-4);
+  bottom: var(--wb-space-4);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1.5px solid color-mix(in srgb, var(--wb-color-on-photo) 60%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--wb-color-water-4) 55%, transparent);
+  color: var(--wb-color-on-photo);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.wb-hero__pause:hover { border-color: var(--wb-color-on-photo); }
+.wb-hero__pause[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .wb-hero__pause { display: none; }
+}
+[data-motion="paused"] :is(.wb-hero, .wb-ticker) * { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .wb-hero__rays > span { animation: wb-hero-sway 9s ease-in-out infinite; }
+  .wb-hero__rays > span:nth-child(2) { animation-duration: 7s; animation-delay: -2s; }
+  .wb-hero__rays > span:nth-child(3) { animation-duration: 11s; animation-delay: -4s; }
+  .wb-hero__rays > span:nth-child(4) { animation-duration: 8s; animation-delay: -1s; }
+  .wb-hero__rays > span:nth-child(5) { animation-duration: 12s; animation-delay: -6s; }
+  .wb-hero__rays > span:nth-child(6) { animation-duration: 9s; animation-delay: -3s; }
+  .wb-hero__bubbles > span { animation: wb-hero-rise 9s linear infinite; }
+  .wb-hero__bubbles > span:nth-child(5n + 2) { animation-duration: 11s; }
+  .wb-hero__bubbles > span:nth-child(5n + 3) { animation-duration: 13s; }
+  .wb-hero__bubbles > span:nth-child(5n + 4) { animation-duration: 15s; }
+  .wb-hero__bubbles > span:nth-child(5n + 5) { animation-duration: 17s; }
+  .wb-hero__bubbles > span:nth-child(2) { animation-delay: -1.7s; }
+  .wb-hero__bubbles > span:nth-child(3) { animation-delay: -3.4s; }
+  .wb-hero__bubbles > span:nth-child(4) { animation-delay: -5.1s; }
+  .wb-hero__bubbles > span:nth-child(5) { animation-delay: -6.8s; }
+  .wb-hero__bubbles > span:nth-child(6) { animation-delay: -8.5s; }
+  .wb-hero__bubbles > span:nth-child(7) { animation-delay: -10.2s; }
+  .wb-hero__bubbles > span:nth-child(8) { animation-delay: -11.9s; }
+  .wb-hero__bubbles > span:nth-child(9) { animation-delay: -13.6s; }
+  .wb-hero__bubbles > span:nth-child(10) { animation-delay: -15.3s; }
+  .wb-hero__school { display: block; }
+  .wb-hero__fish { animation: wb-hero-swim 26s linear infinite, wb-hero-bob 4s ease-in-out infinite; }
+  .wb-hero__fish:nth-child(even) { animation-name: wb-hero-swim-left, wb-hero-bob; }
+  .wb-hero__fish:nth-child(1) { animation-delay: -4s, 0s; }
+  .wb-hero__fish:nth-child(2) { animation-duration: 34s, 4s; animation-delay: -18s, -1s; }
+  .wb-hero__fish:nth-child(3) { animation-duration: 40s, 4s; animation-delay: -27s, -2s; }
+  .wb-hero__fish:nth-child(4) { animation-duration: 46s, 5s; animation-delay: -9s, -3s; }
+  .wb-hero__fish:nth-child(5) { animation-duration: 58s, 6s; animation-delay: -40s, -1.5s; }
+  .wb-hero__fish:nth-child(6) { animation-duration: 52s, 5s; animation-delay: -24s, -2.5s; }
+  /* A ray's wings beat; a turtle rocks as it paddles. */
+  .wb-hero__fish--ray::before { animation: wb-hero-flap 2.8s ease-in-out infinite; }
+  .wb-hero__fish--turtle::before { animation: wb-hero-paddle 5s ease-in-out infinite; }
+}
+@keyframes wb-hero-sway {
+  0%, 100% { transform: rotate(-4deg); opacity: 0.6; }
+  50% { transform: rotate(4deg); opacity: 1; }
+}
+@keyframes wb-hero-rise {
+  from { transform: translateY(0); opacity: 0; }
+  15% { opacity: 0.7; }
+  to { transform: translateY(-47.5rem); opacity: 0; }
+}
+/* A swimmer crosses on `translate` and bobs on `transform`, so the two run together. It starts and ends out of sight,
+   past the edge by its own width and 8rem more, room for a label longer than it. */
+@keyframes wb-hero-swim {
+  from { translate: calc(-100% - 8rem) 0; }
+  to { translate: calc(100vw + 8rem) 0; }
+}
+@keyframes wb-hero-swim-left {
+  from { translate: calc(100vw + 8rem) 0; }
+  to { translate: calc(-100% - 8rem) 0; }
+}
+@keyframes wb-hero-bob {
+  50% { transform: translateY(-0.875rem); }
+}
+@keyframes wb-hero-flap {
+  50% { transform: scaleY(0.78); }
+}
+@keyframes wb-hero-paddle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(4deg); }
+}

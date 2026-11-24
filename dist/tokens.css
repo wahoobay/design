@@ -1,7 +1,7 @@
-/* Wahoo Bay design tokens — generated from tokens/tokens.json; values from docs/superpowers/specs/2026-10-29-wahoobay-net-overhaul-design.md §4.3 (wahoobay/infra). Do not edit by hand. */
+/* Wahoo Bay design tokens — generated from tokens/tokens.json; values from docs/superpowers/specs/2026-10-29-wahoobay-net-overhaul-design.md §4.3 (wahoobay/infra), amended by the Jump In brand in 0.5.0. Do not edit by hand. */
 :root {
   --wb-color-brand: #0088D6;
-  --wb-color-action: #0072B5;
+  --wb-color-action: #0A6E66;
   --wb-color-on-action: #FFFFFF;
   --wb-color-ink: #0F2233;
   --wb-color-ink-2: #35495A;
@@ -10,11 +10,11 @@
   --wb-color-panel: #F3F8FC;
   --wb-color-line: #DCE8F1;
   --wb-color-tint: #EAF4FB;
-  --wb-color-accent: #0B7F72;
-  --wb-color-accent-text: #0A6E63;
-  --wb-color-accent-tint: #DDF3EF;
-  --wb-color-on-accent: #FFFFFF;
-  --wb-color-focus: #0072B5;
+  --wb-color-accent: #FFC56B;
+  --wb-color-accent-text: #8A5300;
+  --wb-color-accent-tint: #FFF3DC;
+  --wb-color-on-accent: #1A1206;
+  --wb-color-focus: #0A6E66;
   --wb-color-on-photo: #FFFFFF;
   --wb-color-scrim: rgb(11 27 43 / 0.85);
   --wb-color-scrim-0: rgb(11 27 43 / 0);
@@ -26,7 +26,16 @@
   --wb-color-series-7: #009E73;
   --wb-color-series-8: #F0E442;
   --wb-color-series-other: #5B6F80;
-  --wb-font-sans: "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wb-color-water-1: #0F6E86;
+  --wb-color-water-2: #0A4A62;
+  --wb-color-water-3: #062C40;
+  --wb-color-water-4: #03141F;
+  --wb-color-ray: rgb(190 255 248 / 0.12);
+  --wb-color-ray-0: rgb(190 255 248 / 0);
+  --wb-color-bubble: rgb(220 255 250 / 0.6);
+  --wb-color-fish: rgb(4 24 34 / 0.85);
+  --wb-font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wb-font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", system-ui, sans-serif;
   --wb-text-xs: 0.75rem;
   --wb-text-sm: 0.875rem;
   --wb-text-base: 1rem;
@@ -36,7 +45,9 @@
   --wb-text-3xl: clamp(2.25rem, 1.4rem + 3.2vw, 3.5rem);
   --wb-text-figure: clamp(2.5rem, 5vw, 4.5rem);
   --wb-text-display: clamp(3rem, 7.5vw, 7rem);
+  --wb-text-hero: clamp(4.5rem, 12vw, 12.25rem);
   --wb-track-display: -0.04em;
+  --wb-track-hero: -0.055em;
   --wb-space-1: 0.25rem;
   --wb-space-2: 0.5rem;
   --wb-space-3: 0.75rem;
@@ -52,20 +63,20 @@
   --wb-measure: 70ch;
 }
 [data-theme="dark"] {
-  --wb-color-bg: #0B1B2B;
-  --wb-color-panel: #122738;
-  --wb-color-line: #1F3A50;
-  --wb-color-tint: #0E2A40;
-  --wb-color-ink: #EAF2F8;
-  --wb-color-ink-2: #C3D2DF;
+  --wb-color-bg: #020B12;
+  --wb-color-panel: #061C27;
+  --wb-color-line: #12323F;
+  --wb-color-tint: #0A3442;
+  --wb-color-ink: #EAF6F5;
+  --wb-color-ink-2: #CBE3E2;
   --wb-color-ink-3: #93A9BC;
-  --wb-color-action: #3FA8EA;
-  --wb-color-on-action: #06111B;
-  --wb-color-accent: #2DD4BF;
-  --wb-color-accent-text: #5FE3D1;
-  --wb-color-accent-tint: #0F3A3C;
-  --wb-color-on-accent: #07192B;
-  --wb-color-focus: #3FA8EA;
+  --wb-color-action: #7DF2DC;
+  --wb-color-on-action: #03141F;
+  --wb-color-accent: #FFC56B;
+  --wb-color-accent-text: #FFC56B;
+  --wb-color-accent-tint: #2A2312;
+  --wb-color-on-accent: #1A1206;
+  --wb-color-focus: #7DF2DC;
   --wb-color-on-photo: #FFFFFF;
   --wb-color-scrim: rgb(11 27 43 / 0.85);
   --wb-color-scrim-0: rgb(11 27 43 / 0);
@@ -77,4 +88,12 @@
   --wb-color-series-7: #009E73;
   --wb-color-series-8: #F0E442;
   --wb-color-series-other: #93A9BC;
+  --wb-color-water-1: #0F6E86;
+  --wb-color-water-2: #0A4A62;
+  --wb-color-water-3: #062C40;
+  --wb-color-water-4: #03141F;
+  --wb-color-ray: rgb(190 255 248 / 0.12);
+  --wb-color-ray-0: rgb(190 255 248 / 0);
+  --wb-color-bubble: rgb(220 255 250 / 0.6);
+  --wb-color-fish: rgb(4 24 34 / 0.85);
 }

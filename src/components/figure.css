@@ -19,6 +19,7 @@
   .wb-figure:nth-child(odd) { border-inline-start: 0; }
 }
 .wb-figure__value {
+  font-family: var(--wb-font-display);
   display: block;
   color: var(--wb-color-brand);
   font-size: var(--wb-text-figure);

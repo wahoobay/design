@@ -10,7 +10,7 @@ Everything consumers use is in `dist/` (committed, because consumers install fro
 - `fonts.css` - the `@font-face` rules.
 - `components.css` - component styles built on the tokens.
 - `logo/` - `wahoobay-logo.svg` and `wahoobay-mark.svg`, drawn in `currentColor`.
-- `icons/` - the icon set (`arrow-left.svg`, `arrow-right.svg`, `external.svg`): 24px grid, one 2px stroke in `currentColor`. Each file carries `class="wb-icon" aria-hidden="true" focusable="false"`, so inline it as it is, next to the words that name the control.
+- `icons/` - the icon set (`arrow-left.svg`, `arrow-right.svg`, `external.svg`, `pause.svg`, `play.svg`): 24px grid, one 2px stroke in `currentColor`. Each file carries `class="wb-icon" aria-hidden="true" focusable="false"`, so inline it as it is, next to the words that name the control.
 - `index.html` - the documentation page, showing the tokens and components.
 - `media/` - the photos the documentation page uses.
 
@@ -64,4 +64,4 @@ Releases are tagged from `main` after CI passes.
 
 Free for noncommercial use under the PolyForm Noncommercial License 1.0.0. Commercial use, including offering this software as a paid service to third parties, requires a separate license. Contact: zimmerman3301@gmail.com
 
-The full terms are in [LICENSE.md](LICENSE.md). The Manrope font, the Wahoo Bay logo and the photographs are other people's work and are not covered; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The full terms are in [LICENSE.md](LICENSE.md). The Inter and Bricolage Grotesque fonts, the Wahoo Bay logo and the photographs are other people's work and are not covered; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
