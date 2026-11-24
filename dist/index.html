@@ -124,7 +124,7 @@
   <header class="docs-head">
     <div class="wb-container">
       <h1>Wahoo Bay design system</h1>
-      <p class="wb-lead docs-lede">Tokens and components for wahoobay.net and the fish-ID app. A white ground, a pale blue wash, one sans-serif and 12px corners. Brand blue is the logo, the large headings and the large numbers, action blue is what you press, and the Seagrass accent means alive right now.</p>
+      <p class="wb-lead docs-lede">Tokens and components for wahoobay.org and the fish-ID app, in the Jump In brand (0.5.0): deep water for the home page and the live pages, a white ground and a pale blue wash for reading, Bricolage Grotesque for display, Inter for text, and 12px corners. Brand blue is the logo and the first chart series, aqua is what you press, and the amber accent means alive right now: the detection boxes and the live badge.</p>
       <ul class="docs-toc" role="list">
         <li><a href="#tokens">Tokens</a></li>
         <li><a href="#light">Components</a></li>
@@ -141,7 +141,7 @@
       <h3>Colour, light</h3>
       <ul class="docs-swatches" role="list">
         <li class="docs-swatch"><span style="background: var(--wb-color-brand)"></span><code>--wb-color-brand</code> <code>#0088D6</code><small>Logo, display headings, large numbers, first chart series</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-action)"></span><code>--wb-color-action</code> <code>#0072B5</code><small>Buttons, links, active navigation</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-action)"></span><code>--wb-color-action</code> <code>#0A6E66</code><small>Buttons, links, active navigation</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-on-action)"></span><code>--wb-color-on-action</code> <code>#FFFFFF</code><small>Text on action</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-ink)"></span><code>--wb-color-ink</code> <code>#0F2233</code><small>Text</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-ink-2)"></span><code>--wb-color-ink-2</code> <code>#35495A</code><small>Secondary text</small></li>
@@ -150,11 +150,11 @@
         <li class="docs-swatch"><span style="background: var(--wb-color-panel)"></span><code>--wb-color-panel</code> <code>#F3F8FC</code><small>Panels, cards</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-line)"></span><code>--wb-color-line</code> <code>#DCE8F1</code><small>1px lines</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-tint)"></span><code>--wb-color-tint</code> <code>#EAF4FB</code><small>Pale blue wash</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-accent)"></span><code>--wb-color-accent</code> <code>#0B7F72</code><small>Seagrass: alive right now</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-accent-text)"></span><code>--wb-color-accent-text</code> <code>#0A6E63</code><small>Accent text on tints</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#DDF3EF</code><small>Chip ground</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#FFFFFF</code><small>Text on accent</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#0072B5</code><small>Focus ring</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent)"></span><code>--wb-color-accent</code> <code>#FFC56B</code><small>Amber: alive right now</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-text)"></span><code>--wb-color-accent-text</code> <code>#8A5300</code><small>Accent text on tints</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#FFF3DC</code><small>Chip ground</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#1A1206</code><small>Text on accent</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#0A6E66</code><small>Focus ring</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
@@ -162,23 +162,23 @@
       </ul>
 
       <h3>Colour, dark</h3>
-      <p class="docs-intro">The live-camera pages and the home page's live band set <code>data-theme="dark"</code>, which replaces these colours; brand blue, type, spacing and corners stay as they are, and so does the text on a photograph and its scrim.</p>
+      <p class="docs-intro">The home page and the live pages set <code>data-theme="dark"</code>, which replaces these colours; brand blue, type, spacing and corners stay as they are, and so does the text on a photograph and its scrim.</p>
       <div class="docs-dark" data-theme="dark">
         <ul class="docs-swatches" role="list">
-        <li class="docs-swatch"><span style="background: var(--wb-color-bg)"></span><code>--wb-color-bg</code> <code>#0B1B2B</code><small>Ground</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-panel)"></span><code>--wb-color-panel</code> <code>#122738</code><small>Panels, cards</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-line)"></span><code>--wb-color-line</code> <code>#1F3A50</code><small>1px lines</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-tint)"></span><code>--wb-color-tint</code> <code>#0E2A40</code><small>Pale blue wash</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-ink)"></span><code>--wb-color-ink</code> <code>#EAF2F8</code><small>Text</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-ink-2)"></span><code>--wb-color-ink-2</code> <code>#C3D2DF</code><small>Secondary text</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-bg)"></span><code>--wb-color-bg</code> <code>#020B12</code><small>Ground</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-panel)"></span><code>--wb-color-panel</code> <code>#061C27</code><small>Panels, cards</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-line)"></span><code>--wb-color-line</code> <code>#12323F</code><small>1px lines</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-tint)"></span><code>--wb-color-tint</code> <code>#0A3442</code><small>Pale blue wash</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink)"></span><code>--wb-color-ink</code> <code>#EAF6F5</code><small>Text</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-ink-2)"></span><code>--wb-color-ink-2</code> <code>#CBE3E2</code><small>Secondary text</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-ink-3)"></span><code>--wb-color-ink-3</code> <code>#93A9BC</code><small>Muted text, labels</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-action)"></span><code>--wb-color-action</code> <code>#3FA8EA</code><small>Buttons, links, active navigation</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-on-action)"></span><code>--wb-color-on-action</code> <code>#06111B</code><small>Text on action</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-accent)"></span><code>--wb-color-accent</code> <code>#2DD4BF</code><small>Seagrass: alive right now</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-accent-text)"></span><code>--wb-color-accent-text</code> <code>#5FE3D1</code><small>Accent text on tints</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#0F3A3C</code><small>Chip ground</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#07192B</code><small>Text on accent</small></li>
-        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#3FA8EA</code><small>Focus ring</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-action)"></span><code>--wb-color-action</code> <code>#7DF2DC</code><small>Buttons, links, active navigation</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-action)"></span><code>--wb-color-on-action</code> <code>#03141F</code><small>Text on action</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent)"></span><code>--wb-color-accent</code> <code>#FFC56B</code><small>Amber: alive right now</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-text)"></span><code>--wb-color-accent-text</code> <code>#FFC56B</code><small>Accent text on tints</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-accent-tint)"></span><code>--wb-color-accent-tint</code> <code>#2A2312</code><small>Chip ground</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-on-accent)"></span><code>--wb-color-on-accent</code> <code>#1A1206</code><small>Text on accent</small></li>
+        <li class="docs-swatch"><span style="background: var(--wb-color-focus)"></span><code>--wb-color-focus</code> <code>#7DF2DC</code><small>Focus ring</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-on-photo)"></span><code>--wb-color-on-photo</code> <code>#FFFFFF</code><small>Text on a photograph, in both themes</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim)"></span><code>--wb-color-scrim</code> <code>rgb(11 27 43 / 0.85)</code><small>The scrim at the foot of a photograph</small></li>
         <li class="docs-swatch"><span style="background: var(--wb-color-scrim-0)"></span><code>--wb-color-scrim-0</code> <code>rgb(11 27 43 / 0)</code><small>Where a scrim starts, clear</small></li>
@@ -199,10 +199,11 @@
       </ul>
 
       <h3>Type scale</h3>
-      <p class="docs-intro">One family, Manrope, from 400 to 800. The four largest steps are fluid. The display size, for the headline on the home page's photograph, and the figure size, for the impact numbers, are tracked in by <code>--wb-track-display</code>, -0.04em.</p>
+      <p class="docs-intro">Two families: Bricolage Grotesque (<code>--wb-font-display</code>) for h1, h2, the stage title and the figures, and Inter (<code>--wb-font-sans</code>) for everything else. The five largest steps are fluid. The hero size is for the one headline at the top of the home page, tracked in by <code>--wb-track-hero</code>, -0.055em; the display and figure sizes are tracked in by <code>--wb-track-display</code>, -0.04em.</p>
       <ul class="docs-scale" role="list">
-        <li><span class="docs-meta"><code>--wb-text-display</code> clamp(3rem, 7.5vw, 7rem)</span><span class="docs-sample" style="font-size: var(--wb-text-display); letter-spacing: var(--wb-track-display)">A living reef</span></li>
-        <li><span class="docs-meta"><code>--wb-text-figure</code> clamp(2.5rem, 5vw, 4.5rem)</span><span class="docs-sample wb-num" style="font-size: var(--wb-text-figure); letter-spacing: var(--wb-track-display)">14,910</span></li>
+        <li><span class="docs-meta"><code>--wb-text-hero</code> clamp(4.5rem, 12vw, 12.25rem)</span><span class="docs-sample" style="font-family: var(--wb-font-display); font-size: var(--wb-text-hero); letter-spacing: var(--wb-track-hero); line-height: 0.9">The reef is live.</span></li>
+        <li><span class="docs-meta"><code>--wb-text-display</code> clamp(3rem, 7.5vw, 7rem)</span><span class="docs-sample" style="font-family: var(--wb-font-display); font-size: var(--wb-text-display); letter-spacing: var(--wb-track-display)">A living reef</span></li>
+        <li><span class="docs-meta"><code>--wb-text-figure</code> clamp(2.5rem, 5vw, 4.5rem)</span><span class="docs-sample wb-num" style="font-family: var(--wb-font-display); font-size: var(--wb-text-figure); letter-spacing: var(--wb-track-display)">14,910</span></li>
         <li><span class="docs-meta"><code>--wb-text-3xl</code> clamp(2.25rem, 1.4rem + 3.2vw, 3.5rem)</span><span class="docs-sample" style="font-size: var(--wb-text-3xl)">A living reef, open to everyone.</span></li>
         <li><span class="docs-meta"><code>--wb-text-2xl</code> clamp(1.75rem, 1.2rem + 2vw, 2.5rem)</span><span class="docs-sample" style="font-size: var(--wb-text-2xl)">A living reef, open to everyone.</span></li>
         <li><span class="docs-meta"><code>--wb-text-xl</code> 1.375rem</span><span class="docs-sample" style="font-size: var(--wb-text-xl)">A living reef, open to everyone.</span></li>
@@ -543,7 +544,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Buttons</h3>
-          <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
+          <p>Action is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
         </div>
         <div>
           <div class="docs-row">
@@ -996,7 +997,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Map frame</h3>
-          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it. The map's own words, its popups and buttons, are in the system's face. A place is a <code>wb-marker</code>, a pin in action blue ringed in the ground colour, in a 44px target; a camera's pin, <code>wb-marker--camera</code>, is the accent, because a camera is alive right now. Name each with <code>aria-label</code>.</p>
+          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it. The map's own words, its popups and buttons, are in the system's face. A place is a <code>wb-marker</code>, a pin in the action colour ringed in the ground colour, in a 44px target; a camera's pin, <code>wb-marker--camera</code>, is the accent, because a camera is alive right now. Name each with <code>aria-label</code>.</p>
         </div>
         <div>
           <div class="wb-map docs-map">
@@ -1372,7 +1373,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Segmented control</h3>
-          <p>One choice of a few, such as a chart's range: a <code>wb-seg</code> group, <code>role="group"</code> with a name, of <code>wb-seg__btn</code> buttons, each at least 44px square. The page marks the chosen one <code>aria-pressed="true"</code> and the rest <code>"false"</code>; the chosen one is on the panel wash, underlined in action blue as the current nav link is.</p>
+          <p>One choice of a few, such as a chart's range: a <code>wb-seg</code> group, <code>role="group"</code> with a name, of <code>wb-seg__btn</code> buttons, each at least 44px square. The page marks the chosen one <code>aria-pressed="true"</code> and the rest <code>"false"</code>; the chosen one is on the panel wash, underlined in the action colour as the current nav link is.</p>
         </div>
         <div>
           <div class="wb-seg" role="group" aria-label="Chart range">
@@ -1552,7 +1553,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Toolbar, table, pager</h3>
-          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code> (children of a labelled cell stay in the value column). <code>wb-table__long</code> on a cell lets free text such as an email break anywhere. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
+          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code> (children of a labelled cell stay in the value column). <code>wb-table__long</code> on a cell lets free text such as an email break anywhere. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in the action colour, and a page size.</p>
         </div>
         <div>
           <div class="wb-toolbar">
@@ -1636,7 +1637,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Dialog and status</h3>
-          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified, rejected, shown or hidden is a <code>wb-chip</code> variant that never wraps: ink, action blue (verified and shown), a plain chip (hidden) and a heavy ink edge, never the accent. <code>wb-btn--grave</code> is the confirm for something that cannot be taken back: an ink fill, no new colour.</p>
+          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified, rejected, shown or hidden is a <code>wb-chip</code> variant that never wraps: ink, the action colour (verified and shown), a plain chip (hidden) and a heavy ink edge, never the accent. <code>wb-btn--grave</code> is the confirm for something that cannot be taken back: an ink fill, no new colour.</p>
         </div>
         <div>
           <ul class="docs-row" role="list">
@@ -1991,7 +1992,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Buttons</h3>
-          <p>Action blue is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
+          <p>Action is the primary action, ghost the secondary, and the accent is Donate and nothing else. Every button is at least 44px tall.</p>
         </div>
         <div>
           <div class="docs-row">
@@ -2444,7 +2445,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Map frame</h3>
-          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it. The map's own words, its popups and buttons, are in the system's face. A place is a <code>wb-marker</code>, a pin in action blue ringed in the ground colour, in a 44px target; a camera's pin, <code>wb-marker--camera</code>, is the accent, because a camera is alive right now. Name each with <code>aria-label</code>.</p>
+          <p>The box an interactive map fills, or its still while the map loads: a 1px line and the 12px corners, as tall as most of the screen without filling it. The map's own words, its popups and buttons, are in the system's face. A place is a <code>wb-marker</code>, a pin in the action colour ringed in the ground colour, in a 44px target; a camera's pin, <code>wb-marker--camera</code>, is the accent, because a camera is alive right now. Name each with <code>aria-label</code>.</p>
         </div>
         <div>
           <div class="wb-map docs-map">
@@ -2820,7 +2821,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Segmented control</h3>
-          <p>One choice of a few, such as a chart's range: a <code>wb-seg</code> group, <code>role="group"</code> with a name, of <code>wb-seg__btn</code> buttons, each at least 44px square. The page marks the chosen one <code>aria-pressed="true"</code> and the rest <code>"false"</code>; the chosen one is on the panel wash, underlined in action blue as the current nav link is.</p>
+          <p>One choice of a few, such as a chart's range: a <code>wb-seg</code> group, <code>role="group"</code> with a name, of <code>wb-seg__btn</code> buttons, each at least 44px square. The page marks the chosen one <code>aria-pressed="true"</code> and the rest <code>"false"</code>; the chosen one is on the panel wash, underlined in the action colour as the current nav link is.</p>
         </div>
         <div>
           <div class="wb-seg" role="group" aria-label="Chart range">
@@ -3000,7 +3001,7 @@
       <div class="docs-specimen docs-wide">
         <div>
           <h3>Toolbar, table, pager</h3>
-          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code> (children of a labelled cell stay in the value column). <code>wb-table__long</code> on a cell lets free text such as an email break anywhere. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in action blue, and a page size.</p>
+          <p>The sighting review. <code>wb-toolbar</code> holds the filters, each a labelled <code>wb-field</code>. <code>wb-table</code> is a plain <code>&lt;table&gt;</code> with a header row, inside <code>wb-table-wrap</code> (a table cannot be a query container); <code>data-stack</code> turns each row into a labelled card when that wrapper is under 36rem wide, every cell carrying its column in <code>data-label</code> (children of a labelled cell stay in the value column). <code>wb-table__long</code> on a cell lets free text such as an email break anywhere. <code>wb-pager</code> is a <code>&lt;nav&gt;</code> with the count in <code>wb-pager__info</code>, Previous and Next in the action colour, and a page size.</p>
         </div>
         <div>
           <div class="wb-toolbar">
@@ -3084,7 +3085,7 @@
       <div class="docs-specimen">
         <div>
           <h3>Dialog and status</h3>
-          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified, rejected, shown or hidden is a <code>wb-chip</code> variant that never wraps: ink, action blue (verified and shown), a plain chip (hidden) and a heavy ink edge, never the accent. <code>wb-btn--grave</code> is the confirm for something that cannot be taken back: an ink fill, no new colour.</p>
+          <p><code>wb-dialog</code> styles the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>; its backdrop is the scrim token. <code>wb-dialog__title</code> and <code>wb-dialog__actions</code> sit inside. <code>wb-status</code> with <code>data-status</code> of pending, verified, rejected, shown or hidden is a <code>wb-chip</code> variant that never wraps: ink, the action colour (verified and shown), a plain chip (hidden) and a heavy ink edge, never the accent. <code>wb-btn--grave</code> is the confirm for something that cannot be taken back: an ink fill, no new colour.</p>
         </div>
         <div>
           <ul class="docs-row" role="list">

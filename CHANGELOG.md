@@ -2,6 +2,21 @@
 
 All notable changes to `@wahoobay/design` are recorded here, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are Git tags.
 
+## 0.5.0 — 2026-11-24
+
+The Jump In brand, from the wahoobay.org home page direction chosen on 2026-11-24 ("Jump In", design canvas). It replaces the Clear Water colours and Manrope decided on 2026-10-29; the 2026-10-29 mockups in `docs/mockups/` stay as the record of that earlier decision. Pending Katie's review.
+
+### Changed
+
+- Dark theme is the deep water of the home page: ground `#020B12`, panel `#061C27`, line `#12323F`, tint `#0A3442`, ink `#EAF6F5`, ink-2 `#CBE3E2` (ink-3 unchanged). Action and focus are aqua `#7DF2DC` on `#03141F` text.
+- The accent is amber `#FFC56B` (text on it `#1A1206`) in both themes: the detection boxes, the live badge and the other accent owners. Light accent text is `#8A5300` on an `#FFF3DC` tint; dark accent text is the amber itself on `#2A2312`.
+- Light action and focus are deep aqua `#0A6E66` (6.1:1 on white), replacing action blue. Brand blue `#0088D6` stays the logo and the first chart series.
+- Type: Inter (variable, 100–900) is `--wb-font-sans`; Bricolage Grotesque (variable, 200–800) is the new `--wb-font-display`, used by `h1`, `h2`, `.wb-stage__title` and `.wb-figure__value`. Manrope is gone. `fonts.css` self-hosts both families, Latin and Latin Extended.
+
+### Added
+
+- `--wb-text-hero`, `clamp(4.5rem, 12vw, 12.25rem)`, and `--wb-track-hero`, `-0.055em`: the one headline at the top of the home page.
+
 ## 0.4.1 — 2026-11-02
 
 Four fixes from the finish review of the wahoobay.net admin screens.

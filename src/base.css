@@ -11,13 +11,13 @@ body {
   color: var(--wb-color-ink);
   background: var(--wb-color-bg);
   -webkit-font-smoothing: antialiased;
-  /* Manrope's common ligatures turn "(c)" into ©, "--" into – and "->" into →; "501(c)(3)" must read as typed. */
+  /* Common ligatures off, so text such as "501(c)(3)", "--" and "->" reads exactly as typed in every face. */
   font-variant-ligatures: no-common-ligatures;
 }
 img, svg, video { max-width: 100%; height: auto; }
 h1, h2, h3, h4 { line-height: 1.15; text-wrap: balance; }
 /* Headings stay ink; the two largest are heavy (spec §4.3; the approved mockup, option B). */
-h1, h2 { font-weight: 800; }
+h1, h2 { font-family: var(--wb-font-display); font-weight: 800; }
 h3, h4 { font-weight: 700; }
 h1 { font-size: var(--wb-text-3xl); letter-spacing: -0.025em; }
 h2 { font-size: var(--wb-text-2xl); letter-spacing: -0.025em; }

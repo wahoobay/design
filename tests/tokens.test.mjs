@@ -12,9 +12,13 @@ test('light and dark tokens meet WCAG AA on every text pair', () => {
 });
 test('tokens.css carries the decided values', () => {
   const css = readFileSync('dist/tokens.css', 'utf8');
-  for (const line of ['--wb-color-brand: #0088D6', '--wb-color-action: #0072B5', '--wb-color-accent: #0B7F72', '--wb-radius: 12px'])
+  for (const line of ['--wb-color-brand: #0088D6', '--wb-color-action: #0A6E66', '--wb-color-accent: #FFC56B', '--wb-radius: 12px'])
     assert.ok(css.includes(line), line);
-  assert.match(css, /\[data-theme="dark"\]\s*\{[^}]*--wb-color-accent: #2DD4BF/);
+  // 0.5.0, the Jump In brand: the dark ground is the deep water of the home page, action is aqua, the accent is the amber
+  // of the detection boxes.
+  assert.match(css, /\[data-theme="dark"\]\s*\{[^}]*--wb-color-accent: #FFC56B/);
+  assert.match(css, /\[data-theme="dark"\]\s*\{[^}]*--wb-color-action: #7DF2DC/);
+  assert.match(css, /\[data-theme="dark"\]\s*\{[^}]*--wb-color-bg: #020B12/);
   assert.doesNotMatch(css, /prefers-color-scheme/);
 });
 test('tokens: display and figure sizes, display tracking', () => {
@@ -22,6 +26,19 @@ test('tokens: display and figure sizes, display tracking', () => {
   assert.match(t, /--wb-text-display:\s*clamp\(3rem,\s*7\.5vw,\s*7rem\)/);
   assert.match(t, /--wb-text-figure:\s*clamp\(2\.5rem,\s*5vw,\s*4\.5rem\)/);
   assert.match(t, /--wb-track-display:\s*-0?\.04em/);
+});
+// 0.5.0: the hero size, for the one headline at the top of the home page (196px at its largest), tracked in further.
+test('tokens: hero size and hero tracking', () => {
+  const t = readFileSync('dist/tokens.css', 'utf8');
+  assert.match(t, /--wb-text-hero:\s*clamp\(4\.5rem,\s*12vw,\s*12\.25rem\)/);
+  assert.match(t, /--wb-track-hero:\s*-0?\.055em/);
+});
+// 0.5.0: two families, Bricolage Grotesque for display (headings, figures, the hero) and Inter for everything else.
+test('tokens: a display family and a text family', () => {
+  const t = readFileSync('dist/tokens.css', 'utf8');
+  assert.match(t, /--wb-font-display:\s*"Bricolage Grotesque Variable"/);
+  assert.match(t, /--wb-font-sans:\s*"Inter Variable"/);
+  assert.doesNotMatch(t, /Manrope/);
 });
 // The scrims are the dark ground at partial alpha. They have no contrast pair in scripts/contrast.mjs: what shows through
 // them is a photograph, so their contrast is checked by eye (spec §4.3), not computed.

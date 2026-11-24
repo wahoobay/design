@@ -6,7 +6,8 @@
 
 | Files | What | Copyright | License |
 |---|---|---|---|
-| `dist/fonts/manrope-latin-wght-normal.woff2`, `dist/fonts/manrope-latin-ext-wght-normal.woff2` | Manrope (variable), copied by `scripts/build.mjs` from the npm package `@fontsource-variable/manrope` 5.3.0 | Copyright 2019 The Manrope Project Authors (https://github.com/sharanda/manrope) | SIL Open Font License 1.1 (`OFL-1.1`), <https://openfontlicense.org> |
+| `dist/fonts/inter-latin-wght-normal.woff2`, `dist/fonts/inter-latin-ext-wght-normal.woff2` | Inter (variable), copied by `scripts/build.mjs` from the npm package `@fontsource-variable/inter` 5.3.0 | Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter) | SIL Open Font License 1.1 (`OFL-1.1`), <https://openfontlicense.org> |
+| `dist/fonts/bricolage-grotesque-latin-wght-normal.woff2`, `dist/fonts/bricolage-grotesque-latin-ext-wght-normal.woff2` | Bricolage Grotesque (variable), copied by `scripts/build.mjs` from the npm package `@fontsource-variable/bricolage-grotesque` 5.3.0 | Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage) | SIL Open Font License 1.1 (`OFL-1.1`), <https://openfontlicense.org> |
 
 The font files carry the copyright line and the license link in their own metadata.
 

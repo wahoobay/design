@@ -134,7 +134,7 @@ test('index.html carries the overlong fixtures: a 60-character species chip and 
   assert.ok(labels.includes(40), `tile label lengths ${labels}`);
 });
 
-test('body text keeps "(c)" as typed: Manrope\'s common ligatures are off', () => {
+test('body text keeps "(c)" as typed: common ligatures are off', () => {
   const body = rules(read('dist/components.css')).find((r) => r.selector === 'body');
   assert.match(body.body, /font-variant-ligatures:\s*no-common-ligatures/);
 });
@@ -858,6 +858,6 @@ test('0.4.1: status never wraps, shown/hidden never use the accent, long-text ce
 
 test('0.4.1: the grave button reads at 4.5:1 in light and dark, at rest and on hover/active', () => {
   const mix = (a, b, pct) => '#' + [1, 3, 5].map((i) => Math.round(parseInt(a.slice(i, i + 2), 16) * pct + parseInt(b.slice(i, i + 2), 16) * (1 - pct)).toString(16).padStart(2, '0')).join('');
-  const light = { ink: '#0F2233', ink2: '#35495A', bg: '#FFFFFF' }, dark = { ink: '#EAF2F8', ink2: '#C3D2DF', bg: '#0B1B2B' };
+  const light = { ink: '#0F2233', ink2: '#35495A', bg: '#FFFFFF' }, dark = { ink: '#EAF6F5', ink2: '#CBE3E2', bg: '#020B12' };
   for (const c of [light, dark]) for (const pct of [1, 0.85, 0.7]) assert.ok(contrast(mix(c.ink, c.ink2, pct), c.bg) >= 4.5, `${pct}`);
 });

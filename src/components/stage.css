@@ -30,6 +30,7 @@
   padding-block: var(--wb-space-7);
 }
 .wb-stage__title {
+  font-family: var(--wb-font-display);
   max-width: 11ch;
   margin: 0;
   font-size: var(--wb-text-display);

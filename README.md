@@ -64,4 +64,4 @@ Releases are tagged from `main` after CI passes.
 
 Free for noncommercial use under the PolyForm Noncommercial License 1.0.0. Commercial use, including offering this software as a paid service to third parties, requires a separate license. Contact: zimmerman3301@gmail.com
 
-The full terms are in [LICENSE.md](LICENSE.md). The Manrope font, the Wahoo Bay logo and the photographs are other people's work and are not covered; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The full terms are in [LICENSE.md](LICENSE.md). The Inter and Bricolage Grotesque fonts, the Wahoo Bay logo and the photographs are other people's work and are not covered; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
